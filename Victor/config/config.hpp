@@ -3,20 +3,21 @@
 #include <sstream>
 #include <vector>
 #include <unordered_map>
+#include <algorithm>
 
 class ConfigBlock
 {
-    private:
+    public:
         std::unordered_map<std::string, std::string> directives;
-        std::unordered_map<std::string, std::vector<ConfigBlock>> nestedBlocks;
+        std::vector<ConfigBlock> *nestedBlocks;
 };
 
 class Config
 {
-    private:
+    public:
         const std::string &_filename;
         ConfigBlock *_configBlock;
-    public:
         Config(const std::string &fileName);
         void configParser();
+        void display();
 };
