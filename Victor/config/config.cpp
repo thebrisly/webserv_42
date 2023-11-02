@@ -70,7 +70,7 @@ void Config::display()
     std::cout << "=========== " << "Displaying config file: " << _filename << " ===========" << std::endl;
     for (int i = _configBlock.size(); i > 0; i--)
     {
-        _configBlock.back()->display();
+        _configBlock.back()->display(0);
         _configBlock.pop_back();
     }
 }

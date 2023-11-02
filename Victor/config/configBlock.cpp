@@ -27,17 +27,20 @@ ConfigBlock& ConfigBlock::operator=(const ConfigBlock& other)
     return *this;
 }
 
-void ConfigBlock::display()
+void ConfigBlock::display(int tree_level)
 {
-    std::cout << "Blocks: " << name << std::endl;
-    std::cout << "  Directives: " << std::endl;
+
+    std::string indent(tree_level, '\t');
+    std::cout << indent << "Blocks: " << name << std::endl;
+    std::cout << indent << "  Directives: " << std::endl;
     for (std::unordered_map<std::string, std::string>::iterator it = directives.begin(); it!= directives.end(); it++)
     {
-        std::cout << "    " << it->first << " = " << it->second << std::endl;
+        std::cout << indent <<  "    " << it->first << " = " << it->second << std::endl;
     }
-    std::cout << "  Nested Blocks: " << std::endl;
+    
     for (std::vector<ConfigBlock>::iterator it = nestedBlocks->begin(); it!= nestedBlocks->end(); it++)
     {
-        it->display();
+        std::cout << indent << "  Nested Blocks: " << std::endl;
+        it->display(10);
     }
 }

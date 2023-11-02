@@ -14,7 +14,7 @@ class ConfigBlock
         std::vector<ConfigBlock> *nestedBlocks;
         ConfigBlock &operator=(const ConfigBlock& other);
 
-        void display();
+        void display(int tree_level);
 
         ConfigBlock();
         ~ConfigBlock();
