@@ -26,3 +26,18 @@ ConfigBlock& ConfigBlock::operator=(const ConfigBlock& other)
     }
     return *this;
 }
+
+void ConfigBlock::display()
+{
+    std::cout << "ConfigBlock: " << name << std::endl;
+    std::cout << "  Directives: " << std::endl;
+    for (std::unordered_map<std::string, std::string>::iterator it = directives.begin(); it!= directives.end(); it++)
+    {
+        std::cout << "    " << it->first << " = " << it->second << std::endl;
+    }
+    std::cout << "  Nested Blocks: " << std::endl;
+    for (std::vector<ConfigBlock>::iterator it = nestedBlocks->begin(); it!= nestedBlocks->end(); it++)
+    {
+        it->display();
+    }
+}
