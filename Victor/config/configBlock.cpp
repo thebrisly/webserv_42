@@ -29,7 +29,7 @@ ConfigBlock& ConfigBlock::operator=(const ConfigBlock& other)
 
 void ConfigBlock::display()
 {
-    std::cout << "ConfigBlock: " << name << std::endl;
+    std::cout << "Blocks: " << name << std::endl;
     std::cout << "  Directives: " << std::endl;
     for (std::unordered_map<std::string, std::string>::iterator it = directives.begin(); it!= directives.end(); it++)
     {
