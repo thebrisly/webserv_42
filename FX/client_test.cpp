@@ -12,11 +12,9 @@
 
 int main()
 {
-
-	int sock_client;									// creating socket
-	struct sockaddr_in server_addr;						// creating address structure
-
-	const std::string message = "sdfg";	// message to send
+	int sock_client;	
+	struct sockaddr_in server_addr;	
+	const std::string message = "Hello from client";
 
 	sock_client = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -28,20 +26,14 @@ int main()
 	connect(sock_client, (struct sockaddr *)&server_addr, sizeof(server_addr));
 
 	std::cout << "Connected to server" << std::endl;
-	
-	send(sock_client, message.c_str(), message.length(), 0);
 
+	send(sock_client, message.c_str(), message.length(), 0);
 
 	char tempBuffer[1024] = {0};
 
 	read(sock_client, tempBuffer, 1024);
 
 	std::cout << "Received message : " << tempBuffer << std::endl;
-
-
-
-
-
 
 	return 0;
 }
