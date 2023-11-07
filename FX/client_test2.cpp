@@ -14,7 +14,7 @@ int main()
 {
 	int		sock_client;	
 	struct	sockaddr_in server_addr;	
-	const	std::string message = "Hello from client";
+	const	std::string message = "Hello from client 2";
 	char	tempBuffer[1024] = {0};
 
 	sock_client = socket(AF_INET, SOCK_STREAM, 0);
@@ -30,7 +30,7 @@ int main()
 
 	std::cout << "Connection status = " << connect_status << std::endl;
 
-	sleep(5);
+	//sleep(10);
 
 	int send_status = send(sock_client, message.c_str(), message.length(), 0);
 
