@@ -30,11 +30,11 @@ int main()
 
 	std::cout << "Connection status = " << connect_status << std::endl;
 
-	sleep(5);
+	//sleep(5);
 
-	int send_status = send(sock_client, message.c_str(), message.length(), 0);
+	//int send_status = send(sock_client, message.c_str(), message.length(), 0);
 
-	std::cout << "Send status " << send_status << std::endl;
+	//std::cout << "Send status " << send_status << std::endl;
 
 	int read_status = read(sock_client, tempBuffer, 1024); //bloc
 

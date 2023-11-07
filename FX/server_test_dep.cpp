@@ -106,9 +106,12 @@ int main()
 				}
 			}
 		}
-			// Envoyer le message à tous les clients connectés.
-		for (int i = 1; i < nfds; i++)
+
+		// Envoyer le message à tous les clients connectés.
+		for (int i = 1; i < MAX_CLIENTS; i++)
 		{
+			std::cout << "i = " << i << " nfds = " << nfds << std::endl;
+
 			if (fds[i].revents & POLLIN)
 			{
 				char buffer[1024] = {0};
@@ -124,8 +127,7 @@ int main()
 					std::cout << "Client " << fds[i].fd << " has disconnected" << std::endl;
 					close(fds[i].fd);
 					fds[i].fd = 0;
-					nfds--;
-
+					fds[i].events = 0;
 				}
 			}
 		}
