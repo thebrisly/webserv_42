@@ -13,22 +13,21 @@
 int main()
 {
 
-	int sock_server;															// creating socket
+	int sock_server;
 	int sock_client;
-	struct sockaddr_in server_addr;												// creating address structure
+	struct sockaddr_in server_addr;
 
 	const int addr_len = sizeof(server_addr);
 
-	const int PORT = 8888;														// port number
+	const int PORT = 8888;
 
 	std::string index_html;
 
     std::ifstream file("index.html");
     std::ostringstream fileStream;
-
 	fileStream << file.rdbuf();
-
 	index_html = fileStream.str();
+	file.close();
 
 	std::string msg = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: 315\r\n\r\n";
 
@@ -40,7 +39,7 @@ int main()
 
 	sock_server = socket(AF_INET, SOCK_STREAM, 0);
 
-	std::cout << "socket created" << std::endl;
+	std::cout << "server socket = " << sock_server << std::endl;
 
 	bzero(&server_addr, sizeof(server_addr));						
 
@@ -55,7 +54,8 @@ int main()
 	while (42)
 	{
 		sock_client = accept(sock_server, (struct sockaddr *)&server_addr, (socklen_t*)&addr_len);
-		std::cout << "Client connected : " << sock_client << std::endl;
+
+		std::cout << "Client connected on socket : " << sock_client << std::endl;
 
 		write(sock_client, msg.c_str(), msg.length());
 
