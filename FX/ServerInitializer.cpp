@@ -1,6 +1,6 @@
-#include "server_initializer.hpp"
+#include "ServerInitializer.hpp"
 
-server_initializer::server_initializer(int port) : _PORT(port)
+ServerInitializer::ServerInitializer(int port) : _PORT(port)
 {
 
 	this->_sock_server = socket(AF_INET, SOCK_STREAM, 0);
@@ -29,24 +29,24 @@ server_initializer::server_initializer(int port) : _PORT(port)
 
 }
 
-server_initializer::~server_initializer(){};
+ServerInitializer::~ServerInitializer(){};
 
-int & server_initializer::get_ref_addrlen()
+int & ServerInitializer::get_ref_addrlen()
 {
 	return this->_addrlen;
 }
 
-int server_initializer::get_sock_server()
+int ServerInitializer::get_sock_server()
 {
 	return this->_sock_server;
 }
 
-struct sockaddr_in server_initializer::get_server_addr()
+struct sockaddr_in ServerInitializer::get_server_addr()
 {
 	return this->_server_addr;
 }
 
-int server_initializer::bind_socket_port()
+int ServerInitializer::bind_socket_port()
 {
 	if (bind(this->_sock_server, (struct sockaddr *)&(this->_server_addr), sizeof(this->_server_addr))<0) 
 	{ 
@@ -59,7 +59,7 @@ int server_initializer::bind_socket_port()
 
 }
 
-struct sockaddr_in & server_initializer::get_ref_server_addr()
+struct sockaddr_in & ServerInitializer::get_ref_server_addr()
 {
 	return this->_server_addr;
 }

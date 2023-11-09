@@ -1,6 +1,4 @@
-//Example code: A simple server side code, which echos back the received response. 
-//Handle multiple socket connections with select and fd_set on Linux 
-#include "server_initializer.hpp"
+#include "ServerInitializer.hpp"
 	
 
 #define PORT 8888 
@@ -8,31 +6,27 @@
 	
 int main() 
 { 
-	//int opt = TRUE; 
+
 	int new_socket , client_socket[30] , max_clients = 30 , activity, i , valread , sd; 
 	int max_sd; 
-	//struct sockaddr_in server_init.get_server_addr(); 
-		
-	char buffer[1025]; //data buffer of 1K 
-		
-	//set of socket descriptors 
-	fd_set readfds; 
-	
-	//a response 
+	char buffer[1025];
+	fd_set readfds;
 
+	fd_set writefds;
+	
 	std::string body = "<!DOCTYPE html><html><body><h1>My First Heading</h1><p>My first paragraph.</p></body></html>"; 
 	std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
 
 	std::string response = header + body;
 	
-	//initialise all client_socket[] to 0 so not checked 
+
 	for (i = 0; i < max_clients; i++) 
 	{ 
 		client_socket[i] = 0; 
 	} 
 	
 
-	server_initializer server_init(PORT);
+	ServerInitializer server_init(PORT);
 	server_init.bind_socket_port();
 		
 	//try to specify maximum of 3 pending connections for the master socket 
@@ -49,10 +43,17 @@ int main()
 	while(true) 
 	{ 
 		//clear the socket set 
-		FD_ZERO(&readfds); 
+		FD_ZERO(&readfds);
+
+		FD_ZERO(&writefds);
 	
 		//add master socket to set 
-		FD_SET(server_init.get_sock_server(), &readfds); 
+		FD_SET(server_init.get_sock_server(), &readfds);
+
+
+
+
+
 		max_sd = server_init.get_sock_server(); 
 			
 		//add child sockets to set 
@@ -72,15 +73,16 @@ int main()
 	
 		//wait for an activity on one of the sockets , timeout is NULL , 
 		//so wait indefinitely 
-		activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL); 
+		activity = select(max_sd + 1, &readfds, &writefds, NULL, NULL); 
 	
+		std::cout << "activity = " << activity << std::endl;
+
 		if ((activity < 0) && (errno!=EINTR)) 
 		{ 
 			printf("select error"); 
 		} 
 			
-		//If something happened on the master socket , 
-		//then its an incoming connection 
+		//If something happened on the master socket, then its an incoming connection 
 		if (FD_ISSET(server_init.get_sock_server(), &readfds)) 
 		{ 
 			if ((new_socket = accept(server_init.get_sock_server(), (struct sockaddr *)&(server_init.get_ref_server_addr()), (socklen_t*)&server_init.get_ref_addrlen()))<0) 
@@ -90,17 +92,9 @@ int main()
 			} 
 			
 			//inform user of socket number - used in send and receive commands 
-			printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(server_init.get_server_addr().sin_addr) , ntohs (server_init.get_server_addr().sin_port)); 
-		
-			//send new connection greeting response 
-			// if( send(new_socket, response.c_str(), response.length(), 0) != response.length() ) 
-			// { 
-			// 	perror("send"); 
-			// } 
-				
-			// puts("Welcome response sent successfully"); 
-				
-			//add new socket to array of sockets 
+			printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket, inet_ntoa(server_init.get_server_addr().sin_addr) , ntohs (server_init.get_server_addr().sin_port)); 
+
+			//add new socket to array of sockets
 			for (i = 0; i < max_clients; i++) 
 			{ 
 				//if position is empty 
@@ -110,14 +104,20 @@ int main()
 					printf("Adding to list of sockets as %d\n" , i);	
 					break; 
 				} 
-			} 
-		} 
+			}
+		}
+
 			
 		//else its some IO operation on some other socket 
 		for (i = 0; i < max_clients; i++) 
 		{ 
 			sd = client_socket[i]; 
 				
+			// if (FD_ISSET(sd, &writefds))
+			// {
+			// 	std::cout << "FD_ISSET(sd, &writefds)" << std::endl;
+			// 	send(sd , response.c_str(), response.length() , 0 ); 	
+			// }
 			if (FD_ISSET( sd , &readfds)) 
 			{ 
 				//Check if it was for closing , and also read the 
@@ -133,22 +133,20 @@ int main()
 					//Close the socket and mark as 0 in list for reuse 
 					close( sd ); 
 					client_socket[i] = 0; 
-				} 
-					
-				//Echo back the response that came in 
+				}
 				else
 				{ 
-					//set the string terminating NULL byte on the end 
-					//of the data read 
-					buffer[valread] = '\0'; 
+
 
 					std::cout << "Host " << i << " : " << buffer << std::endl;
 
 					send(sd , response.c_str(), response.length() , 0 ); 
 
 				} 
-			} 
-		} 
+			}
+
+		}
+		
 	} 
 		
 	return 0; 

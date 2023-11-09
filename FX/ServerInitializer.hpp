@@ -14,7 +14,7 @@
 #include <string>
 
 
-class server_initializer
+class ServerInitializer
 {
 
 	private :
@@ -25,8 +25,8 @@ class server_initializer
 		const int _PORT;
 
 	public :
-		server_initializer(int port);
-		~server_initializer();
+		ServerInitializer(int port);
+		~ServerInitializer();
 
 
 		int get_sock_server();
