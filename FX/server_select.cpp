@@ -23,6 +23,7 @@ class server_initializer
 
 	private :
 		int _sock_server;
+		int _addrlen;
 		struct sockaddr_in _server_addr;
 		int opt;
 		const int _PORT;
@@ -31,8 +32,16 @@ class server_initializer
 		server_initializer(int port);
 		~server_initializer();
 
+		void set_addrlen();
+		void set_server_addr();
+		void set_sock_server();
+
+
 		int get_sock_server();
 		struct sockaddr_in get_server_addr();
+		struct sockaddr_in & get_ref_server_addr();
+
+		int & get_ref_addrlen();
 
 
 		int bind_socket_port();
@@ -61,13 +70,31 @@ server_initializer::server_initializer(int port) : _PORT(port)
 	} 
 
 
-	this->_server_addr.sin_family = AF_INET;
-	this->_server_addr.sin_addr.s_addr = INADDR_ANY;
-	this->_server_addr.sin_port = htons(PORT);
+	this->set_server_addr();
+
+	this->set_addrlen();
 
 }
 
 server_initializer::~server_initializer(){};
+
+void server_initializer::set_addrlen()
+{
+	this->_addrlen = sizeof(this->_server_addr);
+}
+
+void server_initializer::set_server_addr()
+{
+	this->_server_addr.sin_family = AF_INET;
+	this->_server_addr.sin_addr.s_addr = INADDR_ANY;
+	this->_server_addr.sin_port = htons(this->_PORT);
+}
+
+int & server_initializer::get_ref_addrlen()
+{
+	return this->_addrlen;
+}
+
 
 int server_initializer::get_sock_server()
 {
@@ -93,13 +120,18 @@ int server_initializer::bind_socket_port()
 
 }
 
+struct sockaddr_in & server_initializer::get_ref_server_addr()
+{
+	return this->_server_addr;
+}
+
 	
 int main(int argc , char *argv[]) 
 { 
 	//int opt = TRUE; 
-	int master_socket , addrlen , new_socket , client_socket[30] , max_clients = 30 , activity, i , valread , sd; 
+	int addrlen , new_socket , client_socket[30] , max_clients = 30 , activity, i , valread , sd; 
 	int max_sd; 
-	struct sockaddr_in address; 
+	//struct sockaddr_in server_init.get_server_addr(); 
 		
 	char buffer[1025]; //data buffer of 1K 
 		
@@ -121,31 +153,28 @@ int main(int argc , char *argv[])
 	
 
 	server_initializer server_init(PORT);
-	master_socket = server_init.get_sock_server();
+
 
 	
 	//type of socket created 
-	address = server_init.get_server_addr();
+	//server_init.get_server_addr() = server_init.get_server_addr();
 
 
 
 	//bind the socket to localhost port 8888 
-	if (bind(master_socket, (struct sockaddr *)&address, sizeof(address))<0) 
-	{ 
-		perror("bind failed"); 
-		exit(EXIT_FAILURE); 
-	} 
-	printf("Listener on port %d \n", PORT); 
+
+
+	server_init.bind_socket_port();
 		
 	//try to specify maximum of 3 pending connections for the master socket 
-	if (listen(master_socket, 3) < 0) 
+	if (listen(server_init.get_sock_server(), 3) < 0) 
 	{ 
 		perror("listen"); 
 		exit(EXIT_FAILURE); 
 	} 
 		
 	//accept the incoming connection 
-	addrlen = sizeof(address); 
+	addrlen = sizeof(server_init.get_server_addr()); 
 	puts("Waiting for connections ..."); 
 		
 	while(TRUE) 
@@ -154,8 +183,8 @@ int main(int argc , char *argv[])
 		FD_ZERO(&readfds); 
 	
 		//add master socket to set 
-		FD_SET(master_socket, &readfds); 
-		max_sd = master_socket; 
+		FD_SET(server_init.get_sock_server(), &readfds); 
+		max_sd = server_init.get_sock_server(); 
 			
 		//add child sockets to set 
 		for ( i = 0 ; i < max_clients ; i++) 
@@ -183,16 +212,16 @@ int main(int argc , char *argv[])
 			
 		//If something happened on the master socket , 
 		//then its an incoming connection 
-		if (FD_ISSET(master_socket, &readfds)) 
+		if (FD_ISSET(server_init.get_sock_server(), &readfds)) 
 		{ 
-			if ((new_socket = accept(master_socket, (struct sockaddr *)&address, (socklen_t*)&addrlen))<0) 
+			if ((new_socket = accept(server_init.get_sock_server(), (struct sockaddr *)&(server_init.get_ref_server_addr()), (socklen_t*)&addrlen))<0) 
 			{ 
 				perror("accept"); 
 				exit(EXIT_FAILURE); 
 			} 
 			
 			//inform user of socket number - used in send and receive commands 
-			printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(address.sin_addr) , ntohs (address.sin_port)); 
+			printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(server_init.get_server_addr().sin_addr) , ntohs (server_init.get_server_addr().sin_port)); 
 		
 			//send new connection greeting response 
 			if( send(new_socket, response.c_str(), response.length(), 0) != response.length() ) 
@@ -229,8 +258,8 @@ int main(int argc , char *argv[])
 				if (valread == 0) 
 				{ 
 					//Somebody disconnected , get his details and print 
-					getpeername(sd , (struct sockaddr*)&address , (socklen_t*)&addrlen); 
-					printf("Host disconnected , ip %s , port %d \n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port)); 
+					getpeername(sd , (struct sockaddr*)(&(server_init.get_ref_server_addr())) , (socklen_t*)&addrlen); 
+					printf("Host disconnected , ip %s , port %d \n" , inet_ntoa(server_init.get_server_addr().sin_addr) , ntohs(server_init.get_server_addr().sin_port)); 
 						
 					//Close the socket and mark as 0 in list for reuse 
 					close( sd ); 
