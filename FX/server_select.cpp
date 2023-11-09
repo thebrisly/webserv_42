@@ -1,4 +1,4 @@
-//Example code: A simple server side code, which echos back the received message. 
+//Example code: A simple server side code, which echos back the received response. 
 //Handle multiple socket connections with select and fd_set on Linux 
 #include <stdio.h> 
 #include <string.h> //strlen 
@@ -11,14 +11,92 @@
 #include <netinet/in.h> 
 #include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros 
 #include <iostream>
+#include <string>
 	
 #define TRUE 1 
 #define FALSE 0 
 #define PORT 8888 
+
+
+class server_initializer
+{
+
+	private :
+		int _sock_server;
+		struct sockaddr_in _server_addr;
+		int opt;
+		const int _PORT;
+
+	public :
+		server_initializer(int port);
+		~server_initializer();
+
+		int get_sock_server();
+		struct sockaddr_in get_server_addr();
+
+
+		int bind_socket_port();
+
+};
+
+
+server_initializer::server_initializer(int port) : _PORT(port)
+{
+
+	this->_sock_server = socket(AF_INET, SOCK_STREAM, 0);
+
+	if (this->_sock_server <= 0)
+	{
+		std::cerr << "Could not create server socket" << std::endl;
+		// throw std::runtime_error("Could not create server socket");
+	}
+
+	opt = 1;
+	if( setsockopt(this->_sock_server, SOL_SOCKET, SO_REUSEADDR, (char *)&(this->opt), sizeof(this->opt)) < 0 ) 
+	{ 
+		std::cerr << "Could not set socket option" << std::endl;
+		
+		// throw std::runtime_error("Could not set socket option");
+		//exit(EXIT_FAILURE); 
+	} 
+
+
+	this->_server_addr.sin_family = AF_INET;
+	this->_server_addr.sin_addr.s_addr = INADDR_ANY;
+	this->_server_addr.sin_port = htons(PORT);
+
+}
+
+server_initializer::~server_initializer(){};
+
+int server_initializer::get_sock_server()
+{
+	return this->_sock_server;
+}
+
+struct sockaddr_in server_initializer::get_server_addr()
+{
+	return this->_server_addr;
+}
+
+
+int server_initializer::bind_socket_port()
+{
+	if (bind(this->_sock_server, (struct sockaddr *)&(this->_server_addr), sizeof(this->_server_addr))<0) 
+	{ 
+		std::cerr << "Could not bind socket to port" << std::endl;
+		//throw std::runtime_error("Could not bind socket to port");
+		return EXIT_FAILURE; 
+	}
+
+	return EXIT_SUCCESS;
+
+}
+
 	
 int main(int argc , char *argv[]) 
 { 
-	int opt = TRUE; 
+	//int opt = TRUE; 
 	int master_socket , addrlen , new_socket , client_socket[30] , max_clients = 30 , activity, i , valread , sd; 
 	int max_sd; 
 	struct sockaddr_in address; 
@@ -27,36 +105,30 @@ int main(int argc , char *argv[])
 		
 	//set of socket descriptors 
 	fd_set readfds; 
-		
-	//a message 
-	char *message = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: 315\r\n\r\n<!DOCTYPE html><html><body><h1>My First Heading</h1><p>My first paragraph.</p></body></html>"; 
+	
+	//a response 
+
+	std::string body = "<!DOCTYPE html><html><body><h1>My First Heading</h1><p>My first paragraph.</p></body></html>"; 
+	std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+
+	std::string response = header + body;
 	
 	//initialise all client_socket[] to 0 so not checked 
 	for (i = 0; i < max_clients; i++) 
 	{ 
 		client_socket[i] = 0; 
 	} 
-		
-	//create a master socket 
-	if( (master_socket = socket(AF_INET , SOCK_STREAM , 0)) == 0) 
-	{ 
-		perror("socket failed"); 
-		exit(EXIT_FAILURE); 
-	} 
 	
-	//set master socket to allow multiple connections , 
-	//this is just a good habit, it will work without this 
-	if( setsockopt(master_socket, SOL_SOCKET, SO_REUSEADDR, (char *)&opt, sizeof(opt)) < 0 ) 
-	{ 
-		perror("setsockopt"); 
-		exit(EXIT_FAILURE); 
-	} 
+
+	server_initializer server_init(PORT);
+	master_socket = server_init.get_sock_server();
+
 	
 	//type of socket created 
-	address.sin_family = AF_INET; 
-	address.sin_addr.s_addr = INADDR_ANY; 
-	address.sin_port = htons( PORT ); 
-		
+	address = server_init.get_server_addr();
+
+
+
 	//bind the socket to localhost port 8888 
 	if (bind(master_socket, (struct sockaddr *)&address, sizeof(address))<0) 
 	{ 
@@ -122,13 +194,13 @@ int main(int argc , char *argv[])
 			//inform user of socket number - used in send and receive commands 
 			printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(address.sin_addr) , ntohs (address.sin_port)); 
 		
-			//send new connection greeting message 
-			if( send(new_socket, message, strlen(message), 0) != strlen(message) ) 
+			//send new connection greeting response 
+			if( send(new_socket, response.c_str(), response.length(), 0) != response.length() ) 
 			{ 
 				perror("send"); 
 			} 
 				
-			puts("Welcome message sent successfully"); 
+			puts("Welcome response sent successfully"); 
 				
 			//add new socket to array of sockets 
 			for (i = 0; i < max_clients; i++) 
@@ -151,7 +223,7 @@ int main(int argc , char *argv[])
 			if (FD_ISSET( sd , &readfds)) 
 			{ 
 				//Check if it was for closing , and also read the 
-				//incoming message 
+				//incoming response 
 				valread = read( sd , buffer, 1024);
 				std::cout << "valread = " << valread << std::endl;
 				if (valread == 0) 
@@ -165,16 +237,16 @@ int main(int argc , char *argv[])
 					client_socket[i] = 0; 
 				} 
 					
-				//Echo back the message that came in 
+				//Echo back the response that came in 
 				else
 				{ 
 					//set the string terminating NULL byte on the end 
 					//of the data read 
 					buffer[valread] = '\0'; 
 
-					printf("Host %d : %s \n" , i , buffer);
+					std::cout << "Host " << i << " : " << buffer << std::endl;
 
-					send(sd , "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: 315\r\n\r\n<!DOCTYPE html><html><body><h1>My First Heading</h1><p>My first paragraph.</p></body></html>" , strlen(buffer) , 0 ); 
+					send(sd , response.c_str(), response.length() , 0 ); 
 
 				} 
 			} 
