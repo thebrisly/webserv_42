@@ -118,7 +118,9 @@ int main()
 			
 		for ( i = 0 ; i < max_clients ; i++) 
 		{ 
-			sd = client_socket[i]; 
+			sd = client_socket[i];
+
+			//sd = clients_map[i].get_socket();
 
 			if(sd > 0) 
 			{
@@ -149,6 +151,15 @@ int main()
 
 			for (i = 0; i < max_clients; i++) 
 			{ 
+				// if (clients_map[i].get_socket() == 0)
+				// {
+				// 	clients_map[i].set_socket(new_socket);
+				// 	std::cout << "Client " << i << " connected on socket with fd " << new_socket << std::endl;	
+					
+				// 	break; 
+
+				// }
+
 				if( client_socket[i] == 0 ) 
 				{ 
 					client_socket[i] = new_socket; 
