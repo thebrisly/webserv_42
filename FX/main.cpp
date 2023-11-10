@@ -1,5 +1,7 @@
 #include "ServerInitializer.hpp"
 #define PORT 8888 
+#define SIZE_WAITING_LIST 30
+#define MAX_CLIENT 1024
 
 
 void display_client_list(int *client_socket, int max_clients)
@@ -11,6 +13,55 @@ void display_client_list(int *client_socket, int max_clients)
 	}
 	std::cout << std::endl;
 
+}
+
+int client_list_count(int *client_socket, int max_clients)
+{
+	int i;
+	int count = 0;
+
+	for (i = 0; i < max_clients; i++)
+	{
+		if (client_socket[i] != 0)
+		{
+			count++;
+		}
+	}
+	return count;
+}
+
+class Client
+{
+	private :
+		int	_socket;
+
+	public :
+		Client(int socket);
+		~Client();
+
+		int get_socket() const;
+		void set_socket (int socket);
+
+};
+
+Client::Client(int socket) : _socket(socket) {};
+
+Client::~Client() {};
+
+int Client::get_socket() const
+{
+	return this->_socket;
+};
+
+void Client::set_socket (int socket)
+{
+	this->_socket = socket;
+}
+
+std::ostream& operator<<(std::ostream& os, const Client &cl)
+{
+	os << "Client on socket " << cl.get_socket() << std::endl;
+	return os;
 }
 
 int main() 
@@ -26,28 +77,38 @@ int main()
 	std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
 	std::string response = header + body;
 	
+	std::map<int, Client> clients_map;
+
+	for (i = 0; i < MAX_CLIENT; i++)
+	{
+		clients_map.insert(std::make_pair(i, Client(0)));
+	}
+
+    int socket = 10; 
+    Client client(socket);
+    std::cout << client;
+
+	for (std::map<int, Client>::iterator it = clients_map.begin(); it != clients_map.end(); ++it )
+	{
+		std::cout << it->second;
+	}
+
 	for (i = 0; i < max_clients; i++) 
 	{ 
 		client_socket[i] = 0; 
 	}
 
-	//display_client_list(client_socket, 30);	
-	
-	ServerInitializer server_init(PORT);
-	server_init.bind_socket_port();
-		
-	//try to specify maximum of 3 pending connections for the master socket 
-	if (listen(server_init.get_sock_server(), 3) < 0) 
-	{ 
-		perror("listen"); 
-		exit(EXIT_FAILURE); 
-	} 
+	try
+	{
 
-	//int debug = 0;
+	ServerInitializer server_init(PORT, SIZE_WAITING_LIST);
+	server_init.bind_listen_socket_serv();
 
 	puts("Waiting for connections ..."); 	
 	while(true) 
-	{ 
+	{
+		//debug = client_list_count(client_socket, 30);
+
 		FD_ZERO(&readfds);
 		FD_ZERO(&writefds);
 	
@@ -84,15 +145,15 @@ int main()
 				exit(EXIT_FAILURE); 
 			} 
 			
-			printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket, inet_ntoa(server_init.get_server_addr().sin_addr) , ntohs (server_init.get_server_addr().sin_port)); 
+			std::cout << "New client connected on socket with fd " << new_socket << " with ip " << inet_ntoa(server_init.get_server_addr().sin_addr) << " on port "<< ntohs (server_init.get_server_addr().sin_port) << std::endl;
 
 			for (i = 0; i < max_clients; i++) 
 			{ 
 				if( client_socket[i] == 0 ) 
 				{ 
 					client_socket[i] = new_socket; 
-					//printf("Adding to list of sockets as %d\n" , i);
-					//display_client_list(client_socket, 30);	
+
+					std::cout << "Client " << i << " connected on socket with fd " << new_socket << std::endl;	
 					
 					break; 
 				} 
@@ -103,42 +164,46 @@ int main()
 		{ 
 			sd = client_socket[i]; 
 
-			// if (sd > 0)
-			// {
-			// 	std::cout << "i = " << i << " sd = " << sd << std::endl;	
-			// }
-
 			if (FD_ISSET( sd , &readfds)) 
 			{ 
 				valread = read( sd , buffer, 1024);
-				std::cout << "valread = " << valread << std::endl;
+				std::cout << "Client " << i << " send on socket with fd " << sd << " : " << valread << " characters." <<std::endl;
+				std::cout << "Request = " << buffer << std::endl;
+
 				if (valread == 0) 
 				{ 
 					getpeername(sd , (struct sockaddr*)(&(server_init.get_ref_server_addr())) , (socklen_t*)&server_init.get_ref_addrlen()); 
-					printf("Host disconnected , ip %s , port %d \n" , inet_ntoa(server_init.get_server_addr().sin_addr) , ntohs(server_init.get_server_addr().sin_port)); 		
+
+					std::cout << "Client disconnected on socket with fd " << new_socket << " with ip " << inet_ntoa(server_init.get_server_addr().sin_addr) << " on port "<< ntohs (server_init.get_server_addr().sin_port) << std::endl;
+
 					close( sd ); 
 					client_socket[i] = 0;
-
-					//display_client_list(client_socket, 30);	
-
 				}
 				else
-				{ 
-					std::cout << "Host " << i << " : " << buffer << std::endl;
+				{
 					send(sd , response.c_str(), response.length() , 0 ); 
 				} 
 			}
-			// else if (FD_ISSET( sd, &writefds))
-			// {
-			// 	//std::cout << debug << " Host " << i << " : " << "Writing" << std::endl;
-			// 	debug = send(sd , response.c_str(), response.length() , 0 );
-			// 	std::cout << debug << " Host " << i << " : " << "Writing done" << std::endl;
+			else if (FD_ISSET( sd, &writefds))
+			{
+				/*Sera utile pour les CGI*/
 				
-			// }
-			// std::cout << std::endl;
+			}
+
 		}
 
-		//debug++;
-	} 
+		// if (debug == 3)
+		// {
+		// 	display_client_list(client_socket, 30);
+		// 	break;
+		// }
+
+	}
+	}
+	catch(std::exception& e)
+	{
+		std::cout << "Exception : " << e.what() << std::endl;
+		return EXIT_FAILURE;
+	}
 	return 0; 
 } 
