@@ -10,12 +10,15 @@
 class server
 {
 	private:
-		std::string ip_address;
-		int port;
-		std::string ex;
+		unsigned long port;
+		unsigned long ip_address;
+		std::string name;
 	public:
 		server();
 		~server();
+
+		void setPort(unsigned long port);
+		unsigned long getPort();
 };
 
 server::server()
