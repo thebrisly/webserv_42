@@ -3,9 +3,18 @@
 typedef std::map<int, std::string> MAP;
 
 int main() {
-    ConfigParser parser;
-    ServerConfig config = parser.parseConfig("config.config");
 
+	std::vector<ServerConfig> configs;
+
+    ConfigParser parser;
+    configs = parser.parseConfigs("config.config");
+
+	if (configs.empty())
+	{
+		std::cout << "No server configs found" << std::endl;
+		return 0;
+	}
+	ServerConfig config = configs.front();			
 	std::cout << "Server name [" << config.getServerName() << "]" << std::endl;
 	std::cout << "Port [" << config.getPort() << "]" << std::endl;
 	std::cout << "IP address [" << config.getIPAddress() << "]" << std::endl;

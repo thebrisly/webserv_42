@@ -2,7 +2,7 @@
 CXX = g++
 
 # Compiler flags
-CXXFLAGS = -Wall -Werror -Wextra #-std=c++98
+CXXFLAGS = #-Wall -Werror -Wextra #-std=c++98
 
 # Name of the executable
 EXEC = my_program
