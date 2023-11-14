@@ -1,9 +1,10 @@
 #include "ServerInitializer.hpp"
 #define PORT 8888 
-#define SIZE_WAITING_LIST 1024
-#define MAX_CLIENT 1024
+#define SIZE_WAITING_LIST 30
+#define MAX_CLIENT 30
 
 #include <vector>
+#include <sys/socket.h>
 
 
 void display_client_list(int *client_socket, int max_clients)
@@ -94,6 +95,19 @@ std::ostream& operator<<(std::ostream& os, const Client &cl)
 	return os;
 }
 
+class PredicateValueSd
+{
+	public :
+		bool operator()(const Client& client) const
+		{
+			if (client.get_socket() == 0)
+			{
+				return false;
+			}
+			return true;
+		}
+};
+
 int main() 
 { 
 
@@ -103,8 +117,9 @@ int main()
 	fd_set readfds;
 	fd_set writefds;
 	
+	
 	std::string body = "<!DOCTYPE html><html><body><h1>My First Heading</h1><p>My first paragraph.</p></body></html>"; 
-	std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+	std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: keep-alive\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
 	std::string response = header + body;
 	
 
@@ -121,9 +136,23 @@ int main()
 	ServerInitializer server_init(PORT, SIZE_WAITING_LIST);
 	server_init.bind_listen_socket_serv();
 
+	int debug = 0;
+
 	puts("Waiting for connections ..."); 	
-	while(true) 
+	while(42) 
 	{
+
+		// for (i = 0; i < MAX_CLIENT; i++)
+		// {
+		// 	if (clients_vector[i].get_socket()!= 0)
+		// 	{
+		// 		debug++;
+		// 	}
+		// }
+
+		//std::cout << "Clients connected : " << client_list.count(&clients_vector[0], MAX_CLIENT) << std::endl;
+
+
 
 		FD_ZERO(&readfds);
 		FD_ZERO(&writefds);
@@ -154,7 +183,11 @@ int main()
 		} 
 
 		if (FD_ISSET(server_init.get_sock_server(), &readfds)) 
-		{ 
+		{
+			std::cout << "New client number of connections = " << count_if(clients_vector.begin(), clients_vector.end(), PredicateValueSd()) << std::endl;
+
+
+
 			if ((new_socket = accept(server_init.get_sock_server(), (struct sockaddr *)&(server_init.get_ref_server_addr()), (socklen_t*)&server_init.get_ref_addrlen()))<0) 
 			{ 
 				perror("accept"); 
@@ -168,40 +201,57 @@ int main()
 				if( clients_vector[i].get_socket() == 0 ) 
 				{ 
 					clients_vector[i].set_socket(new_socket);	
-					std::cout << "Client " << i << " connected on socket with fd " << new_socket << std::endl;	
+					//std::cout << "Client " << i << " connected on socket with fd " << new_socket << std::endl;	
 					break; 
 				} 
 			}
 		}
 
-		for (i = 0; i < MAX_CLIENT; i++) 
+		for (i = 0; i < max_sd; i++) 
 		{ 
 
 			sd = clients_vector[i].get_socket();
 
-			if (FD_ISSET( sd , &readfds)) 
+			if (FD_ISSET(sd, &readfds)) 
 			{ 
-				valread = read(sd , buffer, 1024);
+				//valread = read(sd , buffer, 1024);
+
+				valread = recv(sd,	buffer, 1024, 0);
+
+				std::cout << "valread = " << valread << std::endl;
 
 				clients_vector[i].set_request(buffer);
 				// LAURA
 
 				std::cout << "Client " << i << " send on socket with fd " << sd << " : " << valread << " characters." <<std::endl;
-				std::cout << "Request = " << buffer << std::endl;
+				//std::cout << "Request = " << buffer << std::endl;
 
+				if (valread == -1)
+				{
+					std::cout << "Error reading from socket" << std::endl;
+					return EXIT_FAILURE;
+				}
 				if (valread == 0) 
 				{ 
 					getpeername(sd , (struct sockaddr*)(&(server_init.get_ref_server_addr())) , (socklen_t*)&server_init.get_ref_addrlen()); 
 
-					std::cout << "Client disconnected on socket with fd " << new_socket << " with ip " << inet_ntoa(server_init.get_server_addr().sin_addr) << " on port "<< ntohs (server_init.get_server_addr().sin_port) << std::endl;
+					std::cout << "Client disconnected on socket with fd " << sd << " with ip " << inet_ntoa(server_init.get_server_addr().sin_addr) << " on port "<< ntohs (server_init.get_server_addr().sin_port) << std::endl;
 
 					close( sd ); 
 
 					clients_vector[i].set_socket(0);
+					std::cout << "STOP Number of connections = " << count_if(clients_vector.begin(), clients_vector.end(), PredicateValueSd()) << std::endl;
+					for (int k = 0; k < MAX_CLIENT; k++)
+					{
+						if (clients_vector[k].get_socket() != 0)
+						{
+							std::cout << "Client " << k << " connected on socket with fd " << clients_vector[k].get_socket() << std::endl;
+						}
+					}
 				}
 				else
 				{
-					// LAURA
+			
 					clients_vector[i].set_response(response);
 
 					send(sd , response.c_str(), response.length() , 0 ); 
@@ -209,12 +259,18 @@ int main()
 			}
 			else if (FD_ISSET( sd, &writefds))
 			{
-				/*Sera utile pour les CGI*/
+				//clients_vector[i].set_response(response);
+
+				//int debug_send = send(sd , response.c_str(), response.length() , 0 ); 
+
 				//std::cout << "Client " << i << " send on socket with fd " << std::endl;
+				//std::cout << "EDTM " << i << " send on socket with fd " << sd << " : " << debug_send << " characters." <<std::endl;
 			}
 
 		}
 
+		debug ++;
+		
 	}
 	}
 	catch(std::exception& e)
