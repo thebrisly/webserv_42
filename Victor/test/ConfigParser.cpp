@@ -1,10 +1,9 @@
 #include "ConfigParser.hpp"
-
 #include <map>
 #include <string>
 
 // Assume processLine is part of the ConfigParser class
-void ConfigParser::processLine(const std::string& key, const std::string& value, ServerConfig& config, std::string& currentContext)
+void ConfigParser::processLine(const std::string& key, const std::string& value, ServerConfig& config)
 {
 
 	// else if (!currentContext.empty() && currentContext == "error_page") {
@@ -25,7 +24,7 @@ void ConfigParser::processLine(const std::string& key, const std::string& value,
 
 }
 
-void ConfigParser::processErrorPages(const std::string& key, const std::string& value, ServerConfig& config, std::string& currentContext)
+void ConfigParser::processErrorPages(const std::string& key, const std::string& value, ServerConfig& config)
 {
     try {
         int errorCode = std::stoi(key);
@@ -35,10 +34,8 @@ void ConfigParser::processErrorPages(const std::string& key, const std::string& 
     }
 }
 
-void ConfigParser::processLocation(const std::string& key, const std::string& value, ServerConfig& config, std::string& currentContext)
+void ConfigParser::processLocation(const std::string& key, const std::string& value, ServerConfig& config, RouteConfig& route)
 {
-
-    RouteConfig route;
     if (key == "methods") {
         route.methods.push_back(value);
     } else if (key == "directory_listing") {
@@ -54,14 +51,12 @@ void ConfigParser::processLocation(const std::string& key, const std::string& va
         route.path = value;
     } else if (key == "root"){
         route.root = value;
-    } else if (key == "redirect") {
-        
     } else {
         std::cout << "Unknown key: " << key << std::endl;
     }
 }
 
-void ConfigParser::processServer(const std::string& key, const std::string& value, ServerConfig& config, std::string& currentContext)
+void ConfigParser::processServer(const std::string& key, const std::string& value, ServerConfig& config)
 {
     if (key == "server_name") {
         config.setServerName(value);
@@ -78,8 +73,16 @@ void ConfigParser::processServer(const std::string& key, const std::string& valu
     }
 }
 
+void ConfigParser::processRedirect(const std::string &key, const std::string &value, ServerConfig &config, RouteConfig &route) {
 
-
+    if (key == "from") {
+        route.redirect.first = value;
+    } else if (key == "to") {
+        route.redirect.second = value;
+    } else {
+        std::cout << "Unknown key: " << key << std::endl;
+    }
+}
 
 std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename) {
     std::stack<std::string> contexts;
@@ -90,7 +93,6 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
     std::string line, currentContext;
     int lineNumber = 0, currentIndentation = 0;
     bool inServerBlock = false;
-    //bool newServerBlockStarted = false;
 
     if (!file.is_open()) {
         std::cerr << "Could not open config file: " << filename << std::endl;
@@ -148,6 +150,8 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
                     std::cerr << "Location outside of server block at line " << lineNumber << std::endl;
                     continue;
                 }
+                RouteConfig newRoute;
+                serverConfig.addRoute(newRoute);
                 currentContext = "location";
                 contexts.push(currentContext);
                 continue ;
@@ -170,13 +174,13 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
             }
 
             if (currentContext == "server"){
-                processServer(key, value, serverConfig, currentContext);
+                processServer(key, value, serverConfig);
             } else if (currentContext == "location"){
-                processLocation(key, value, serverConfig, currentContext);
+                processLocation(key, value, serverConfig, const_cast<RouteConfig&>(serverConfig.getRoutes().back()));
             } else if (currentContext == "error_pages"){
-                processErrorPages(key, value, serverConfig, currentContext);
+                processErrorPages(key, value, serverConfig);
             } else if (currentContext == "redirect") {
-                
+                processRedirect(key, value, serverConfig, const_cast<RouteConfig&>(serverConfig.getRoutes().back()));
             }
         }
     }

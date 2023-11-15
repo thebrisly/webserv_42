@@ -1,6 +1,24 @@
-#include "ConfigParser.hpp"
+
+#include "utils.hpp"
+
 
 typedef std::map<int, std::string> MAP;
+
+
+void printRoute(const RouteConfig &route)
+{
+	std::cout << "Path: " << route.path << std::endl;
+	std::cout << "Methods: ";
+	for (std::vector<std::string>::const_iterator it = route.methods.begin(); it != route.methods.end(); ++it)
+	{
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
+	std::cout << "Default file: " << route.default_file << std::endl;
+	std::cout << "Directory listing: " << route.directory_listing << std::endl;
+	std::cout << "Root: " << route.root << std::endl;
+	std::cout << "Redirect: " << route.redirect.first << " " << route.redirect.second << std::endl;
+}
 
 int main() {
 
@@ -31,6 +49,21 @@ int main() {
 	{
 		std::cout << "Error pages: " << it->second << std::endl;
 	}
+
+	int i = 0;
+	for (std::vector<RouteConfig>::const_iterator it = config.getRoutes().begin(); it != config.getRoutes().end(); ++it)
+	{
+		std::cout << "<----- Route " << i++ << " ------>" << std::endl;
+		printRoute(*it);
+	}
+
+	const std::string &test = get_error_page(config, 403);
+	std::cout << "Error page: " << test << std::endl;
+
+	std::string route = "/";
+	std::vector<std::string> v = get_allowed_methods(config, route);
+
+	std::cout << "Allowed methods for route " << v.front() << ": ";
 
 	// MAP::const_iterator pos = m.find(404);
 	// std::cout << "Error pages: " << pos->second << std::endl;
