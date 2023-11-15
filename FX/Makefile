@@ -1,4 +1,4 @@
-SRCS = main.cpp ServerInitializer.cpp
+SRCS = main.cpp ServerInitializer.cpp Client.cpp
 
 NAME = ./server
 

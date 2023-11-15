@@ -9,7 +9,7 @@
 #include <unistd.h>
 
 #include <random>
-#include <time>
+#include <time.h>
 
 #define READ 1
 #define WRIT 2
