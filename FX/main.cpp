@@ -127,7 +127,7 @@ int main()
 				outputFile << "Client " << i << " send on socket with fd " << sd << " : " << valread << " characters." <<std::endl;
 				outputFile << "Request = " << buffer << std::endl;
 
-				clients_vector[i].set_request(buffer);
+
 				// LAURA
 
 
@@ -148,6 +148,12 @@ int main()
 
 					clients_vector[i].set_socket(0);
 				}
+				else if (valread > 0)
+				{
+					clients_vector[i].set_request(buffer);
+					clients_vector[i].set_size_request(valread);
+				}
+
 
 				outputFile << std::endl;
 			}
