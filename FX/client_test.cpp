@@ -8,11 +8,18 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
+#include <random>
+#include <time>
+
+#define READ 1
+#define WRIT 2
+
 #define PORT 8888
 
 int main()
 {
-	int		sock_client;	
+	int		sock_client;
+	int		status = WRIT;
 	struct	sockaddr_in server_addr;	
 	const	std::string message = "Hello from client";
 	char	tempBuffer[1024] = {0};
@@ -32,9 +39,39 @@ int main()
 	while (42)
 	{
 
-		int send_status = send(sock_client, message.c_str(), message.length(), 0);
-		std::cout << "Send status " << send_status << std::endl;
-		sleep(1);
+		if (status == WRIT)
+		{
+			srand(time(NULL));
+			int random_number = std::rand() % 10;
+			int send_status;
+
+			if (random_number == 5)
+			{
+				send_status = send(sock_client, "", 0, 0);
+				std::cout << "Send status " << send_status << std::endl;
+				status = 0;
+				return 0;
+			}
+			else
+			{
+				send_status = send(sock_client, message.c_str(), message.length(), 0);
+				std::cout << "Send status " << send_status << std::endl;
+				status = READ;
+			}
+
+
+			//sleep(1);
+		}
+
+		if (status == READ)
+		{
+			int recv_status = recv(sock_client, tempBuffer, 1024, 0);
+			std::cout << "Recv status " << recv_status << std::endl;
+
+			std::cout << "Received message : " << std::endl;
+			std::cout << tempBuffer << std::endl;
+			status = WRIT;
+		}
 
 	}
 

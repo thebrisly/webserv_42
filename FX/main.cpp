@@ -2,9 +2,12 @@
 #define PORT 8888 
 #define SIZE_WAITING_LIST 30
 #define MAX_CLIENT 30
+#define READ_M 1
+#define WRITE_M 2
 
 #include <vector>
 #include <sys/socket.h>
+#include <fstream>
 
 
 void display_client_list(int *client_socket, int max_clients)
@@ -39,6 +42,7 @@ class Client
 		int	_socket;
 		std::string _request;
 		std::string _response;
+		int _socket_mod;
 
 	public :
 		Client(int socket);
@@ -46,6 +50,9 @@ class Client
 
 		int get_socket() const;
 		void set_socket (int socket);
+
+		int get_socket_mod() const;
+		void set_socket_mod (int socket_mod);
 
 		std::string get_request() const;
 		void set_request (std::string request);
@@ -55,7 +62,7 @@ class Client
 
 };
 
-Client::Client(int socket) : _socket(socket) {};
+Client::Client(int socket) : _socket(socket), _socket_mod(0) {};
 
 Client::~Client() {};
 
@@ -68,6 +75,20 @@ void Client::set_socket (int socket)
 {
 	this->_socket = socket;
 }
+
+int Client::get_socket_mod() const
+{
+	return this->_socket_mod;
+};
+
+void Client::set_socket_mod (int socket_mod)
+{
+	this->_socket_mod = socket_mod;
+}
+
+
+
+
 
 void Client::set_request (std::string request)
 {
@@ -91,7 +112,7 @@ std::string Client::get_response() const
 
 std::ostream& operator<<(std::ostream& os, const Client &cl)
 {
-	os << "Client on socket " << cl.get_socket() << std::endl;
+	os << "Client on socket " << cl.get_socket() << " with mode " << cl.get_socket_mod() <<std::endl;
 	return os;
 }
 
@@ -116,6 +137,7 @@ int main()
 	char buffer[1025];
 	fd_set readfds;
 	fd_set writefds;
+	std::ofstream outputFile("log.txt");
 	
 	
 	std::string body = "<!DOCTYPE html><html><body><h1>My First Heading</h1><p>My first paragraph.</p></body></html>"; 
@@ -141,28 +163,18 @@ int main()
 	puts("Waiting for connections ..."); 	
 	while(42) 
 	{
-
-		// for (i = 0; i < MAX_CLIENT; i++)
-		// {
-		// 	if (clients_vector[i].get_socket()!= 0)
-		// 	{
-		// 		debug++;
-		// 	}
-		// }
-
-		//std::cout << "Clients connected : " << client_list.count(&clients_vector[0], MAX_CLIENT) << std::endl;
-
-
+		outputFile << "loop " << debug << std::endl;
 
 		FD_ZERO(&readfds);
 		FD_ZERO(&writefds);
 	
 		FD_SET(server_init.get_sock_server(), &readfds);
+		FD_SET(server_init.get_sock_server(), &writefds);
 
 		max_sd = server_init.get_sock_server(); 
 			
 		for ( i = 0 ; i < MAX_CLIENT ; i++) 
-		{ 
+		{
 			sd = clients_vector[i].get_socket();
 
 			if(sd > 0) 
@@ -179,14 +191,14 @@ int main()
 
 		if ((activity < 0) && (errno!=EINTR)) 
 		{ 
-			printf("select error"); 
+			printf("select error");
+			exit(EXIT_FAILURE);
 		} 
 
 		if (FD_ISSET(server_init.get_sock_server(), &readfds)) 
 		{
-			std::cout << "New client number of connections = " << count_if(clients_vector.begin(), clients_vector.end(), PredicateValueSd()) << std::endl;
-
-
+			outputFile << "New connection" << std::endl;
+			//std::cout << "New client number of connections = " << count_if(clients_vector.begin(), clients_vector.end(), PredicateValueSd()) << std::endl;
 
 			if ((new_socket = accept(server_init.get_sock_server(), (struct sockaddr *)&(server_init.get_ref_server_addr()), (socklen_t*)&server_init.get_ref_addrlen()))<0) 
 			{ 
@@ -194,13 +206,14 @@ int main()
 				exit(EXIT_FAILURE); 
 			} 
 			
-			std::cout << "New client connected on socket with fd " << new_socket << " with ip " << inet_ntoa(server_init.get_server_addr().sin_addr) << " on port "<< ntohs (server_init.get_server_addr().sin_port) << std::endl;
+			outputFile << "New client connected on socket with fd " << new_socket << " with ip " << inet_ntoa(server_init.get_server_addr().sin_addr) << " on port "<< ntohs (server_init.get_server_addr().sin_port) << std::endl;
 
 			for (i = 0; i < MAX_CLIENT; i++) 
 			{ 
 				if( clients_vector[i].get_socket() == 0 ) 
 				{ 
-					clients_vector[i].set_socket(new_socket);	
+					clients_vector[i].set_socket(new_socket);
+					clients_vector[i].set_socket_mod(READ_M);
 					//std::cout << "Client " << i << " connected on socket with fd " << new_socket << std::endl;	
 					break; 
 				} 
@@ -213,18 +226,19 @@ int main()
 			sd = clients_vector[i].get_socket();
 
 			if (FD_ISSET(sd, &readfds)) 
-			{ 
-				//valread = read(sd , buffer, 1024);
+			{
+				outputFile << "Activity in readfds :" << std::endl;
+				outputFile << "i = " << i << " : " << clients_vector[i];
 
+				memset (buffer, 0, 1024);
 				valread = recv(sd,	buffer, 1024, 0);
-
-				std::cout << "valread = " << valread << std::endl;
+				outputFile << "Client " << i << " send on socket with fd " << sd << " : " << valread << " characters." <<std::endl;
+				outputFile << "Request = " << buffer << std::endl;
 
 				clients_vector[i].set_request(buffer);
 				// LAURA
 
-				std::cout << "Client " << i << " send on socket with fd " << sd << " : " << valread << " characters." <<std::endl;
-				//std::cout << "Request = " << buffer << std::endl;
+
 
 				if (valread == -1)
 				{
@@ -235,42 +249,66 @@ int main()
 				{ 
 					getpeername(sd , (struct sockaddr*)(&(server_init.get_ref_server_addr())) , (socklen_t*)&server_init.get_ref_addrlen()); 
 
-					std::cout << "Client disconnected on socket with fd " << sd << " with ip " << inet_ntoa(server_init.get_server_addr().sin_addr) << " on port "<< ntohs (server_init.get_server_addr().sin_port) << std::endl;
+					outputFile << "Client disconnected on socket with fd " << sd << " with ip " << inet_ntoa(server_init.get_server_addr().sin_addr) << " on port "<< ntohs (server_init.get_server_addr().sin_port) << std::endl;
 
 					close( sd ); 
 
 					clients_vector[i].set_socket(0);
-					std::cout << "STOP Number of connections = " << count_if(clients_vector.begin(), clients_vector.end(), PredicateValueSd()) << std::endl;
-					for (int k = 0; k < MAX_CLIENT; k++)
-					{
-						if (clients_vector[k].get_socket() != 0)
-						{
-							std::cout << "Client " << k << " connected on socket with fd " << clients_vector[k].get_socket() << std::endl;
-						}
-					}
+					//outputFile << "Remaining connections = " << count_if(clients_vector.begin(), clients_vector.end(), PredicateValueSd()) << std::endl;
+					// for (int k = 0; k < MAX_CLIENT; k++)
+					// {
+					// 	if (clients_vector[k].get_socket() != 0)
+					// 	{
+					// 		std::cout << "Client " << k << " connected on socket with fd " << clients_vector[k].get_socket() << std::endl;
+					// 	}
+					// }
 				}
 				else
 				{
-			
-					clients_vector[i].set_response(response);
 
-					send(sd , response.c_str(), response.length() , 0 ); 
+					clients_vector[i].set_socket_mod(WRITE_M);
+					// clients_vector[i].set_response(response);
+
+					// send(sd , response.c_str(), response.length() , 0 ); 
 				} 
+				outputFile << std::endl;
 			}
 			else if (FD_ISSET( sd, &writefds))
 			{
-				//clients_vector[i].set_response(response);
+				outputFile << "Activity in writefds :" << std::endl;
+				outputFile << "i = " << i << " : " << clients_vector[i] <<std::endl;
 
-				//int debug_send = send(sd , response.c_str(), response.length() , 0 ); 
+				if (clients_vector[i].get_socket_mod() == WRITE_M)
+				{
+					clients_vector[i].set_response(response);
 
-				//std::cout << "Client " << i << " send on socket with fd " << std::endl;
-				//std::cout << "EDTM " << i << " send on socket with fd " << sd << " : " << debug_send << " characters." <<std::endl;
+					int size_send = send(sd , response.c_str(), response.length() , 0 ); 	
+					outputFile << "Client " << i << " received " << size_send << " characters." <<std::endl;				
+					clients_vector[i].set_socket_mod(READ_M);
+					close( sd );
+					clients_vector[i].set_socket(0);
+				}
+				
 			}
 
 		}
 
 		debug ++;
-		
+		int nb_connections = 0;
+		for (int k = 0; k < MAX_CLIENT; k++)
+		{
+			if (clients_vector[k].get_socket() != 0)
+			{
+				outputFile << "[" << k << " : " << clients_vector[k].get_socket() << "] ";
+				nb_connections++;
+			}
+		}
+		outputFile << std::endl;
+		outputFile << "nb_connections = " << nb_connections << std::endl;
+		outputFile << std::endl;
+		outputFile << std::endl;
+
+
 	}
 	}
 	catch(std::exception& e)
@@ -279,4 +317,4 @@ int main()
 		return EXIT_FAILURE;
 	}
 	return 0; 
-} 
+}
