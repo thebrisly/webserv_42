@@ -14,6 +14,8 @@ void Client::set_socket (int socket)
 	this->_socket = socket;
 }
 
+
+
 int Client::get_size_response () const
 {
 	return this->_size_response;
@@ -66,6 +68,6 @@ std::string Client::get_response() const
 
 std::ostream& operator<<(std::ostream& os, const Client &cl)
 {
-	os << "Client on socket " << cl.get_socket() << " with mode " << cl.get_socket_mod() <<std::endl;
+	os << "Client on socket " << cl.get_socket() << " with mode " << cl.get_socket_mod();
 	return os;
 }

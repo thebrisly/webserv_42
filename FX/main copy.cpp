@@ -1,7 +1,6 @@
 #include "ServerInitializer.hpp"
 #include "Client.hpp"
-#define PORT 8888
-#define PORT_2 8008
+#define PORT 8888 
 #define SIZE_WAITING_LIST 30
 #define MAX_CLIENT 30
 #define READ_M 1
@@ -9,9 +8,7 @@
 
 #include <vector>
 #include <sys/socket.h>
-#include <sys/time.h>
 #include <fstream>
-#include <signal.h>
 
 class PredicateValueSd
 {
@@ -26,28 +23,6 @@ class PredicateValueSd
 		}
 };
 
-void sigpipeHandle (int sig)
-{
-	std::cerr << "PROBLEME ECRITURE SOCKET" << sig <<std::endl;
-}
-
-void fd_set_checker (fd_set *set)
-{
-	for (int i = 0; i < 1024; i++)
-	{
-		if (FD_ISSET(i, set))
-		{
-			std::cout << i << " : 1 "; 
-		}
-		// else
-		// {
-		// 	std::cout << i << " : 0 ";
-		// }
-		std::cout << "|";
-	}
-}
-
-
 int main() 
 { 
 
@@ -57,12 +32,6 @@ int main()
 	fd_set readfds;
 	fd_set writefds;
 	std::ofstream outputFile("log.txt");
-
-	struct timeval timeout;
-
-	timeout.tv_sec = 1;
-	timeout.tv_usec = 0;
-	//std::ofstream outputFile2("log2.txt");
 	
 	
 	std::string body = "<!DOCTYPE html><html><body><h1>My First Heading</h1><p>My first paragraph.</p></body></html>"; 
@@ -82,22 +51,19 @@ int main()
 
 	ServerInitializer server_init(PORT, SIZE_WAITING_LIST);
 	server_init.bind_listen_socket_serv();
-	signal(SIGPIPE, sigpipeHandle);
-	//ServerInitializer server_init2(PORT_2, SIZE_WAITING_LIST);
-	//server_init2.bind_listen_socket_serv();
 
 	int debug = 0;
 
+	puts("Waiting for connections ..."); 	
 	while(42) 
 	{
 		outputFile << "loop " << debug << std::endl;
-		std::cout << "\033[1;31m" << "loop " << debug << "\033[0m" << std::endl;
 
 		FD_ZERO(&readfds);
 		FD_ZERO(&writefds);
 	
 		FD_SET(server_init.get_sock_server(), &readfds);
-		// FD_SET(server_init.get_sock_server(), &writefds);
+		FD_SET(server_init.get_sock_server(), &writefds);
 
 		max_sd = server_init.get_sock_server(); 
 			
@@ -107,35 +73,15 @@ int main()
 
 			if(sd > 0) 
 			{
-				if (clients_vector[i].get_socket_mod() == WRITE_M)
-				{
-					outputFile << sd << " added in writefds." <<std::endl; 
-					FD_SET( sd, &writefds);
-				}
-				else
-				{
-					outputFile << sd << " added in readfds." <<std::endl; 
-					FD_SET( sd , &readfds);
-				}
+				FD_SET( sd , &readfds); 
+				FD_SET( sd, &writefds);
 			}
 
 			if(sd > max_sd) 
 				max_sd = sd; 
-		}
-
-		std::cout << "readfds = "; 
-		fd_set_checker(&readfds);
-		std::cout << std::endl;
-
-		std::cout << "writefds = "; 
-		fd_set_checker(&writefds);
-		std::cout << std::endl;
-
-		std::cout << "SELECT" << " " << max_sd << " " << server_init.get_sock_server() << std::endl;
-		outputFile << "SELECT" << " " << max_sd << " " << server_init.get_sock_server() << std::endl;
-		activity = select(max_sd + 1, &readfds, &writefds, NULL, &timeout);
-		outputFile << "activity = " << activity << std::endl;
-		std::cout << "activity = " << activity << std::endl;
+		} 
+	
+		activity = select(max_sd + 1, &readfds, &writefds, NULL, NULL); 
 
 		if (activity < 0) 
 		{ 
@@ -160,7 +106,7 @@ int main()
 				if( clients_vector[i].get_socket() == 0 ) 
 				{ 
 					clients_vector[i].set_socket(new_socket);
-					clients_vector[i].set_socket_mod(READ_M);
+					//clients_vector[i].set_socket_mod(READ_M);
 					break; 
 				} 
 			}
@@ -206,7 +152,6 @@ int main()
 				{
 					clients_vector[i].set_request(buffer);
 					clients_vector[i].set_size_request(valread);
-					clients_vector[i].set_socket_mod(WRITE_M);
 				}
 
 
