@@ -37,20 +37,20 @@ void fd_set_checker (fd_set *set)
 	{
 		if (FD_ISSET(i, set))
 		{
-			std::cout << i << " : 1 "; 
+			std::cout << i << " | "; 
 		}
 		// else
 		// {
 		// 	std::cout << i << " : 0 ";
 		// }
-		std::cout << "|";
+		//std::cout << "|";
 	}
 }
 
 
 int main() 
 { 
-
+	int c;
 	int new_socket, activity, i , valread , sd; 
 	int max_sd; 
 	char buffer[1025];
@@ -131,6 +131,18 @@ int main()
 		fd_set_checker(&writefds);
 		std::cout << std::endl;
 
+		int nb_connections2 = 0;
+		for (int k = 0; k < MAX_CLIENT; k++)
+		{
+			if (clients_vector[k].get_socket() != 0)
+			{
+				std::cout << "[" << k << " : " << clients_vector[k].get_socket() << "] ";
+				nb_connections2++;
+			}
+		}
+		std::cout << "nb_connections = " << nb_connections2 << std::endl;
+
+
 		std::cout << "SELECT" << " " << max_sd << " " << server_init.get_sock_server() << std::endl;
 		outputFile << "SELECT" << " " << max_sd << " " << server_init.get_sock_server() << std::endl;
 		activity = select(max_sd + 1, &readfds, &writefds, NULL, &timeout);
@@ -143,6 +155,10 @@ int main()
 			throw std::runtime_error("Issue with select");
 		} 
 
+		/*FD_ISSET mets le fd sur le premier 0 qu il trouve... */
+		/*Si il reste une place avant le max_sd + 1 il est chéké direct*/
+		/*Sinon il sera chéké tout de suite après...*/
+		/*Je pense que c'est un probleme*/
 		if (FD_ISSET(server_init.get_sock_server(), &readfds)) 
 		{
 			outputFile << "New connection" << std::endl;
@@ -165,7 +181,6 @@ int main()
 				} 
 			}
 		}
-
 		for (i = 0; i < max_sd; i++) 
 		{ 
 
@@ -187,7 +202,9 @@ int main()
 
 				if (valread == -1)
 				{
-					close (sd);
+					c = close (sd);
+					if (c < 0)
+						outputFile << "ERROR CLOSE" << std::endl;
 					clients_vector[i].set_socket(0);
 					std::cout << "Error reading from socket" << std::endl;
 					
@@ -199,7 +216,8 @@ int main()
 					outputFile << "Client disconnected on socket with fd " << sd << " with ip " << inet_ntoa(server_init.get_server_addr().sin_addr) << " on port "<< ntohs (server_init.get_server_addr().sin_port) << std::endl;
 
 					close( sd ); 
-
+					if (c < 0)
+						outputFile << "ERROR CLOSE" << std::endl;
 					clients_vector[i].set_socket(0);
 				}
 				else if (valread > 0)
@@ -224,7 +242,9 @@ int main()
 				int size_send = send(sd , clients_vector[i].get_response().c_str(), clients_vector[i].get_size_response() , 0 ); 	
 				outputFile << "Client " << i << " received " << size_send << " characters." <<std::endl;				
 				//clients_vector[i].set_socket_mod(READ_M);
-				close( sd );
+				c = close( sd );
+				if (c < 0)
+					outputFile << "ERROR CLOSE" << std::endl;
 				clients_vector[i].set_socket(0);
 			
 			}
