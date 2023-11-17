@@ -1,5 +1,6 @@
 #include "ConfigParser.hpp"
-
+#define RED     "\033[31m"
+#define RESET   "\033[0m"
 
 typedef std::map<int, std::string> MAP;
 
@@ -31,7 +32,7 @@ int main() {
 	}
 	catch(const std::exception& e)
 	{
-		std::cerr << e.what() << '\n';
+		std::cerr << RED << e.what() << RESET << '\n';
 		return (0);
 	}
 	

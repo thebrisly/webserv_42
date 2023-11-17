@@ -3,6 +3,18 @@
 #include <string>
 #include <algorithm>
 
+
+void print_stack(std::stack<std::string> stack)
+{
+    std::cout << "Stack: ";
+    while (!stack.empty())
+    {
+        std::cout << stack.top() << " ";
+        stack.pop();
+    }
+    std::cout << std::endl;
+}
+
 // void ConfigParser::processLine(const std::string& key, const std::string& value, ServerConfig& config)
 // {
 
@@ -51,13 +63,15 @@ void ConfigParser::processLocation(const std::string& key, const std::string& va
     } else if (key == "root"){
         route.root = value;
     } else {
-        std::cout << "Unknown key: " << key << std::endl;
+        throw std::runtime_error("Unknown key or wrong context: " + key);
     }
 }
 
 void ConfigParser::processServer(const std::string& key, const std::string& value, ServerConfig& config)
 {
-    if (
+    if (value.empty()) {
+        throw std::runtime_error("Unknown key or wrong context: " + key);
+    }
     if (key == "server_name") {
         config.setServerName(value);
     } else if (key == "port") {
@@ -70,7 +84,7 @@ void ConfigParser::processServer(const std::string& key, const std::string& valu
         config.setRoot(value);
     } else {
         //std::cout << key << "Unkown key or wrong context" << std::endl;
-        throw std::runtime_error(key + ": Unknown key or wrong context");
+        throw std::runtime_error("Unknown key or wrong context: " + key);
     }
 }
 
@@ -81,7 +95,7 @@ void ConfigParser::processRedirect(const std::string &key, const std::string &va
     } else if (key == "to") {
         route.redirect.second = value;
     } else {
-        std::cout << "Unknown key: " << key << std::endl;
+        throw std::runtime_error("Unknown key or wrong context: " + key);
     }
 }
 
@@ -125,15 +139,27 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
             //     continue; // or handle the error
             // }
 
-            if (contexts.size() > static_cast<size_t>(currentIndentation))
-                contexts.pop();
 
+            int stacksize = static_cast<int>(contexts.size());
+            for (int i = 0; i <  stacksize - (currentIndentation); i++)
+            {
+                if (!contexts.empty())
+                    contexts.pop();
+            }
+
+            // std::cout << "***************************************" << std::endl;
+            // print_stack(contexts);
+            // std::cout << key + ":" + value << " Contexte size " <<  static_cast<int>(contexts.size()) << " Indentation " << currentIndentation <<  std::endl;
+            // std::cout << "****************************************\n" << std::endl; 
+            
             if (!contexts.empty())
                 currentContext = contexts.top();
+            else
+                currentContext = "";
 
             if (currentContext.empty() && key != "server") {
                 std::cerr << "Found configuration outside of server block at line " << lineNumber << std::endl;
-                    throw std::runtime_error("Location outside of server block.");
+                throw std::runtime_error("Found configuration outside of server block at line.");
 
                 //continue; // or handle the error
             }
@@ -141,7 +167,7 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
             if (key == "server") {
                 if (!contexts.empty()) {
                     std::cerr << "Nested server blocks are not allowed. Error at line " << lineNumber << std::endl;
-                    throw std::runtime_error("Location outside of server block.");
+                    throw std::runtime_error("Found configuration outside of server block at line.");
 
                     //continue;
                 } else {
@@ -182,7 +208,8 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
                 continue ;
             }
 
-            //std::cout << "Current contexte = " << currentContext << " : " << key + value << std::endl;
+            if (currentContext.empty())
+                continue;
             if (currentContext == "server"){
                 processServer(key, value, serverConfig);
             } else if (currentContext == "location"){
