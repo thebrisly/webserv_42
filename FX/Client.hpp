@@ -21,8 +21,6 @@ class Client
 		void set_socket (int socket);
 
 
-
-
 		int get_size_response() const;
 		void set_size_response (int size_response);
 
