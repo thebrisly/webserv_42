@@ -111,6 +111,13 @@ int main()
 			readfds = cpy_readfds;
 			writefds = cpy_writefds;
 
+			std::cout << "LOOP " <<std::endl;
+			for (std::map<int, Client>::iterator it = map_clients.begin(); it != map_clients.end(); ++it)
+			{
+				std::cout << it->second << std::endl;
+			}
+
+
 			max_sd = server_init.get_sock_server();
 
 			for ( i = 0 ; i < MAX_CLIENT ; i++)
@@ -184,7 +191,7 @@ int main()
 						map_clients[i].set_request(buffer);
 						map_clients[i].set_size_request(size_read);
 						map_clients[i].set_socket_mod(READ_M);
-						std::cout << map_clients[i] << std::endl;
+						//std::cout << map_clients[i] << std::endl;
 					}
 				}
 				else if (FD_ISSET(i, &writefds))
