@@ -15,11 +15,11 @@ class Client
 
 	public :
 		Client(int socket);
+		Client();
 		~Client();
 
 		int get_socket() const;
 		void set_socket (int socket);
-
 
 		int get_size_response() const;
 		void set_size_response (int size_response);

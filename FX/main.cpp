@@ -54,6 +54,8 @@ void fd_set_checker (fd_set *set)
 	}
 }
 
+
+
 int main() 
 { 
 	int new_socket, i , size_read; 
@@ -84,7 +86,9 @@ int main()
 	std::string response = header + body;
 	
 
-	std::vector<Client> clients_vector;
+	std::map<int, Client> map_clients;
+
+	//clients_vector.push_back(Client(0));
 
 	// for (i = 0; i < MAX_CLIENT; i++)
 	// {
@@ -139,6 +143,8 @@ int main()
 					}
 					std::cout << BLUE << "New client connected on socket " << new_socket << " with ip " << inet_ntoa(server_init.get_server_addr().sin_addr) << " on port "<< ntohs (server_init.get_server_addr().sin_port) << RESET << std::endl;
 					FD_SET(new_socket, &cpy_readfds);
+					map_clients.insert(std::pair<int, Client>(new_socket, Client(new_socket)));
+					
 				}
 				else if (FD_ISSET(i, &readfds)) 
 				{
@@ -153,6 +159,8 @@ int main()
 							perror("close");
 						}
 						FD_CLR(i, &cpy_readfds);
+						map_clients.erase(i);
+
 						std::cout << RED << "Error reading from socket" << RESET <<std::endl;
 					}
 					if (size_read == 0) 
@@ -164,14 +172,19 @@ int main()
 							std::cerr << RED << "ERROR : " << RESET;
 							perror("close");
 						}
-						std::cout << YELLOW << "Client " << i << " disconected | ip = " << inet_ntoa(server_init.get_server_addr().sin_addr) << " | port = "<< ntohs (server_init.get_server_addr().sin_port) << RESET <<std::endl;
+						std::cout << YELLOW << "Client " << i << " disconected | IP = " << inet_ntoa(server_init.get_server_addr().sin_addr) << " | PORT = "<< ntohs (server_init.get_server_addr().sin_port) << RESET <<std::endl;
 						FD_CLR(i, &cpy_readfds);
+						map_clients.erase(i);
 					}
 					else if (size_read > 0)
 					{
 						std::cout << GREEN << "Received request of " << size_read << " characters from client " << i << RESET << std::endl;
 						FD_CLR(i, &cpy_readfds);
 						FD_SET(i, &cpy_writefds);
+						map_clients[i].set_request(buffer);
+						map_clients[i].set_size_request(size_read);
+						map_clients[i].set_socket_mod(READ_M);
+						std::cout << map_clients[i] << std::endl;
 					}
 				}
 				else if (FD_ISSET(i, &writefds))
@@ -192,6 +205,7 @@ int main()
 					}
 					std::cout << YELLOW << "Client " << i << " disconected." << RESET <<std::endl;				
 					FD_CLR(i, &cpy_writefds);
+					map_clients.erase(i);
 				}
 			}
 		}

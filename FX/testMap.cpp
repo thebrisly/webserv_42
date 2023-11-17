@@ -1,4 +1,41 @@
-#include "Client.hpp"
+#include <iostream>
+#include <map>
+
+class Client
+{
+	private :
+		int	_socket;
+		std::string _request;
+		std::string _response;
+		int _socket_mod;
+		int _size_response;
+		int _size_request;
+
+	public :
+		Client(int socket);
+		Client();
+		~Client();
+
+		int get_socket() const;
+		void set_socket (int socket);
+
+		int get_size_response() const;
+		void set_size_response (int size_response);
+
+		int get_size_request() const;
+		void set_size_request (int size_request);
+
+		int get_socket_mod() const;
+		void set_socket_mod (int socket_mod);
+
+		std::string get_request() const;
+		void set_request (std::string request);
+
+		std::string get_response() const;
+		void set_response (std::string response);
+
+};
+
 
 Client::Client(int socket) : _socket(socket), _socket_mod(0), _size_response(0), _size_request(0) {};
 
@@ -56,24 +93,26 @@ std::string Client::get_request() const
 	return this->_request;
 }
 
-void Client::set_response (std::string response)
+void Client::set_response (std::string request)
 {
-	this->_response = response;
+	this->_request = request;
 }
 
 std::string Client::get_response() const
 {
-	return this->_response;
+	return this->_request;
 }
 
-std::ostream& operator<<(std::ostream& os, const Client &cl)
-{
-	os << "       _socket = " << cl.get_socket() << std::endl;
-	os << "  _socket_mode = " << cl.get_socket_mod() << std::endl;
-	os << "      _request = " << cl.get_request() << std::endl;
-	os << " _size_request = " << cl.get_size_request() << std::endl;
-	os << "     _response = " << cl.get_response() << std::endl;
-	os << "_size_response = " << cl.get_size_response() << std::endl;
 
-	return os;
+
+int main ()
+{
+	std::map<int, Client> map_client;
+
+	map_client.insert(std::pair<int, Client>(14, Client(14)));
+
+	std::cout << map_client[14].get_socket() << std::endl;
+
+
+	return 0;
 }
