@@ -6,7 +6,7 @@
 /*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 13:27:08 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/17 15:20:43 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/11/17 15:57:01 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ std::vector<std::string>		Request::initMethods()
 void 	Request::parseRequest(const std::string& request)
 {
 	// Clear existing data
-	// requestClear();
+	clearRequest();
 
 	// Split the request into lines
 	std::istringstream requestStream(request);
@@ -45,11 +45,11 @@ void 	Request::parseRequest(const std::string& request)
 	{
 		if (line.empty()) { break; } // Check if the line is empty (end of headers)
 
-		if (_method.empty())
+		if (this->_method.empty())
 		{
-			_method = readMethod(line);
-			_version = readVersion(line);
-			_path = readFirstLine(line);
+			this->_method = readMethod(line);
+			this->_version = readVersion(line);
+			this->_path = readFirstLine(line);
 		}
 
 		else
@@ -59,7 +59,7 @@ void 	Request::parseRequest(const std::string& request)
             {
                 std::string key = line.substr(0, colonPos);
                 std::string value = line.substr(colonPos + 2); // Skip ': '
-                _headers[key] = value;
+                this->_headers[key] = value;
             }
 		}
 	}
@@ -69,29 +69,34 @@ void 	Request::parseRequest(const std::string& request)
 
 std::string Request::readFirstLine(const std::string& line)
 {
-	// Extract the path from the first line
 	size_t space1 = line.find(' ');
 	size_t space2 = line.rfind(' ');
 
-	if (space1 != std::string::npos && space2 != std::string::npos && space1 < space2) {
+	if (space1 != std::string::npos && space2 != std::string::npos && space1 < space2)
+	{
 		return line.substr(space1 + 1, space2 - space1 - 1);
 	}
 
-	// Return an empty string if parsing fails
 	return "";
 }
 
+void Request::clearRequest()
+{
+	this->_headers.clear();
+	this->_method.clear();
+	this->_version.clear();
+	this->_path.clear();
+}
 
 std::string Request::readVersion(const std::string& line)
 {
-	// Extract the version from the first line
 	size_t space = line.rfind(' ');
 
-	if (space != std::string::npos) {
+	if (space != std::string::npos)
+	{
 		return line.substr(space + 1);
 	}
 
-	// Return an empty string if parsing fails
 	return "";
 }
 
@@ -105,6 +110,5 @@ std::string Request::readMethod(const std::string& line)
 		return line.substr(0, space);
 	}
 
-	// Return an empty string if parsing fails
 	return "";
 }

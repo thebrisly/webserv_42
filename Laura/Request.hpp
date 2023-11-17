@@ -6,7 +6,7 @@
 /*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:37:25 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/17 15:28:03 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/11/17 16:03:45 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ class Request {
 
         // function to initialize http methods
         std::vector<std::string>		            initMethods();
-        void                                        requestClear(); // pour vider le contenu et laisser de la place pour une nouvelle requete
+        void                                        clearRequest(); // pour vider le contenu et laisser de la place pour une nouvelle requete
 
         // parsing the request
         void                                        parseRequest(const std::string& request);

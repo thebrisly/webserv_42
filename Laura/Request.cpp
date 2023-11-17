@@ -6,7 +6,7 @@
 /*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:43:38 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/17 15:27:44 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/11/17 15:54:23 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ Request::~Request() {}
 Request& Request::operator=(const Request& other) {
 	if (this != &other)
 	{
-        _current_request = other._current_request;
+        this->_current_request = other._current_request;
 	}
     return *this;
 }
@@ -37,25 +37,25 @@ Request& Request::operator=(const Request& other) {
 
 std::string Request::getCurrentRequest() const
 {
-        return (_current_request);
+        return (this->_current_request);
 }
 
 std::string Request::getVersion() const
 {
-        return (_version);
+        return (this->_version);
 }
 
 std::string Request::getMethod() const
 {
-        return (_method);
+        return (this->_method);
 }
 
 std::string Request::getPath() const
 {
-        return (_path);
+        return (this->_path);
 }
 
 const std::map<std::string, std::string>& Request::getHeaders() const
 {
-    return _headers;
+    return (this->_headers);
 }
