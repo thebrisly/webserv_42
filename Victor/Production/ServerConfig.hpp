@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <algorithm> 
 #include "RouteConfig.hpp"
 
 class ServerConfig
@@ -41,5 +42,8 @@ class ServerConfig
 		const std::map<int, std::string>& getErrorPages() const;
 		const std::string& getRoot() const;
 		const std::vector<RouteConfig>& getRoutes() const;
+
+		RouteConfig getRoute(const std::string& path) const;
+
 		
 };

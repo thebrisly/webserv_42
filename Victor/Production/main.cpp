@@ -1,5 +1,4 @@
-
-#include "utils.hpp"
+#include "ConfigParser.hpp"
 
 
 typedef std::map<int, std::string> MAP;
@@ -57,14 +56,21 @@ int main() {
 		printRoute(*it);
 	}
 
-	const std::string &test = get_error_page(config, 403);
-	std::cout << "Error page: " << test << std::endl;
 
-	std::string route = "/";
-	std::vector<std::string> v = get_allowed_methods(config, route);
+	std::cout << "<===== TEST ======>"	<< std::endl;
+	std::string path = "/kapouet";
 
-	std::cout << "Allowed methods for route " << v.front() << ": ";
 
+	try
+	{
+		RouteConfig route = config.getRoute(path);
+		printRoute(route);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
+	
 	// MAP::const_iterator pos = m.find(404);
 	// std::cout << "Error pages: " << pos->second << std::endl;
 	// pos = m.find(500);
