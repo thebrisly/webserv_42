@@ -1,7 +1,6 @@
 #include "ConfigParser.hpp"
 #include <map>
 #include <string>
-#include <algorithm>
 
 // void ConfigParser::processLine(const std::string& key, const std::string& value, ServerConfig& config)
 // {
@@ -57,7 +56,6 @@ void ConfigParser::processLocation(const std::string& key, const std::string& va
 
 void ConfigParser::processServer(const std::string& key, const std::string& value, ServerConfig& config)
 {
-    if (
     if (key == "server_name") {
         config.setServerName(value);
     } else if (key == "port") {
@@ -69,8 +67,7 @@ void ConfigParser::processServer(const std::string& key, const std::string& valu
     } else if (key == "root") {
         config.setRoot(value);
     } else {
-        //std::cout << key << "Unkown key or wrong context" << std::endl;
-        throw std::runtime_error(key + ": Unknown key or wrong context");
+        std::cout << "Unknown key: " << key << std::endl;
     }
 }
 
@@ -133,17 +130,13 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
 
             if (currentContext.empty() && key != "server") {
                 std::cerr << "Found configuration outside of server block at line " << lineNumber << std::endl;
-                    throw std::runtime_error("Location outside of server block.");
-
-                //continue; // or handle the error
+                continue; // or handle the error
             }
 
             if (key == "server") {
                 if (!contexts.empty()) {
                     std::cerr << "Nested server blocks are not allowed. Error at line " << lineNumber << std::endl;
-                    throw std::runtime_error("Location outside of server block.");
-
-                    //continue;
+                    continue;
                 } else {
                     currentContext = "server";
                     contexts.push(currentContext);
@@ -152,8 +145,7 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
             } else if (key == "location") {
                 if (currentContext != "server") {
                     std::cerr << "Location outside of server block at line " << lineNumber << std::endl;
-                    throw std::runtime_error("Location outside of server block.");
-                    //continue;
+                    continue;
                 }
                 RouteConfig newRoute;
                 serverConfig.addRoute(newRoute);
@@ -163,9 +155,7 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
             } else if (key == "error_page") {
                 if (currentContext != "server") {
                     std::cerr << "Error page outside of server block at line " << lineNumber << std::endl;
-                    throw std::runtime_error("Location outside of server block.");
-
-                    //continue;
+                    continue;
                 }
                 currentContext = "error_pages";
                 contexts.push(currentContext);
@@ -173,16 +163,13 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
             } else if (key == "redirect") {
                 if (currentContext != "location") {
                     std::cerr << "Redirect outside of location block at line " << lineNumber << std::endl;
-                    throw std::runtime_error("Location outside of server block.");
-
-                    //continue;
+                    continue;
                 }
                 currentContext = "redirect";
                 contexts.push(currentContext);
                 continue ;
             }
 
-            //std::cout << "Current contexte = " << currentContext << " : " << key + value << std::endl;
             if (currentContext == "server"){
                 processServer(key, value, serverConfig);
             } else if (currentContext == "location"){

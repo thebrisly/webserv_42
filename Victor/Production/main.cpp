@@ -24,7 +24,17 @@ int main() {
 	std::vector<ServerConfig> configs;
 
     ConfigParser parser;
-    configs = parser.parseConfigs("config.config");
+	try
+	{
+		
+    	configs = parser.parseConfigs("config.config");
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+		return (0);
+	}
+	
 
 	if (configs.empty())
 	{

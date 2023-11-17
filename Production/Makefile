@@ -1,8 +1,8 @@
 # Compiler to use
-CXX = g++ -std=c++98
+CXX = g++
 
 # Compiler flags
-CXXFLAGS = -Wall -Werror -Wextra 
+CXXFLAGS = -Wall -Werror -Wextra -std=c++98
 
 # Name of the executable
 EXEC = my_program
@@ -18,7 +18,7 @@ all: $(EXEC)
 
 # Rule to link the executable
 $(EXEC): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $^ 
+	$(CXX) $(CXXFLAGS) -o $@ $^  -fsanitize=address 
 
 # Rule for object files from cpp files
 %.o: %.cpp
