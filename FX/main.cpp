@@ -54,7 +54,54 @@ void fd_set_checker (fd_set *set)
 	}
 }
 
+class Displayer
+{
+	static void console_out (const std::string msg, const std::string COLOR)
+	{
+		std::cout << COLOR << msg << RESET <<std::endl;
+	}
 
+	static void console_err (const std::string function)
+	{
+		std::cerr << RED << "ERROR : ";
+		perror(function.c_str());
+	}
+
+};
+
+
+class RunServer
+{
+	private :
+		ServerInitializer _server_init;
+		std::map<int, Client> _map_client;
+
+		fd_set _readfds;
+		fd_set _writefds;
+		fd_set _cpy_readfds;
+		fd_set _cpy_writefds;
+		struct timeval _timeout;
+
+	public :
+		RunServer(const ServerInitializer server_init);
+
+};
+
+RunServer::RunServer(ServerInitializer server_init) : _server_init(server_init)
+{
+	FD_ZERO(&this->_writefds);
+	FD_ZERO(&this->_readfds);
+
+	FD_ZERO(&this->_cpy_readfds);
+	FD_ZERO(&this->_cpy_writefds);
+
+
+	FD_SET(this->_server_init.get_sock_server(), &this->_cpy_readfds);
+	
+
+	this->_timeout.tv_sec = 0;
+	this->_timeout.tv_usec = 100000;
+}
 
 int main() 
 { 
@@ -85,15 +132,7 @@ int main()
 	std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
 	std::string response = header + body;
 	
-
 	std::map<int, Client> map_clients;
-
-	//clients_vector.push_back(Client(0));
-
-	// for (i = 0; i < MAX_CLIENT; i++)
-	// {
-	// 	clients_vector.push_back(Client(0));
-	// }
 
 	try
 	{
@@ -106,19 +145,23 @@ int main()
 		FD_SET(server_init.get_sock_server(), &cpy_readfds);
 
 		std::cout << MAGENTA << "Listening on socket " << server_init.get_sock_server() << " bind with port " << PORT << "\033[0m" << std::endl;
+		
 		while(42) 
 		{
 			readfds = cpy_readfds;
 			writefds = cpy_writefds;
 
-			std::cout << "LOOP " <<std::endl;
+			int max_key = server_init.get_sock_server();
+			max_sd = server_init.get_sock_server();
+
 			for (std::map<int, Client>::iterator it = map_clients.begin(); it != map_clients.end(); ++it)
 			{
-				std::cout << it->second << std::endl;
+				//std::cout << it->second << std::endl;
+				if (it->first > max_key)
+				{
+					max_key = it->first;
+				}
 			}
-
-
-			max_sd = server_init.get_sock_server();
 
 			for ( i = 0 ; i < MAX_CLIENT ; i++)
 			{
@@ -131,6 +174,12 @@ int main()
 					max_sd = i;
 				}
 			}
+
+			if (max_key != max_sd)
+			{
+				std::cout << RED << "---------ERROR--------" << RESET <<std::endl;
+			}
+
 
 			/* select() Delete from readfds and writefds all the sockets not "ready" for a I/O operation. */
 			if (select(max_sd +1 , &readfds, &writefds, NULL, &timeout) < 0) 
@@ -196,14 +245,14 @@ int main()
 				}
 				else if (FD_ISSET(i, &writefds))
 				{
-					int size_send = send(i , response.c_str(), response.length() , 0 );
-					if (size_send == -1)
+					//int size_send = send(i , response.c_str(), response.length() , 0 );
+					if (send(i , response.c_str(), response.length() , 0 ) == -1)
 					{
 						std::cerr << RED << "ERROR : " << RESET;
 						perror("send");
 					}
 					
-					std::cout << GREEN << "Sent response of " << size_send << " characters to client "<< i << RESET <<std::endl;
+					std::cout << GREEN << "Sent response of " << response.length() << " characters to client "<< i << RESET <<std::endl;
 					
 					if (close (i) < 0)
 					{
