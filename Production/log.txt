@@ -1,0 +1,2290 @@
+loop 0
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 1
+SELECT 4 4
+activity = 1
+New connection
+New client connected on socket with fd 5 with ip 127.0.0.1 on port 53309
+[0 : 5] 
+nb_connections = 1
+
+
+loop 2
+5 added in readfds.
+SELECT 5 4
+activity = 1
+Activity in readfds :
+i = 0 : Client on socket 5 with mode 1
+Client 0 send on socket with fd 5 : 471 characters.
+Request = GET / HTTP/1.1
+Host: 127.0.0.1:8080
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/117.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+
+
+
+[0 : 5] 
+nb_connections = 1
+
+
+loop 3
+5 added in writefds.
+SELECT 5 4
+activity = 1
+Activity in writefds :
+i = 0 : Client on socket 5 with mode 2
+
+Client 0 received 177 characters.
+
+nb_connections = 0
+
+
+loop 4
+SELECT 4 4
+activity = 1
+New connection
+New client connected on socket with fd 5 with ip 127.0.0.1 on port 53310
+[0 : 5] 
+nb_connections = 1
+
+
+loop 5
+5 added in readfds.
+SELECT 5 4
+activity = 1
+Activity in readfds :
+i = 0 : Client on socket 5 with mode 1
+Client 0 send on socket with fd 5 : 408 characters.
+Request = GET /favicon.ico HTTP/1.1
+Host: 127.0.0.1:8080
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/117.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://127.0.0.1:8080/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+
+[0 : 5] 
+nb_connections = 1
+
+
+loop 6
+5 added in writefds.
+SELECT 5 4
+activity = 1
+Activity in writefds :
+i = 0 : Client on socket 5 with mode 2
+
+Client 0 received 177 characters.
+
+nb_connections = 0
+
+
+loop 7
+SELECT 4 4
+activity = 1
+New connection
+New client connected on socket with fd 5 with ip 127.0.0.1 on port 53311
+[0 : 5] 
+nb_connections = 1
+
+
+loop 8
+5 added in readfds.
+SELECT 5 4
+activity = 1
+Activity in readfds :
+i = 0 : Client on socket 5 with mode 1
+Client 0 send on socket with fd 5 : 471 characters.
+Request = GET / HTTP/1.1
+Host: 127.0.0.1:8080
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/117.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+
+
+
+[0 : 5] 
+nb_connections = 1
+
+
+loop 9
+5 added in writefds.
+SELECT 5 4
+activity = 1
+Activity in writefds :
+i = 0 : Client on socket 5 with mode 2
+
+Client 0 received 177 characters.
+
+nb_connections = 0
+
+
+loop 10
+SELECT 4 4
+activity = 1
+New connection
+New client connected on socket with fd 5 with ip 127.0.0.1 on port 53312
+[0 : 5] 
+nb_connections = 1
+
+
+loop 11
+5 added in readfds.
+SELECT 5 4
+activity = 1
+Activity in readfds :
+i = 0 : Client on socket 5 with mode 1
+Client 0 send on socket with fd 5 : 408 characters.
+Request = GET /favicon.ico HTTP/1.1
+Host: 127.0.0.1:8080
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/117.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://127.0.0.1:8080/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+
+[0 : 5] 
+nb_connections = 1
+
+
+loop 12
+5 added in writefds.
+SELECT 5 4
+activity = 1
+Activity in writefds :
+i = 0 : Client on socket 5 with mode 2
+
+Client 0 received 177 characters.
+
+nb_connections = 0
+
+
+loop 13
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 14
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 15
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 16
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 17
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 18
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 19
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 20
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 21
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 22
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 23
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 24
+SELECT 4 4
+activity = 1
+New connection
+New client connected on socket with fd 5 with ip 127.0.0.1 on port 53317
+[0 : 5] 
+nb_connections = 1
+
+
+loop 25
+5 added in readfds.
+SELECT 5 4
+activity = 1
+Activity in readfds :
+i = 0 : Client on socket 5 with mode 1
+Client 0 send on socket with fd 5 : 471 characters.
+Request = GET / HTTP/1.1
+Host: 127.0.0.1:8080
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/117.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+
+
+
+[0 : 5] 
+nb_connections = 1
+
+
+loop 26
+5 added in writefds.
+SELECT 5 4
+activity = 1
+Activity in writefds :
+i = 0 : Client on socket 5 with mode 2
+
+Client 0 received 177 characters.
+
+nb_connections = 0
+
+
+loop 27
+SELECT 4 4
+activity = 1
+New connection
+New client connected on socket with fd 5 with ip 127.0.0.1 on port 53318
+[0 : 5] 
+nb_connections = 1
+
+
+loop 28
+5 added in readfds.
+SELECT 5 4
+activity = 1
+Activity in readfds :
+i = 0 : Client on socket 5 with mode 1
+Client 0 send on socket with fd 5 : 408 characters.
+Request = GET /favicon.ico HTTP/1.1
+Host: 127.0.0.1:8080
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/117.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://127.0.0.1:8080/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+
+[0 : 5] 
+nb_connections = 1
+
+
+loop 29
+5 added in writefds.
+SELECT 5 4
+activity = 1
+Activity in writefds :
+i = 0 : Client on socket 5 with mode 2
+
+Client 0 received 177 characters.
+
+nb_connections = 0
+
+
+loop 30
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 31
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 32
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 33
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 34
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 35
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 36
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 37
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 38
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 39
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 40
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 41
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 42
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 43
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 44
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 45
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 46
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 47
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 48
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 49
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 50
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 51
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 52
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 53
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 54
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 55
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 56
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 57
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 58
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 59
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 60
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 61
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 62
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 63
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 64
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 65
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 66
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 67
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 68
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 69
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 70
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 71
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 72
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 73
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 74
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 75
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 76
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 77
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 78
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 79
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 80
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 81
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 82
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 83
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 84
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 85
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 86
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 87
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 88
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 89
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 90
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 91
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 92
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 93
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 94
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 95
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 96
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 97
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 98
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 99
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 100
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 101
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 102
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 103
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 104
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 105
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 106
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 107
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 108
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 109
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 110
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 111
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 112
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 113
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 114
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 115
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 116
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 117
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 118
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 119
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 120
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 121
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 122
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 123
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 124
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 125
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 126
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 127
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 128
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 129
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 130
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 131
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 132
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 133
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 134
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 135
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 136
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 137
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 138
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 139
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 140
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 141
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 142
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 143
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 144
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 145
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 146
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 147
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 148
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 149
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 150
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 151
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 152
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 153
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 154
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 155
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 156
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 157
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 158
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 159
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 160
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 161
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 162
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 163
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 164
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 165
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 166
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 167
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 168
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 169
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 170
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 171
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 172
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 173
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 174
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 175
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 176
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 177
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 178
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 179
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 180
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 181
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 182
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 183
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 184
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 185
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 186
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 187
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 188
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 189
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 190
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 191
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 192
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 193
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 194
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 195
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 196
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 197
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 198
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 199
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 200
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 201
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 202
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 203
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 204
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 205
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 206
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 207
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 208
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 209
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 210
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 211
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 212
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 213
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 214
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 215
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 216
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 217
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 218
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 219
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 220
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 221
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 222
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 223
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 224
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 225
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 226
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 227
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 228
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 229
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 230
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 231
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 232
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 233
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 234
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 235
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 236
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 237
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 238
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 239
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 240
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 241
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 242
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 243
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 244
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 245
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 246
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 247
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 248
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 249
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 250
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 251
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 252
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 253
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 254
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 255
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 256
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 257
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 258
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 259
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 260
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 261
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 262
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 263
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 264
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 265
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 266
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 267
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 268
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 269
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 270
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 271
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 272
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 273
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 274
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 275
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 276
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 277
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 278
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 279
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 280
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 281
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 282
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 283
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 284
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 285
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 286
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 287
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 288
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 289
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 290
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 291
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 292
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 293
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 294
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 295
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 296
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 297
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 298
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 299
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 300
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 301
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 302
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 303
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 304
+SELECT 4 4
+activity = 0
+
+nb_connections = 0
+
+
+loop 305
+SELECT 4 4
