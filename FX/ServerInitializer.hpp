@@ -34,7 +34,7 @@ class ServerInitializer
 		ServerInitializer(int port, int size_waiting_list);
 		~ServerInitializer();
 
-		int						get_sock_server();
+		int						get_sock_server() const;
 		struct sockaddr_in		get_server_addr();
 		struct sockaddr_in &	get_ref_server_addr();
 

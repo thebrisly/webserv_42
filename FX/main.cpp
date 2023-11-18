@@ -73,8 +73,8 @@ class Displayer
 class RunServer
 {
 	private :
-		const int _socket_server;
-		std::map<int, Client> _map_client;
+		ServerInitializer & _server_init;
+		std::map<int, Client> _map_clients;
 
 		fd_set _readfds;
 		fd_set _writefds;
@@ -83,16 +83,16 @@ class RunServer
 		struct timeval _timeout;
 
 	public :
-		RunServer(const int server_init);
+		RunServer(ServerInitializer & server_init);
 		~RunServer();
 
 		void accept_new_connection();
-		void recvs_request();
-		void send_response();
+		void recvs_request(int i);
+		void send_response(int i);
 		void process();
 };
 
-RunServer::RunServer(const int socket_server) : _socket_server(socket_server)
+RunServer::RunServer(ServerInitializer & server_init) : _server_init(server_init)
 {
 	FD_ZERO(&this->_writefds);
 	FD_ZERO(&this->_readfds);
@@ -101,26 +101,30 @@ RunServer::RunServer(const int socket_server) : _socket_server(socket_server)
 	FD_ZERO(&this->_cpy_writefds);
 
 
-	FD_SET(this->_socket_server, &this->_cpy_readfds);
+	FD_SET(this->_server_init.get_sock_server(), &this->_cpy_readfds);
 	
 
 	this->_timeout.tv_sec = 0;
 	this->_timeout.tv_usec = 100000;
 }
 
-void accept_new_connection(ServerInitializer & server_init, fd_set & cpy_readfds, int & new_socket, std::map<int, Client> & map_clients)
+RunServer::~RunServer(){}
+
+void RunServer::accept_new_connection()
 {
-	if ((new_socket = accept(server_init.get_sock_server(), (struct sockaddr *)&(server_init.get_ref_server_addr()), (socklen_t*)&server_init.get_ref_addrlen()))<0) 
+	int new_socket;
+
+	if ((new_socket = accept(this->_server_init.get_sock_server(), (struct sockaddr *)&(this->_server_init.get_ref_server_addr()), (socklen_t*)&this->_server_init.get_ref_addrlen()))<0) 
 	{ 
 		std::cerr << RED << "ERROR : " << RESET;
 		perror("accept");
 	}
-	std::cout << BLUE << "New client connected on socket " << new_socket << " with ip " << inet_ntoa(server_init.get_server_addr().sin_addr) << " on port "<< ntohs (server_init.get_server_addr().sin_port) << RESET << std::endl;
-	FD_SET(new_socket, &cpy_readfds);
-	map_clients.insert(std::pair<int, Client>(new_socket, Client(new_socket)));				
+	std::cout << BLUE << "New client connected on socket " << new_socket << " with ip " << inet_ntoa(this->_server_init.get_server_addr().sin_addr) << " on port "<< ntohs (this->_server_init.get_server_addr().sin_port) << RESET << std::endl;
+	FD_SET(new_socket, &this->_cpy_readfds);
+	this->_map_clients.insert(std::pair<int, Client>(new_socket, Client(new_socket)));				
 }
 
-void recvs_request (ServerInitializer & server_init, fd_set & cpy_readfds, fd_set & cpy_writefds ,std::map<int, Client> & map_clients, int i)
+void RunServer::recvs_request (int i)
 {
 	char buffer[1025];
 	int size_read;
@@ -135,37 +139,37 @@ void recvs_request (ServerInitializer & server_init, fd_set & cpy_readfds, fd_se
 			std::cerr << RED << "ERROR : " << RESET;
 			perror("close");
 		}
-		FD_CLR(i, &cpy_readfds);
-		map_clients.erase(i);
+		FD_CLR(i, &this->_cpy_readfds);
+		this->_map_clients.erase(i);
 
 		std::cout << RED << "Error reading from socket" << RESET <<std::endl;
 	}
 	else if (size_read == 0) 
 	{ 
-		getpeername(i , (struct sockaddr*)(&(server_init.get_ref_server_addr())) , (socklen_t*)&server_init.get_ref_addrlen()); 
+		getpeername(i , (struct sockaddr*)(&(this->_server_init.get_ref_server_addr())) , (socklen_t*)&this->_server_init.get_ref_addrlen()); 
 
 		if (close(i) < 0)
 		{
 			std::cerr << RED << "ERROR : " << RESET;
 			perror("close");
 		}
-		std::cout << YELLOW << "Client " << i << " disconected | IP = " << inet_ntoa(server_init.get_server_addr().sin_addr) << " | PORT = "<< ntohs (server_init.get_server_addr().sin_port) << RESET <<std::endl;
-		FD_CLR(i, &cpy_readfds);
-		map_clients.erase(i);
+		std::cout << YELLOW << "Client " << i << " disconected | IP = " << inet_ntoa(this->_server_init.get_server_addr().sin_addr) << " | PORT = "<< ntohs (this->_server_init.get_server_addr().sin_port) << RESET <<std::endl;
+		FD_CLR(i, &this->_cpy_readfds);
+		this->_map_clients.erase(i);
 	}
 	else if (size_read > 0)
 	{
 		std::cout << GREEN << "Received request of " << size_read << " characters from client " << i << RESET << std::endl;
-		FD_CLR(i, &cpy_readfds);
-		FD_SET(i, &cpy_writefds);
-		map_clients[i].set_request(buffer);
-		map_clients[i].set_size_request(size_read);
-		map_clients[i].set_socket_mod(READ_M);
+		FD_CLR(i, &this->_cpy_readfds);
+		FD_SET(i, &this->_cpy_writefds);
+		this->_map_clients[i].set_request(buffer);
+		this->_map_clients[i].set_size_request(size_read);
+		this->_map_clients[i].set_socket_mod(READ_M);
 	}
 
 }
 
-void send_response (int i, std::map<int, Client> & map_clients, fd_set & cpy_writefds)
+void RunServer::send_response (int i)
 {
 
 	std::string body = "<!DOCTYPE html><html><body><h1>My First Heading</h1><h2>My first paragraph.</h2><h2>My web server</h2></body></html>"; 
@@ -186,29 +190,29 @@ void send_response (int i, std::map<int, Client> & map_clients, fd_set & cpy_wri
 		perror("close");
 	}
 	std::cout << YELLOW << "Client " << i << " disconected." << RESET <<std::endl;				
-	FD_CLR(i, &cpy_writefds);
-	map_clients.erase(i);
+	FD_CLR(i, &this->_cpy_writefds);
+	this->_map_clients.erase(i);
 
 }
 
 
-void process (ServerInitializer & server_init, fd_set & cpy_readfds, fd_set & cpy_writefds, fd_set & readfds, fd_set & writefds ,std::map<int, Client> & map_clients)
+void RunServer::process ()
 {
 	int i;
 	int max_sd;
 	struct timeval timeout;
-	int new_socket;
+
 
 	timeout.tv_sec = 0;
 	timeout.tv_usec = 100000;
 
-	readfds = cpy_readfds;
-	writefds = cpy_writefds;
+	this->_readfds = this->_cpy_readfds;
+	this->_writefds = this->_cpy_writefds;
 
-	int max_key = server_init.get_sock_server();
-	max_sd = server_init.get_sock_server();
+	int max_key = this->_server_init.get_sock_server();
+	max_sd = this->_server_init.get_sock_server();
 
-	for (std::map<int, Client>::iterator it = map_clients.begin(); it != map_clients.end(); ++it)
+	for (std::map<int, Client>::iterator it = this->_map_clients.begin(); it != this->_map_clients.end(); ++it)
 	{
 		if (it->first > max_key)
 		{
@@ -218,11 +222,11 @@ void process (ServerInitializer & server_init, fd_set & cpy_readfds, fd_set & cp
 
 	for ( i = 0 ; i < MAX_CLIENT ; i++)
 	{
-		if (FD_ISSET(i, &readfds) && i > max_sd)
+		if (FD_ISSET(i, &this->_readfds) && i > max_sd)
 		{
 			max_sd = i;
 		}
-		else if (FD_ISSET(i, &writefds) && i > max_sd)
+		else if (FD_ISSET(i, &this->_writefds) && i > max_sd)
 		{
 			max_sd = i;
 		}
@@ -235,7 +239,7 @@ void process (ServerInitializer & server_init, fd_set & cpy_readfds, fd_set & cp
 
 
 	/* select() Delete from readfds and writefds all the sockets not "ready" for an I/O operation. */
-	if (select(max_sd +1 , &readfds, &writefds, NULL, &timeout) < 0) 
+	if (select(max_sd +1 , &this->_readfds, &this->_writefds, NULL, &timeout) < 0) 
 	{ 
 		std::cerr << RED << "ERROR : " << RESET;
 		perror("select");
@@ -243,17 +247,17 @@ void process (ServerInitializer & server_init, fd_set & cpy_readfds, fd_set & cp
 
 	for (i = 0; i < max_sd + 1; i++) 
 	{
-		if (FD_ISSET(i, &readfds) && i == server_init.get_sock_server()) 
+		if (FD_ISSET(i, &this->_readfds) && i == this->_server_init.get_sock_server()) 
 		{
-			accept_new_connection(server_init, cpy_readfds, new_socket, map_clients);
+			this->accept_new_connection();
 		}
-		else if (FD_ISSET(i, &readfds)) 
+		else if (FD_ISSET(i, &this->_readfds)) 
 		{
-			recvs_request (server_init, cpy_readfds, cpy_writefds , map_clients, i);
+			recvs_request (i);
 		}
-		else if (FD_ISSET(i, &writefds))
+		else if (FD_ISSET(i, &this->_writefds))
 		{
-			send_response(i, map_clients, cpy_writefds);
+			send_response(i);
 		}
 	}	
 
@@ -262,21 +266,22 @@ void process (ServerInitializer & server_init, fd_set & cpy_readfds, fd_set & cp
 int main() 
 { 
 
-	fd_set readfds;
-	fd_set writefds;
+	// fd_set readfds;
+	// fd_set writefds;
 
-	fd_set cpy_readfds;
-	fd_set cpy_writefds;
+	// fd_set cpy_readfds;
+	// fd_set cpy_writefds;
 
-	FD_ZERO(&writefds);
-	FD_ZERO(&readfds);
+	// FD_ZERO(&writefds);
+	// FD_ZERO(&readfds);
 
-	FD_ZERO(&cpy_readfds);
-	FD_ZERO(&cpy_writefds);
+	// FD_ZERO(&cpy_readfds);
+	// FD_ZERO(&cpy_writefds);
+
+	// std::map<int, Client> map_clients;
 
 	//std::ofstream outputFile("log.txt");
 	
-	std::map<int, Client> map_clients;
 
 	try
 	{
@@ -285,12 +290,14 @@ int main()
 
 		signal(SIGPIPE, sigpipeHandle);
 
-		FD_SET(server_init.get_sock_server(), &cpy_readfds);
+		RunServer run_server(server_init);
+
+
 		std::cout << MAGENTA << "Listening on socket " << server_init.get_sock_server() << " bind with port " << PORT << "\033[0m" << std::endl;
 		
 		while(42) 
 		{
-			process (server_init, cpy_readfds, cpy_writefds, readfds, writefds , map_clients);
+			run_server.process();
 		}
 	}
 	catch(std::exception& e)

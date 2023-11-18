@@ -34,7 +34,7 @@ int & ServerInitializer::get_ref_addrlen()
 	return this->_addrlen;
 }
 
-int ServerInitializer::get_sock_server()
+int ServerInitializer::get_sock_server() const
 {
 	return this->_sock_server;
 }
