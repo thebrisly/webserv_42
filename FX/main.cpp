@@ -103,11 +103,94 @@ RunServer::RunServer(ServerInitializer server_init) : _server_init(server_init)
 	this->_timeout.tv_usec = 100000;
 }
 
+void accept_new_connection(ServerInitializer & server_init, fd_set & cpy_readfds, int & new_socket, std::map<int, Client> & map_clients)
+{
+	if ((new_socket = accept(server_init.get_sock_server(), (struct sockaddr *)&(server_init.get_ref_server_addr()), (socklen_t*)&server_init.get_ref_addrlen()))<0) 
+	{ 
+		std::cerr << RED << "ERROR : " << RESET;
+		perror("accept");
+	}
+	std::cout << BLUE << "New client connected on socket " << new_socket << " with ip " << inet_ntoa(server_init.get_server_addr().sin_addr) << " on port "<< ntohs (server_init.get_server_addr().sin_port) << RESET << std::endl;
+	FD_SET(new_socket, &cpy_readfds);
+	map_clients.insert(std::pair<int, Client>(new_socket, Client(new_socket)));				
+}
+
+void read_socket (ServerInitializer & server_init, fd_set & cpy_readfds, fd_set & cpy_writefds ,std::map<int, Client> & map_clients, int i)
+{
+	char buffer[1025];
+	int size_read;
+
+	memset (buffer, 0, 1024);
+	size_read = recv(i, buffer, 1024, 0);
+
+	if (size_read == -1)
+	{
+		if (close(i) < 0)
+		{
+			std::cerr << RED << "ERROR : " << RESET;
+			perror("close");
+		}
+		FD_CLR(i, &cpy_readfds);
+		map_clients.erase(i);
+
+		std::cout << RED << "Error reading from socket" << RESET <<std::endl;
+	}
+	else if (size_read == 0) 
+	{ 
+		getpeername(i , (struct sockaddr*)(&(server_init.get_ref_server_addr())) , (socklen_t*)&server_init.get_ref_addrlen()); 
+
+		if (close(i) < 0)
+		{
+			std::cerr << RED << "ERROR : " << RESET;
+			perror("close");
+		}
+		std::cout << YELLOW << "Client " << i << " disconected | IP = " << inet_ntoa(server_init.get_server_addr().sin_addr) << " | PORT = "<< ntohs (server_init.get_server_addr().sin_port) << RESET <<std::endl;
+		FD_CLR(i, &cpy_readfds);
+		map_clients.erase(i);
+	}
+	else if (size_read > 0)
+	{
+		std::cout << GREEN << "Received request of " << size_read << " characters from client " << i << RESET << std::endl;
+		FD_CLR(i, &cpy_readfds);
+		FD_SET(i, &cpy_writefds);
+		map_clients[i].set_request(buffer);
+		map_clients[i].set_size_request(size_read);
+		map_clients[i].set_socket_mod(READ_M);
+		//std::cout << map_clients[i] << std::endl;
+	}
+
+}
+
+void send_response ()
+{
+
+	
+
+	if (send(i , response.c_str(), response.length() , 0 ) == -1)
+	{
+		std::cerr << RED << "ERROR : " << RESET;
+		perror("send");
+	}
+	
+	std::cout << GREEN << "Sent response of " << response.length() << " characters to client "<< i << RESET <<std::endl;
+	
+	if (close (i) < 0)
+	{
+		std::cerr << RED << "ERROR : " << RESET;
+		perror("close");
+	}
+	std::cout << YELLOW << "Client " << i << " disconected." << RESET <<std::endl;				
+	FD_CLR(i, &cpy_writefds);
+	map_clients.erase(i);
+
+}
+
+
 int main() 
 { 
-	int new_socket, i , size_read; 
+	int new_socket, i; 
 	int max_sd; 
-	char buffer[1025];
+	//char buffer[1025];
 
 	fd_set readfds;
 	fd_set writefds;
@@ -192,60 +275,14 @@ int main()
 			{
 				if (FD_ISSET(i, &readfds) && i == server_init.get_sock_server()) 
 				{
-					if ((new_socket = accept(server_init.get_sock_server(), (struct sockaddr *)&(server_init.get_ref_server_addr()), (socklen_t*)&server_init.get_ref_addrlen()))<0) 
-					{ 
-						std::cerr << RED << "ERROR : " << RESET;
-						perror("accept");
-					}
-					std::cout << BLUE << "New client connected on socket " << new_socket << " with ip " << inet_ntoa(server_init.get_server_addr().sin_addr) << " on port "<< ntohs (server_init.get_server_addr().sin_port) << RESET << std::endl;
-					FD_SET(new_socket, &cpy_readfds);
-					map_clients.insert(std::pair<int, Client>(new_socket, Client(new_socket)));
-					
+					accept_new_connection(server_init, cpy_readfds, new_socket, map_clients);
 				}
 				else if (FD_ISSET(i, &readfds)) 
 				{
-					memset (buffer, 0, 1024);
-					size_read = recv(i, buffer, 1024, 0);
-
-					if (size_read == -1)
-					{
-						if (close(i) < 0)
-						{
-							std::cerr << RED << "ERROR : " << RESET;
-							perror("close");
-						}
-						FD_CLR(i, &cpy_readfds);
-						map_clients.erase(i);
-
-						std::cout << RED << "Error reading from socket" << RESET <<std::endl;
-					}
-					if (size_read == 0) 
-					{ 
-						getpeername(i , (struct sockaddr*)(&(server_init.get_ref_server_addr())) , (socklen_t*)&server_init.get_ref_addrlen()); 
-
-						if (close(i) < 0)
-						{
-							std::cerr << RED << "ERROR : " << RESET;
-							perror("close");
-						}
-						std::cout << YELLOW << "Client " << i << " disconected | IP = " << inet_ntoa(server_init.get_server_addr().sin_addr) << " | PORT = "<< ntohs (server_init.get_server_addr().sin_port) << RESET <<std::endl;
-						FD_CLR(i, &cpy_readfds);
-						map_clients.erase(i);
-					}
-					else if (size_read > 0)
-					{
-						std::cout << GREEN << "Received request of " << size_read << " characters from client " << i << RESET << std::endl;
-						FD_CLR(i, &cpy_readfds);
-						FD_SET(i, &cpy_writefds);
-						map_clients[i].set_request(buffer);
-						map_clients[i].set_size_request(size_read);
-						map_clients[i].set_socket_mod(READ_M);
-						//std::cout << map_clients[i] << std::endl;
-					}
+					read_socket (server_init, cpy_readfds, cpy_writefds , map_clients, i);
 				}
 				else if (FD_ISSET(i, &writefds))
 				{
-					//int size_send = send(i , response.c_str(), response.length() , 0 );
 					if (send(i , response.c_str(), response.length() , 0 ) == -1)
 					{
 						std::cerr << RED << "ERROR : " << RESET;
