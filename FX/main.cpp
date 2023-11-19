@@ -1,5 +1,7 @@
 #include "ServerInitializer.hpp"
 #include "Client.hpp"
+#include "ConfigParser.hpp"
+
 #define PORT 8888
 #define PORT_2 8008
 #define SIZE_WAITING_LIST 30
@@ -220,6 +222,14 @@ int main()
 	try
 	{
 		signal(SIGPIPE, sigpipeHandle);
+
+		std::vector<ServerConfig> configs;
+	    ConfigParser parser;
+	
+    	configs = parser.parseConfigs("config.config");
+
+		std::cout << "Number of server : " << configs.size() << std::endl;
+
 
 		ServerInitializer server_init(PORT, SIZE_WAITING_LIST);
 		server_init.bind_listen_socket_serv();
