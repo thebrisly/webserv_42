@@ -1,5 +1,5 @@
 # Compiler to use
-CXX = g++ -std=c++98
+CXX = g++
 
 # Compiler flags
 CXXFLAGS = -Wall -Werror -Wextra 

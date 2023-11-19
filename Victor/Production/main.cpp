@@ -42,14 +42,14 @@ int main() {
 		std::cout << "No server configs found" << std::endl;
 		return 0;
 	}
-	ServerConfig config = configs.front();			
+	ServerConfig config = configs.back();			
 	std::cout << "Server name [" << config.getServerName() << "]" << std::endl;
 	std::cout << "Port [" << config.getPort() << "]" << std::endl;
 	std::cout << "IP address [" << config.getIPAddress() << "]" << std::endl;
 	std::cout << "Max body size [" << config.getMaxBodySize() << "]" << std::endl;
 	std::cout << "Root [" << config.getRoot() << "]" << std::endl;
 
-
+	std::cout << configs.size() << " server configs found" << std::endl;
 
 	const MAP& m = config.getErrorPages();
 

@@ -107,6 +107,7 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
     std::ifstream file(filename.c_str());
     std::string line, currentContext;
     int lineNumber = 0, currentIndentation = 0;
+    bool in_server = false;
 
     if (!file.is_open()) {
         std::cerr << "Could not open config file: " << filename << std::endl;
@@ -165,6 +166,12 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
             }
 
             if (key == "server") {
+                if (in_server == true)
+                {
+                    configs.push_back(serverConfig);
+                    serverConfig = ServerConfig();
+                }
+                in_server = true;
                 if (!contexts.empty()) {
                     std::cerr << "Nested server blocks are not allowed. Error at line " << lineNumber << std::endl;
                     throw std::runtime_error("Found configuration outside of server block at line.");
