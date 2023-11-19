@@ -1,10 +1,6 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <vector>
-#include <map>
-#include <algorithm>
-#include <algorithm> 
+#ifndef SERVER_CONFIG_HPP
+#define SERVER_CONFIG_HPP
+
 #include "RouteConfig.hpp"
 
 class ServerConfig
@@ -47,3 +43,5 @@ class ServerConfig
 
 		
 };
+
+#endif

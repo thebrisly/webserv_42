@@ -1,8 +1,11 @@
+#ifndef CONFIG_PARSER_HPP
+#define CONFIG_PARSER_HPP
+
+#include "ServerConfig.hpp"
+
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <stack>
-#include "ServerConfig.hpp"
 
 class ConfigParser
 {
@@ -15,3 +18,5 @@ class ConfigParser
 		void processLocation(const std::string& key, const std::string& value, RouteConfig& route);
 		void processRedirect(const std::string& key, const std::string& value, RouteConfig& route);
 };
+
+#endif
