@@ -1,5 +1,4 @@
 #include "ServerConfig.hpp"
-#include <functional>
 
 // Constructor
 ServerConfig::ServerConfig() : port(0), ip_address(""), max_body_size(0), server_name(""), root("") {}

@@ -1,3 +1,6 @@
+#ifndef ROUTE_CONFIG_HPP
+#define ROUTE_CONFIG_HPP
+
 #include <string>
 #include <vector>
 #include <map>
@@ -11,3 +14,5 @@ struct RouteConfig
     std::string root;
     std::pair<std::string, std::string> redirect;
 };
+
+#endif
