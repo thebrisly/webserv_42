@@ -8,6 +8,46 @@ void sigpipeHandle (int sig)
 	std::cerr << "sigpipeHandle : PROBLEME ECRITURE SOCKET : " << sig <<std::endl;
 }
 
+
+class ServersManager
+{
+	private:
+		const std::vector<ServerConfig>		_configs;
+		std::vector<ServerInitializer>		_servers;
+
+	public:
+		ServersManager(const std::vector<ServerConfig> configs);
+		~ServersManager();
+
+		ServerInitializer & get_server_init(int i);
+
+		ServerInitializer & operator[](int i);
+
+
+};
+
+ServersManager::ServersManager(const std::vector<ServerConfig> configs) : _configs(configs)
+{
+	for (std::vector<ServerConfig>::const_iterator it = configs.begin(); it!= configs.end(); ++it)
+	{
+		ServerInitializer server_init(*it, SIZE_WAITING_LIST);
+		this->_servers.push_back(server_init);
+	}
+};
+
+ServersManager::~ServersManager(){};
+
+ServerInitializer & ServersManager::get_server_init(int i)
+{
+	return this->_servers[i];
+}
+
+ServerInitializer & ServersManager::operator[](int i)
+{
+	return this->_servers[i];
+}
+
+
 int main() 
 { 
 	try
@@ -16,20 +56,25 @@ int main()
 
 		std::vector<ServerConfig> configs;
 	    ConfigParser parser;
-	
     	configs = parser.parseConfigs("config.config");
+
+		ServersManager servers_manager(configs);
+
+		std::cout << "Port : " << servers_manager[0].get_config().getPort() << std::endl;
+		std::cout << "Port : " << servers_manager[1].get_config().getPort() << std::endl;
+
 
 		std::cout << "Number of server : " << configs.size() << std::endl;
 
 
-		ServerInitializer server_init(PORT, SIZE_WAITING_LIST);
+		ServerInitializer server_init(configs[0], SIZE_WAITING_LIST);
 		server_init.bind_listen_socket_serv();
 
 		//std::cout << server_init.get_sock_server() << std::endl;
 
 		RunServer run_server(server_init);
 
-		std::cout << MAGENTA << "Listening on socket " << server_init.get_sock_server() << " bind with port " << PORT << "\033[0m" << std::endl;
+		std::cout << MAGENTA << "Listening on socket " << server_init.get_sock_server() << " bind with port " << server_init.get_config().getPort() << "\033[0m" << std::endl;
 		
 		while(42) 
 		{

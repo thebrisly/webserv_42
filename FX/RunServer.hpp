@@ -5,7 +5,7 @@
 #include "Client.hpp"
 #include "Color.hpp"
 
-#define PORT 8888
+
 
 #define SIZE_WAITING_LIST 30
 #define MAX_CLIENT 30
