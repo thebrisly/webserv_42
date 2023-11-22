@@ -2,6 +2,7 @@
 #define RUN_SERVER_HPP
 
 #include "ServerInitializer.hpp"
+#include "ServersManager.hpp"
 #include "Client.hpp"
 #include "Color.hpp"
 
@@ -18,7 +19,7 @@
 class RunServer
 {
 	private :
-		ServerInitializer& _server_init;
+		ServersManager & _servers_manager;
 		std::map<int, Client> _map_clients;
 
 		fd_set			_readfds;
@@ -28,7 +29,7 @@ class RunServer
 		struct timeval	_timeout;
 
 	public :
-		RunServer(ServerInitializer& server_init);
+		RunServer(ServersManager & server_manager);
 		~RunServer();
 
 		void accept_new_connection();
