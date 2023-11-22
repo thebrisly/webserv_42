@@ -32,7 +32,7 @@ class RunServer
 		RunServer(ServersManager & server_manager);
 		~RunServer();
 
-		void accept_new_connection();
+		void accept_new_connection(int i);
 		void recvs_request(int i);
 		void send_response(int i);
 		void process();

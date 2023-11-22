@@ -20,6 +20,12 @@ class ServersManager
 
 		ServerInitializer & operator[](int i);
 
+		int get_socket_max() const;
+
+		bool is_server_active(const int i) const;
+
+		ServerInitializer & get_server_by_sock(const int sock);
+
 
 };
 

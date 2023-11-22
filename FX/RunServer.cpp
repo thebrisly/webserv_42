@@ -10,12 +10,11 @@ RunServer::RunServer(ServersManager & servers_manager) : _servers_manager(server
 
 	std::cout << "number of servers : " << this->_servers_manager.get_servers().size() << std::endl;
 
-	std::cout << GREEN << this->_servers_manager[0].get_config().getPort() << RESET << std::endl;
-	
-	this->_servers_manager[0].bind_listen_socket_serv();
-
-
-	FD_SET(this->_servers_manager[0].get_sock_server(), &this->_cpy_readfds);
+	for (unsigned long i = 0; i < this->_servers_manager.get_servers().size(); i++)
+	{
+		std::cout << GREEN << this->_servers_manager[i].get_config().getPort() << RESET << std::endl;
+		FD_SET(this->_servers_manager[i].get_sock_server(), &this->_cpy_readfds);
+	}
 	
 	this->_timeout.tv_sec = 0;
 	this->_timeout.tv_usec = 100000;
@@ -23,11 +22,24 @@ RunServer::RunServer(ServersManager & servers_manager) : _servers_manager(server
 
 RunServer::~RunServer(){}
 
-void RunServer::accept_new_connection()
+void RunServer::accept_new_connection(int i)
 {
 	int new_socket;
 
-	if ((new_socket = accept(this->_servers_manager[0].get_sock_server(), (struct sockaddr *)&(this->_servers_manager[0].get_ref_server_addr()), (socklen_t*)&this->_servers_manager[0].get_ref_addrlen()))<0) 
+	(void) i;
+
+	ServerInitializer & server_init = this->_servers_manager.get_server_by_sock(i);
+
+	//std::cout << i << " " << this->_servers_manager[0].get_sock_server() << std::endl;
+	//sleep(10);
+	if (i != server_init.get_sock_server())
+	{
+		std::cerr << RED << "ERROR : accept_new_connection " << i << " " << server_init.get_sock_server() << RESET << std::endl;
+		sleep(10);
+	}
+	//ServerInitializer & server_init = this->_servers_manager[0];
+
+	if ((new_socket = accept(i, (struct sockaddr *)&(server_init.get_ref_server_addr()), (socklen_t*)&server_init.get_ref_addrlen()))<0) 
 	{ 
 		std::cerr << RED << "ERROR : " << RESET;
 		perror("accept");
@@ -112,16 +124,17 @@ void RunServer::process ()
 {
 	int i;
 	int max_sd;
-	struct timeval timeout;
+	int max_key;
 
+	struct timeval timeout;
 	timeout.tv_sec = 0;
 	timeout.tv_usec = 100000;
 
 	this->_readfds = this->_cpy_readfds;
 	this->_writefds = this->_cpy_writefds;
 
-	int max_key = this->_servers_manager[0].get_sock_server();
-	max_sd = this->_servers_manager[0].get_sock_server();
+	max_key = this->_servers_manager.get_socket_max();
+	max_sd = this->_servers_manager.get_socket_max();
 
 	for (std::map<int, Client>::iterator it = this->_map_clients.begin(); it != this->_map_clients.end(); ++it)
 	{
@@ -145,7 +158,7 @@ void RunServer::process ()
 
 	if (max_key != max_sd)
 	{
-		std::cout << RED << "---------ERROR--------" << RESET <<std::endl;
+		std::cout << RED << "---------ERROR--------" << " max_key = " << max_key << " max_sd = " << max_sd << RESET <<std::endl;
 	}
 
 
@@ -158,9 +171,9 @@ void RunServer::process ()
 
 	for (i = 0; i < max_sd + 1; i++) 
 	{
-		if (FD_ISSET(i, &this->_readfds) && i == _servers_manager[0].get_sock_server()) 
+		if (FD_ISSET(i, &this->_readfds) && this->_servers_manager.is_server_active(i)) 
 		{
-			this->accept_new_connection();
+			this->accept_new_connection(i);
 		}
 		else if (FD_ISSET(i, &this->_readfds)) 
 		{

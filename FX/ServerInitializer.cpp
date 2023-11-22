@@ -28,6 +28,8 @@ ServerInitializer::ServerInitializer(const ServerConfig config, int size_waiting
 
 	this->_addrlen = sizeof(this->_server_addr);
 
+	this->bind_listen_socket_serv();
+
 }
 
 ServerInitializer::~ServerInitializer(){};
@@ -72,3 +74,5 @@ const ServerConfig	ServerInitializer::get_config() const
 {
 	return this->_config;
 }
+
+
