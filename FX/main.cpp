@@ -8,9 +8,6 @@ void sigpipeHandle (int sig)
 	std::cerr << "sigpipeHandle : PROBLEME ECRITURE SOCKET : " << sig <<std::endl;
 }
 
-
-
-
 ServersManager::ServersManager(const std::vector<ServerConfig> configs) : _configs(configs)
 {
 	for (std::vector<ServerConfig>::const_iterator it = configs.begin(); it!= configs.end(); ++it)
@@ -67,6 +64,7 @@ ServerInitializer & ServersManager::get_server_by_sock(const int sock)
 {
 	for (std::vector<ServerInitializer>::iterator it = this->_servers.begin(); it!= this->_servers.end(); ++it)
 	{
+		
 		if (it->get_sock_server() == sock)
 		{
 			return *it;

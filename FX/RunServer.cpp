@@ -26,8 +26,7 @@ void RunServer::accept_new_connection(int i)
 {
 	int new_socket;
 
-	(void) i;
-
+	std::cout << "i = " << i << std::endl;
 	ServerInitializer & server_init = this->_servers_manager.get_server_by_sock(i);
 
 	//std::cout << i << " " << this->_servers_manager[0].get_sock_server() << std::endl;
@@ -53,6 +52,9 @@ void RunServer::recvs_request (int i)
 {
 	char buffer[1025];
 	int size_read;
+	//ServerInitializer & server_init = this->_servers_manager.get_server_by_sock(i);
+
+
 
 	memset (buffer, 0, 1024);
 	size_read = recv(i, buffer, 1024, 0);
@@ -71,14 +73,14 @@ void RunServer::recvs_request (int i)
 	}
 	else if (size_read == 0) 
 	{ 
-		getpeername(i , (struct sockaddr*)(&(this->_servers_manager[0].get_ref_server_addr())) , (socklen_t*)&this->_servers_manager[0].get_ref_addrlen()); 
+		//getpeername(i , (struct sockaddr*)(&(server_init.get_ref_server_addr())) , (socklen_t*)&server_init.get_ref_addrlen()); 
 
 		if (close(i) < 0)
 		{
 			std::cerr << RED << "ERROR : " << RESET;
 			perror("close");
 		}
-		std::cout << YELLOW << "Client " << i << " disconected | IP = " << inet_ntoa(this->_servers_manager[0].get_server_addr().sin_addr) << " | PORT = "<< ntohs (this->_servers_manager[0].get_server_addr().sin_port) << RESET <<std::endl;
+		std::cout << YELLOW << "Client " << i << " disconected" << RESET << std::endl;
 		FD_CLR(i, &this->_cpy_readfds);
 		this->_map_clients.erase(i);
 	}
@@ -117,7 +119,6 @@ void RunServer::send_response (int i)
 	std::cout << YELLOW << "Client " << i << " disconected." << RESET <<std::endl;				
 	FD_CLR(i, &this->_cpy_writefds);
 	this->_map_clients.erase(i);
-
 }
 
 void RunServer::process ()
@@ -173,6 +174,7 @@ void RunServer::process ()
 	{
 		if (FD_ISSET(i, &this->_readfds) && this->_servers_manager.is_server_active(i)) 
 		{
+			std::cout << "Je veux accepter la connexion sur socket " << i << std::endl;
 			this->accept_new_connection(i);
 		}
 		else if (FD_ISSET(i, &this->_readfds)) 
