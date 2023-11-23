@@ -1,0 +1,21 @@
+readfds : 3 
+writefds : 
+key : 5       _socket = 5
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = 
+_size_response = 0
+
+
+
+
+readfds : 3 
+writefds : 
+key : 5       _socket = 5
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = 
+_size_response = 0
+

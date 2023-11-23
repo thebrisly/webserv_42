@@ -1,4 +1,7 @@
 #include "RunServer.hpp"
+#include <fstream>
+
+/* RunServer is an object that runs the servers */
 
 RunServer::RunServer(ServersManager & servers_manager) : _servers_manager(servers_manager)
 {
@@ -13,7 +16,9 @@ RunServer::RunServer(ServersManager & servers_manager) : _servers_manager(server
 	for (unsigned long i = 0; i < this->_servers_manager.get_servers().size(); i++)
 	{
 		std::cout << GREEN << this->_servers_manager[i].get_config().getPort() << RESET << std::endl;
+
 		FD_SET(this->_servers_manager[i].get_sock_server(), &this->_cpy_readfds);
+
 	}
 	
 	this->_timeout.tv_sec = 0;
@@ -53,8 +58,6 @@ void RunServer::recvs_request (int i)
 	char buffer[1025];
 	int size_read;
 	//ServerInitializer & server_init = this->_servers_manager.get_server_by_sock(i);
-
-
 
 	memset (buffer, 0, 1024);
 	size_read = recv(i, buffer, 1024, 0);
@@ -99,11 +102,11 @@ void RunServer::recvs_request (int i)
 void RunServer::send_response (int i)
 {
 
-	std::string body = "<!DOCTYPE html><html><body><h1>My First Heading</h1><h2>My first paragraph.</h2><h2>My web server</h2></body></html>"; 
-	std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+	const std::string body = "<!DOCTYPE html><html><body><h1>My First Heading</h1><h2>My first paragraph.</h2><h2>My web server</h2></body></html>"; 
+	const std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
 	std::string response = header + body;
 
-	if (send(i , response.c_str(), response.length() , 0 ) == -1)
+	if (send(i , response.c_str(), response.length() , 0 ) != static_cast<long>(response.length()))
 	{
 		std::cerr << RED << "ERROR : " << RESET;
 		perror("send");
@@ -117,11 +120,45 @@ void RunServer::send_response (int i)
 		perror("close");
 	}
 	std::cout << YELLOW << "Client " << i << " disconected." << RESET <<std::endl;				
+
 	FD_CLR(i, &this->_cpy_writefds);
+	std::cout << "erase " << i << " " << this->_map_clients.size() <<std::endl;
 	this->_map_clients.erase(i);
+	std::cout << "erase " << i << " " << this->_map_clients.size() <<std::endl;
+
 }
 
-void RunServer::process ()
+void display_clients(std::ofstream & out, std::map<int, Client> & map_clients)
+{
+	for (std::map<int, Client>::iterator it = map_clients.begin(); it!= map_clients.end(); ++it)
+	{
+		out << "key : " << it->first << (*it).second <<std::endl;
+	}
+};
+
+void display_fd_set(std::ofstream & out, const fd_set & readfds, const fd_set & writefds)
+{
+	out << "readfds : ";
+	for (int i = 0; i < MAX_CLIENT; i++)
+	{
+		if (FD_ISSET(i, &readfds))
+		{
+			out << i << " " ;
+		}
+	}
+	out << std::endl;
+	out << "writefds : ";
+	for (int i = 0; i < MAX_CLIENT; i++)
+	{
+		if (FD_ISSET(i, &writefds))
+		{
+			out << i << " " ;
+		}
+	}
+	out << std::endl;
+}
+
+void RunServer::process (std::ofstream & out)
 {
 	int i;
 	int max_sd;
@@ -157,9 +194,11 @@ void RunServer::process ()
 		}
 	}
 
+
 	if (max_key != max_sd)
 	{
-		std::cout << RED << "---------ERROR--------" << " max_key = " << max_key << " max_sd = " << max_sd << RESET <<std::endl;
+		std::cout << RED << "ERROR : " << " max_key = " << max_key << " max_sd = " << max_sd << RESET <<std::endl;
+		exit(0);
 	}
 
 
@@ -174,16 +213,17 @@ void RunServer::process ()
 	{
 		if (FD_ISSET(i, &this->_readfds) && this->_servers_manager.is_server_active(i)) 
 		{
-			std::cout << "Je veux accepter la connexion sur socket " << i << std::endl;
 			this->accept_new_connection(i);
+			display_fd_set(out, this->_readfds, this->_writefds);
+			display_clients(out, this->_map_clients);
 		}
 		else if (FD_ISSET(i, &this->_readfds)) 
 		{
-			recvs_request (i);
+			this->recvs_request (i);
 		}
 		else if (FD_ISSET(i, &this->_writefds))
 		{
-			send_response(i);
+			this->send_response(i);
 		}
 	}	
 

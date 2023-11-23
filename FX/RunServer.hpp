@@ -6,15 +6,12 @@
 #include "Client.hpp"
 #include "Color.hpp"
 
-
-
-#define SIZE_WAITING_LIST 30
-#define MAX_CLIENT 30
+#define SIZE_WAITING_LIST 100
+#define MAX_CLIENT 1024
 #define READ_M 0
 #define WRITE_M 1
 
 #include <map>
-
 
 class RunServer
 {
@@ -35,8 +32,7 @@ class RunServer
 		void accept_new_connection(int i);
 		void recvs_request(int i);
 		void send_response(int i);
-		void process();
+		void process(std::ofstream & out);
 };
-
 
 #endif

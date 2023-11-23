@@ -1,5 +1,6 @@
 #include "ConfigParser.hpp"
 #include "RunServer.hpp"
+#include <fstream>
 
 #include <signal.h>
 
@@ -64,17 +65,13 @@ ServerInitializer & ServersManager::get_server_by_sock(const int sock)
 {
 	for (std::vector<ServerInitializer>::iterator it = this->_servers.begin(); it!= this->_servers.end(); ++it)
 	{
-		
 		if (it->get_sock_server() == sock)
 		{
 			return *it;
 		}
 	}
 	throw std::runtime_error("Could not find server by socket");
-
 }
-
-
 
 int main() 
 { 
@@ -88,24 +85,12 @@ int main()
 
 		ServersManager servers_manager(configs);
 
-		// std::cout << "Port : " << servers_manager[0].get_config().getPort() << std::endl;
-		// std::cout << "Port : " << servers_manager[1].get_config().getPort() << std::endl;
-
-		// std::cout << "Number of server : " << configs.size() << std::endl;
-
-
-		//ServerInitializer server_init(configs[0], SIZE_WAITING_LIST);
-		//server_init.bind_listen_socket_serv();
-
-		//std::cout << server_init.get_sock_server() << std::endl;
-
 		RunServer run_server(servers_manager);
-
-		// std::cout << MAGENTA << "Listening on socket " << server_init.get_sock_server() << " bind with port " << server_init.get_config().getPort() << "\033[0m" << std::endl;
+		std::ofstream out("log.txt", std::ofstream::out);
 		
 		while(42) 
 		{
-			run_server.process();
+			run_server.process(out);
 		}
 	}
 	catch(std::exception& e)
