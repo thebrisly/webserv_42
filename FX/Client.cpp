@@ -1,6 +1,13 @@
 #include "Client.hpp"
 
-Client::Client(int socket) : _socket(socket), _socket_mod(0), _size_response(0), _size_request(0) {};
+Client::Client(const int socket, const ServerConfig server_config) : _socket(socket), _server_config(server_config)
+{
+
+	this->_socket_mod = 0;
+	this->_size_response = 0;
+	this->_size_request = 0;
+
+} 
 
 Client::Client(): _socket(0), _socket_mod(0), _size_response(0), _size_request(0){};
 
@@ -10,11 +17,6 @@ int Client::get_socket() const
 {
 	return this->_socket;
 };
-
-void Client::set_socket (int socket)
-{
-	this->_socket = socket;
-}
 
 int Client::get_size_response () const
 {
@@ -66,6 +68,13 @@ std::string Client::get_response() const
 	return this->_response;
 }
 
+ServerConfig Client::get_server_config() const
+{
+
+	return this->_server_config;
+
+}
+
 std::ostream& operator<<(std::ostream& os, const Client &cl)
 {
 	os << "       _socket = " << cl.get_socket() << std::endl;
@@ -74,6 +83,7 @@ std::ostream& operator<<(std::ostream& os, const Client &cl)
 	os << " _size_request = " << cl.get_size_request() << std::endl;
 	os << "     _response = " << cl.get_response() << std::endl;
 	os << "_size_response = " << cl.get_size_response() << std::endl;
+	os << "connected to server : " << cl.get_server_config().getPort() << std::endl;
 
 	return os;
 }

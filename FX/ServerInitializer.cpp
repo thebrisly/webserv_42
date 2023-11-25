@@ -18,7 +18,6 @@ ServerInitializer::ServerInitializer(const ServerConfig config, int size_waiting
 		throw std::runtime_error("Could not set socket option");
 	} 
 
-
 	this->_server_addr.sin_family = AF_INET;
 	this->_server_addr.sin_addr.s_addr = INADDR_ANY;
 
@@ -59,10 +58,15 @@ void ServerInitializer::bind_listen_socket_serv()
 
 	if (listen(this->_sock_server, this->_size_waiting_list) < 0) 
 	{ 
-		std::cout << "listen : " << strerror(errno) << std::endl;
+		std::cerr << "listen : " << strerror(errno) << std::endl;
 		throw std::runtime_error("Could not listen on socket");
-	} 
-
+	}
+	
+	if (fcntl(this->_sock_server, F_SETFL, O_NONBLOCK) < 0)
+	{
+		std::cerr << "fcntl : " << strerror(errno) << std::endl;
+		throw std::runtime_error("Could not set socket on NONBLOCK mode");
+	}
 }
 
 struct sockaddr_in & ServerInitializer::get_ref_server_addr()

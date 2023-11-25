@@ -31,7 +31,7 @@ void RunServer::accept_new_connection(int i)
 {
 	int new_socket;
 
-	std::cout << "i = " << i << std::endl;
+	//std::cout << "i = " << i << std::endl;
 	ServerInitializer & server_init = this->_servers_manager.get_server_by_sock(i);
 
 	//std::cout << i << " " << this->_servers_manager[0].get_sock_server() << std::endl;
@@ -48,9 +48,9 @@ void RunServer::accept_new_connection(int i)
 		std::cerr << RED << "ERROR : " << RESET;
 		perror("accept");
 	}
-	std::cout << BLUE << "New client connected on socket " << new_socket << " with ip " << inet_ntoa(this->_servers_manager[0].get_server_addr().sin_addr) << " on port "<< ntohs (this->_servers_manager[0].get_server_addr().sin_port) << RESET << std::endl;
+	std::cout << BLUE << "New client connected on socket " << new_socket << " with ip " << inet_ntoa(server_init.get_server_addr().sin_addr) << " on port "<< server_init.get_config().getPort() << RESET << std::endl;
 	FD_SET(new_socket, &this->_cpy_readfds);
-	this->_map_clients.insert(std::pair<int, Client>(new_socket, Client(new_socket)));				
+	this->_map_clients.insert(std::pair<int, Client>(new_socket, Client(new_socket, server_init.get_config())));				
 }
 
 void RunServer::recvs_request (int i)
@@ -70,6 +70,7 @@ void RunServer::recvs_request (int i)
 			perror("close");
 		}
 		FD_CLR(i, &this->_cpy_readfds);
+		FD_CLR(i, &this->_cpy_writefds);
 		this->_map_clients.erase(i);
 
 		std::cout << RED << "Error reading from socket" << RESET <<std::endl;
@@ -83,9 +84,10 @@ void RunServer::recvs_request (int i)
 			std::cerr << RED << "ERROR : " << RESET;
 			perror("close");
 		}
-		std::cout << YELLOW << "Client " << i << " disconected" << RESET << std::endl;
 		FD_CLR(i, &this->_cpy_readfds);
+		FD_CLR(i, &this->_cpy_writefds);
 		this->_map_clients.erase(i);
+		std::cout << YELLOW << "Client " << i << " disconected" << RESET << std::endl;
 	}
 	else if (size_read > 0)
 	{
@@ -94,9 +96,8 @@ void RunServer::recvs_request (int i)
 		FD_SET(i, &this->_cpy_writefds);
 		this->_map_clients[i].set_request(buffer);
 		this->_map_clients[i].set_size_request(size_read);
-		this->_map_clients[i].set_socket_mod(READ_M);
+		this->_map_clients[i].set_socket_mod(WRITE_M);
 	}
-
 }
 
 void RunServer::send_response (int i)
@@ -121,10 +122,11 @@ void RunServer::send_response (int i)
 	}
 	std::cout << YELLOW << "Client " << i << " disconected." << RESET <<std::endl;				
 
+	FD_CLR(i, &this->_cpy_readfds);
 	FD_CLR(i, &this->_cpy_writefds);
-	std::cout << "erase " << i << " " << this->_map_clients.size() <<std::endl;
+	//std::cout << "erase " << i << " " << this->_map_clients.size() <<std::endl;
 	this->_map_clients.erase(i);
-	std::cout << "erase " << i << " " << this->_map_clients.size() <<std::endl;
+	//std::cout << "erase " << i << " " << this->_map_clients.size() <<std::endl;
 
 }
 
@@ -164,10 +166,6 @@ void RunServer::process (std::ofstream & out)
 	int max_sd;
 	int max_key;
 
-	struct timeval timeout;
-	timeout.tv_sec = 0;
-	timeout.tv_usec = 100000;
-
 	this->_readfds = this->_cpy_readfds;
 	this->_writefds = this->_cpy_writefds;
 
@@ -194,7 +192,6 @@ void RunServer::process (std::ofstream & out)
 		}
 	}
 
-
 	if (max_key != max_sd)
 	{
 		std::cout << RED << "ERROR : " << " max_key = " << max_key << " max_sd = " << max_sd << RESET <<std::endl;
@@ -203,7 +200,7 @@ void RunServer::process (std::ofstream & out)
 
 
 	/* select() Delete from readfds and writefds all the sockets not "ready" for an I/O operation. */
-	if (select(max_sd +1 , &this->_readfds, &this->_writefds, NULL, &timeout) < 0) 
+	if (select(max_sd +1 , &this->_readfds, &this->_writefds, NULL, &this->_timeout) < 0) 
 	{ 
 		std::cerr << RED << "ERROR : " << RESET;
 		perror("select");
@@ -214,17 +211,26 @@ void RunServer::process (std::ofstream & out)
 		if (FD_ISSET(i, &this->_readfds) && this->_servers_manager.is_server_active(i)) 
 		{
 			this->accept_new_connection(i);
+			out << "accept new connection" << std::endl;
 			display_fd_set(out, this->_readfds, this->_writefds);
+			display_fd_set(out, this->_cpy_readfds, this->_cpy_writefds);
 			display_clients(out, this->_map_clients);
 		}
 		else if (FD_ISSET(i, &this->_readfds)) 
 		{
 			this->recvs_request (i);
+			out << "recvs request" << std::endl;
+			display_fd_set(out, this->_readfds, this->_writefds);
+			display_fd_set(out, this->_cpy_readfds, this->_cpy_writefds);
+			display_clients(out, this->_map_clients);
 		}
 		else if (FD_ISSET(i, &this->_writefds))
 		{
 			this->send_response(i);
+			out << "send response" << std::endl;
+			display_fd_set(out, this->_readfds, this->_writefds);
+			display_fd_set(out, this->_cpy_readfds, this->_cpy_writefds);
+			display_clients(out, this->_map_clients);
 		}
-	}	
-
+	}
 }

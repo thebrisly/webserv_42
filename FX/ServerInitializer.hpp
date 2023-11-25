@@ -4,6 +4,7 @@
 #include <unistd.h> //close 
 #include <arpa/inet.h> // close aussi ...
 #include <iostream>
+#include <fcntl.h>
 #include "ServerConfig.hpp"
 
 class ServerInitializer

@@ -2,24 +2,29 @@
 #define CLIENT_HPP
 
 #include <iostream>
+#include "ServerConfig.hpp"
 
 class Client
 {
 	private :
-		int	_socket;
+		const int	_socket;
 		std::string _request;
 		std::string _response;
 		int _socket_mod;
 		int _size_response;
 		int _size_request;
 
+		const ServerConfig	_server_config;
+
+
 	public :
-		Client(int socket);
+		Client(int socket, const ServerConfig server_config);
 		Client();
 		~Client();
 
 		int get_socket() const;
-		void set_socket (int socket);
+
+		ServerConfig get_server_config() const;
 
 		int get_size_response() const;
 		void set_size_response (int size_response);
