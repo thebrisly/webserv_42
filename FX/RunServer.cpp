@@ -102,10 +102,13 @@ void RunServer::recvs_request (int i)
 
 void RunServer::send_response (int i)
 {
+	unsigned long max_body_size = this->_map_clients[i].get_server_config().getMaxBodySize();
+	std::string response = this->_map_clients[i].get_response();
 
-	const std::string body = "<!DOCTYPE html><html><body><h1>My First Heading</h1><h2>My first paragraph.</h2><h2>My web server</h2></body></html>"; 
-	const std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
-	std::string response = header + body;
+	if (response.length() > max_body_size)
+	{
+		response = response.substr(0, max_body_size);
+	}
 
 	if (send(i , response.c_str(), response.length() , 0 ) != static_cast<long>(response.length()))
 	{

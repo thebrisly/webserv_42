@@ -7,8 +7,13 @@ key : 6       _socket = 6
   _socket_mode = 0
       _request = 
  _size_request = 0
-     _response = 
-_size_response = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 116
+
+<!DOCTYPE html><html><body><h1>My First Heading</h1><h2>My first paragraph.</h2><h2>My web server</h2></body></html>
+_size_response = 197
 connected to server : 8880
 
 recvs request
@@ -19,22 +24,23 @@ writefds : 6
 key : 6       _socket = 6
   _socket_mode = 1
       _request = GET / HTTP/1.1
-Host: localhost:8880
+Host: myhostname:8880
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
 Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
+Accept-Encoding: gzip, deflate
 Connection: keep-alive
 Upgrade-Insecure-Requests: 1
-Sec-Fetch-Dest: document
-Sec-Fetch-Mode: navigate
-Sec-Fetch-Site: none
-Sec-Fetch-User: ?1
 
 
- _size_request = 471
-     _response = 
-_size_response = 0
+ _size_request = 374
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 116
+
+<!DOCTYPE html><html><body><h1>My First Heading</h1><h2>My first paragraph.</h2><h2>My web server</h2></body></html>
+_size_response = 197
 connected to server : 8880
 
 send response
@@ -43,7 +49,7 @@ writefds : 6
 readfds : 3 4 
 writefds : 
 accept new connection
-readfds : 3 
+readfds : 4 
 writefds : 
 readfds : 3 4 6 
 writefds : 
@@ -51,9 +57,14 @@ key : 6       _socket = 6
   _socket_mode = 0
       _request = 
  _size_request = 0
-     _response = 
-_size_response = 0
-connected to server : 8888
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 116
+
+<!DOCTYPE html><html><body><h1>My First Heading</h1><h2>My first paragraph.</h2><h2>My web server</h2></body></html>
+_size_response = 197
+connected to server : 8880
 
 recvs request
 readfds : 6 
@@ -62,24 +73,25 @@ readfds : 3 4
 writefds : 6 
 key : 6       _socket = 6
   _socket_mode = 1
-      _request = GET / HTTP/1.1
-Host: localhost:8888
+      _request = GET /favicon.ico HTTP/1.1
+Host: myhostname:8880
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept: image/avif,image/webp,*/*
 Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
+Accept-Encoding: gzip, deflate
 Connection: keep-alive
-Upgrade-Insecure-Requests: 1
-Sec-Fetch-Dest: document
-Sec-Fetch-Mode: navigate
-Sec-Fetch-Site: none
-Sec-Fetch-User: ?1
+Referer: http://myhostname:8880/
 
 
- _size_request = 471
-     _response = 
-_size_response = 0
-connected to server : 8888
+ _size_request = 329
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 116
+
+<!DOCTYPE html><html><body><h1>My First Heading</h1><h2>My first paragraph.</h2><h2>My web server</h2></body></html>
+_size_response = 197
+connected to server : 8880
 
 send response
 readfds : 

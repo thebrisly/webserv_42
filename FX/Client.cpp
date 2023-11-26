@@ -3,8 +3,14 @@
 Client::Client(const int socket, const ServerConfig server_config) : _socket(socket), _server_config(server_config)
 {
 
+	const std::string body = "<!DOCTYPE html><html><body><h1>My First Heading</h1><h2>My first paragraph.</h2><h2>My web server</h2></body></html>"; 
+	const std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+
+	std::string response = header + body;
+
+	this->_response = response;
 	this->_socket_mod = 0;
-	this->_size_response = 0;
+	this->_size_response = response.length();
 	this->_size_request = 0;
 
 } 
@@ -18,22 +24,22 @@ int Client::get_socket() const
 	return this->_socket;
 };
 
-int Client::get_size_response () const
+unsigned long Client::get_size_response () const
 {
 	return this->_size_response;
 };
 
-void Client::set_size_response (int size_response)
+void Client::set_size_response (unsigned long size_response)
 {
 	this->_size_response = size_response;
 }
 
-int Client::get_size_request () const
+unsigned long Client::get_size_request () const
 {
 	return this->_size_request;
 };
 
-void Client::set_size_request (int size_request)
+void Client::set_size_request (unsigned long size_request)
 {
 	this->_size_request = size_request;
 }
