@@ -11,7 +11,7 @@ Client::Client(const int socket, const ServerConfig server_config) : _socket(soc
 	std::string current_line;
 
 	std::ifstream webTest;
-	webTest.open("/Users/francois-xavier/Desktop/current/FX/web/index.html");
+	webTest.open("/Users/fcoindre/Desktop/webserv/FX/web/index.html");
 
 	while (std::getline (webTest, current_line))
 	{

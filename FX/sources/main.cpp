@@ -19,7 +19,7 @@ int main()
 
 		std::vector<ServerConfig> configs;
 	    ConfigParser parser;
-    	configs = parser.parseConfigs("/Users/francois-xavier/Desktop/current/FX/config/config.config");
+    	configs = parser.parseConfigs("/Users/fcoindre/Desktop/webserv/FX/config/config.config");
 
 		ServersManager servers_manager(configs);
 
