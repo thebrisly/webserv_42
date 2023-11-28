@@ -1,4 +1,4 @@
-SRCS = main.cpp ServerInitializer.cpp Client.cpp
+SRCS = $(wildcard *.cpp)
 
 NAME = ./server
 

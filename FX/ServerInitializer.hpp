@@ -1,19 +1,11 @@
 #ifndef SERVER_INITIALIZER_HPP
 #define SERVER_INITIALIZER_HPP
 
-#include <stdio.h> 
-#include <stdlib.h> 
-#include <errno.h> 
 #include <unistd.h> //close 
-#include <arpa/inet.h> //close 
-#include <sys/types.h> 
-#include <sys/socket.h> 
-#include <netinet/in.h> 
-#include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros 
+#include <arpa/inet.h> // close aussi ...
 #include <iostream>
-#include <string>
-#include <map>
-
+#include <fcntl.h>
+#include "ServerConfig.hpp"
 
 class ServerInitializer
 {
@@ -23,7 +15,7 @@ class ServerInitializer
 		struct sockaddr_in	_server_addr;
 		int					_opt;
 
-		const int			_PORT;
+		const ServerConfig	_config;
 		const int			_size_waiting_list;
 		// const std::string							_hostname;
 		// const std::string							_error_page;
@@ -31,14 +23,14 @@ class ServerInitializer
 		// const std::map<std::string, std::string>	_path_rules;
 
 	public :
-		ServerInitializer(int port, int size_waiting_list);
+		ServerInitializer(const ServerConfig config, int size_waiting_list);
 		~ServerInitializer();
 
-		int						get_sock_server();
+		int						get_sock_server() const;
 		struct sockaddr_in		get_server_addr();
 		struct sockaddr_in &	get_ref_server_addr();
-
 		int & 					get_ref_addrlen();
+		const ServerConfig		get_config() const;
 
 		void					bind_listen_socket_serv();
 };
