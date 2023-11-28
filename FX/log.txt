@@ -52,130 +52,16 @@ writefds : 6
 key : 6       _socket = 6
   _socket_mode = 1
       _request = GET / HTTP/1.1
-Host: localhost:8888
+Host: 10.12.3.3:8888
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
 Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
+Accept-Encoding: gzip, deflate
 Connection: keep-alive
 Upgrade-Insecure-Requests: 1
-Sec-Fetch-Dest: document
-Sec-Fetch-Mode: navigate
-Sec-Fetch-Site: none
-Sec-Fetch-User: ?1
 
 
- _size_request = 471
-     _response = HTTP/1.1 200 OK
-Content-Type: text/html
-Connection: close
-Content-Length: 833
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="style0.css">
-</head>
-<body>
-    <header>
-        <h1>Welcome to My Homepage</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section id="gallery">
-        <img src="picture1.jpg" alt="Picture 1">
-        <img src="picture2.jpg" alt="Picture 2">
-        <img src="picture3.jpg" alt="Picture 3">
-        <img src="picture4.jpg" alt="Picture 4">
-    </section>
-</body>
-</html>
-
-_size_response = 914
-connected to server : 8888
-
-send response
-readfds : 
-writefds : 6 
-readfds : 3 4 
-writefds : 
-accept new connection
-readfds : 3 
-writefds : 
-readfds : 3 4 6 
-writefds : 
-key : 6       _socket = 6
-  _socket_mode = 0
-      _request = 
- _size_request = 0
-     _response = HTTP/1.1 200 OK
-Content-Type: text/html
-Connection: close
-Content-Length: 833
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="style0.css">
-</head>
-<body>
-    <header>
-        <h1>Welcome to My Homepage</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section id="gallery">
-        <img src="picture1.jpg" alt="Picture 1">
-        <img src="picture2.jpg" alt="Picture 2">
-        <img src="picture3.jpg" alt="Picture 3">
-        <img src="picture4.jpg" alt="Picture 4">
-    </section>
-</body>
-</html>
-
-_size_response = 914
-connected to server : 8888
-
-recvs request
-readfds : 6 
-writefds : 
-readfds : 3 4 
-writefds : 6 
-key : 6       _socket = 6
-  _socket_mode = 1
-      _request = GET / HTTP/1.1
-Host: localhost:8888
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
-Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
-Connection: keep-alive
-Upgrade-Insecure-Requests: 1
-Sec-Fetch-Dest: document
-Sec-Fetch-Mode: navigate
-Sec-Fetch-Site: none
-Sec-Fetch-User: ?1
-
-
- _size_request = 471
+ _size_request = 373
      _response = HTTP/1.1 200 OK
 Content-Type: text/html
 Connection: close
@@ -272,19 +158,16 @@ writefds : 6
 key : 6       _socket = 6
   _socket_mode = 1
       _request = GET /style0.css HTTP/1.1
-Host: localhost:8888
+Host: 10.12.3.3:8888
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
 Accept: text/css,*/*;q=0.1
 Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
+Accept-Encoding: gzip, deflate
 Connection: keep-alive
-Referer: http://localhost:8888/
-Sec-Fetch-Dest: style
-Sec-Fetch-Mode: no-cors
-Sec-Fetch-Site: same-origin
+Referer: http://10.12.3.3:8888/
 
 
- _size_request = 400
+ _size_request = 319
      _response = HTTP/1.1 200 OK
 Content-Type: text/html
 Connection: close
@@ -328,7 +211,7 @@ writefds : 6
 readfds : 3 4 
 writefds : 
 accept new connection
-readfds : 4 
+readfds : 3 
 writefds : 
 readfds : 3 4 6 
 writefds : 
@@ -371,120 +254,10 @@ Content-Length: 833
 </html>
 
 _size_response = 914
-connected to server : 8880
-
-recvs request
-readfds : 6 
-writefds : 
-readfds : 3 4 
-writefds : 6 
-key : 6       _socket = 6
-  _socket_mode = 1
-      _request = GET / HTTP/1.1
-Host: localhost:8880
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
-Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
-Connection: keep-alive
-Upgrade-Insecure-Requests: 1
-Sec-Fetch-Dest: document
-Sec-Fetch-Mode: navigate
-Sec-Fetch-Site: none
-Sec-Fetch-User: ?1
-
-
- _size_request = 471
-     _response = HTTP/1.1 200 OK
-Content-Type: text/html
-Connection: close
-Content-Length: 833
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="style0.css">
-</head>
-<body>
-    <header>
-        <h1>Welcome to My Homepage</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section id="gallery">
-        <img src="picture1.jpg" alt="Picture 1">
-        <img src="picture2.jpg" alt="Picture 2">
-        <img src="picture3.jpg" alt="Picture 3">
-        <img src="picture4.jpg" alt="Picture 4">
-    </section>
-</body>
-</html>
-
-_size_response = 914
-connected to server : 8880
-
-send response
-readfds : 
-writefds : 6 
-readfds : 3 4 
-writefds : 
-accept new connection
-readfds : 4 
-writefds : 
-readfds : 3 4 6 
-writefds : 
-key : 6       _socket = 6
-  _socket_mode = 0
-      _request = 
- _size_request = 0
-     _response = HTTP/1.1 200 OK
-Content-Type: text/html
-Connection: close
-Content-Length: 833
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="style0.css">
-</head>
-<body>
-    <header>
-        <h1>Welcome to My Homepage</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section id="gallery">
-        <img src="picture1.jpg" alt="Picture 1">
-        <img src="picture2.jpg" alt="Picture 2">
-        <img src="picture3.jpg" alt="Picture 3">
-        <img src="picture4.jpg" alt="Picture 4">
-    </section>
-</body>
-</html>
-
-_size_response = 914
-connected to server : 8880
+connected to server : 8888
 
 accept new connection
-readfds : 4 6 
+readfds : 3 6 
 writefds : 
 readfds : 3 4 6 7 
 writefds : 
@@ -527,7 +300,7 @@ Content-Length: 833
 </html>
 
 _size_response = 914
-connected to server : 8880
+connected to server : 8888
 
 key : 7       _socket = 7
   _socket_mode = 0
@@ -568,174 +341,26 @@ Content-Length: 833
 </html>
 
 _size_response = 914
-connected to server : 8880
+connected to server : 8888
 
 recvs request
-readfds : 4 6 
+readfds : 3 6 
 writefds : 
 readfds : 3 4 7 
 writefds : 6 
 key : 6       _socket = 6
-  _socket_mode = 1
-      _request = GET /style0.css HTTP/1.1
-Host: localhost:8880
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
-Accept: text/css,*/*;q=0.1
-Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
-Connection: keep-alive
-Referer: http://localhost:8880/
-Sec-Fetch-Dest: style
-Sec-Fetch-Mode: no-cors
-Sec-Fetch-Site: same-origin
-
-
- _size_request = 400
-     _response = HTTP/1.1 200 OK
-Content-Type: text/html
-Connection: close
-Content-Length: 833
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="style0.css">
-</head>
-<body>
-    <header>
-        <h1>Welcome to My Homepage</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section id="gallery">
-        <img src="picture1.jpg" alt="Picture 1">
-        <img src="picture2.jpg" alt="Picture 2">
-        <img src="picture3.jpg" alt="Picture 3">
-        <img src="picture4.jpg" alt="Picture 4">
-    </section>
-</body>
-</html>
-
-_size_response = 914
-connected to server : 8880
-
-key : 7       _socket = 7
-  _socket_mode = 0
-      _request = 
- _size_request = 0
-     _response = HTTP/1.1 200 OK
-Content-Type: text/html
-Connection: close
-Content-Length: 833
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="style0.css">
-</head>
-<body>
-    <header>
-        <h1>Welcome to My Homepage</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section id="gallery">
-        <img src="picture1.jpg" alt="Picture 1">
-        <img src="picture2.jpg" alt="Picture 2">
-        <img src="picture3.jpg" alt="Picture 3">
-        <img src="picture4.jpg" alt="Picture 4">
-    </section>
-</body>
-</html>
-
-_size_response = 914
-connected to server : 8880
-
-send response
-readfds : 
-writefds : 6 
-readfds : 3 4 7 
-writefds : 
-key : 7       _socket = 7
-  _socket_mode = 0
-      _request = 
- _size_request = 0
-     _response = HTTP/1.1 200 OK
-Content-Type: text/html
-Connection: close
-Content-Length: 833
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="style0.css">
-</head>
-<body>
-    <header>
-        <h1>Welcome to My Homepage</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section id="gallery">
-        <img src="picture1.jpg" alt="Picture 1">
-        <img src="picture2.jpg" alt="Picture 2">
-        <img src="picture3.jpg" alt="Picture 3">
-        <img src="picture4.jpg" alt="Picture 4">
-    </section>
-</body>
-</html>
-
-_size_response = 914
-connected to server : 8880
-
-recvs request
-readfds : 7 
-writefds : 
-readfds : 3 4 
-writefds : 7 
-key : 7       _socket = 7
   _socket_mode = 1
       _request = GET /picture1.jpg HTTP/1.1
-Host: localhost:8880
+Host: 10.12.3.3:8888
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
 Accept: image/avif,image/webp,*/*
 Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
+Accept-Encoding: gzip, deflate
 Connection: keep-alive
-Referer: http://localhost:8880/
-Sec-Fetch-Dest: image
-Sec-Fetch-Mode: no-cors
-Sec-Fetch-Site: same-origin
+Referer: http://10.12.3.3:8888/
 
 
- _size_request = 409
+ _size_request = 328
      _response = HTTP/1.1 200 OK
 Content-Type: text/html
 Connection: close
@@ -771,104 +396,7 @@ Content-Length: 833
 </html>
 
 _size_response = 914
-connected to server : 8880
-
-send response
-readfds : 
-writefds : 7 
-readfds : 3 4 
-writefds : 
-accept new connection
-readfds : 4 
-writefds : 
-readfds : 3 4 6 
-writefds : 
-key : 6       _socket = 6
-  _socket_mode = 0
-      _request = 
- _size_request = 0
-     _response = HTTP/1.1 200 OK
-Content-Type: text/html
-Connection: close
-Content-Length: 833
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="style0.css">
-</head>
-<body>
-    <header>
-        <h1>Welcome to My Homepage</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section id="gallery">
-        <img src="picture1.jpg" alt="Picture 1">
-        <img src="picture2.jpg" alt="Picture 2">
-        <img src="picture3.jpg" alt="Picture 3">
-        <img src="picture4.jpg" alt="Picture 4">
-    </section>
-</body>
-</html>
-
-_size_response = 914
-connected to server : 8880
-
-accept new connection
-readfds : 4 6 
-writefds : 
-readfds : 3 4 6 7 
-writefds : 
-key : 6       _socket = 6
-  _socket_mode = 0
-      _request = 
- _size_request = 0
-     _response = HTTP/1.1 200 OK
-Content-Type: text/html
-Connection: close
-Content-Length: 833
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="style0.css">
-</head>
-<body>
-    <header>
-        <h1>Welcome to My Homepage</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section id="gallery">
-        <img src="picture1.jpg" alt="Picture 1">
-        <img src="picture2.jpg" alt="Picture 2">
-        <img src="picture3.jpg" alt="Picture 3">
-        <img src="picture4.jpg" alt="Picture 4">
-    </section>
-</body>
-</html>
-
-_size_response = 914
-connected to server : 8880
+connected to server : 8888
 
 key : 7       _socket = 7
   _socket_mode = 0
@@ -909,128 +437,26 @@ Content-Length: 833
 </html>
 
 _size_response = 914
-connected to server : 8880
-
-recvs request
-readfds : 4 6 
-writefds : 
-readfds : 3 4 7 
-writefds : 6 
-key : 6       _socket = 6
-  _socket_mode = 1
-      _request = GET /picture2.jpg HTTP/1.1
-Host: localhost:8880
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
-Accept: image/avif,image/webp,*/*
-Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
-Connection: keep-alive
-Referer: http://localhost:8880/
-Sec-Fetch-Dest: image
-Sec-Fetch-Mode: no-cors
-Sec-Fetch-Site: same-origin
-
-
- _size_request = 409
-     _response = HTTP/1.1 200 OK
-Content-Type: text/html
-Connection: close
-Content-Length: 833
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="style0.css">
-</head>
-<body>
-    <header>
-        <h1>Welcome to My Homepage</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section id="gallery">
-        <img src="picture1.jpg" alt="Picture 1">
-        <img src="picture2.jpg" alt="Picture 2">
-        <img src="picture3.jpg" alt="Picture 3">
-        <img src="picture4.jpg" alt="Picture 4">
-    </section>
-</body>
-</html>
-
-_size_response = 914
-connected to server : 8880
-
-key : 7       _socket = 7
-  _socket_mode = 0
-      _request = 
- _size_request = 0
-     _response = HTTP/1.1 200 OK
-Content-Type: text/html
-Connection: close
-Content-Length: 833
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="style0.css">
-</head>
-<body>
-    <header>
-        <h1>Welcome to My Homepage</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section id="gallery">
-        <img src="picture1.jpg" alt="Picture 1">
-        <img src="picture2.jpg" alt="Picture 2">
-        <img src="picture3.jpg" alt="Picture 3">
-        <img src="picture4.jpg" alt="Picture 4">
-    </section>
-</body>
-</html>
-
-_size_response = 914
-connected to server : 8880
+connected to server : 8888
 
 accept new connection
-readfds : 4 7 
+readfds : 3 7 
 writefds : 6 
 readfds : 3 4 7 8 
 writefds : 6 
 key : 6       _socket = 6
   _socket_mode = 1
-      _request = GET /picture2.jpg HTTP/1.1
-Host: localhost:8880
+      _request = GET /picture1.jpg HTTP/1.1
+Host: 10.12.3.3:8888
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
 Accept: image/avif,image/webp,*/*
 Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
+Accept-Encoding: gzip, deflate
 Connection: keep-alive
-Referer: http://localhost:8880/
-Sec-Fetch-Dest: image
-Sec-Fetch-Mode: no-cors
-Sec-Fetch-Site: same-origin
+Referer: http://10.12.3.3:8888/
 
 
- _size_request = 409
+ _size_request = 328
      _response = HTTP/1.1 200 OK
 Content-Type: text/html
 Connection: close
@@ -1066,7 +492,7 @@ Content-Length: 833
 </html>
 
 _size_response = 914
-connected to server : 8880
+connected to server : 8888
 
 key : 7       _socket = 7
   _socket_mode = 0
@@ -1107,7 +533,7 @@ Content-Length: 833
 </html>
 
 _size_response = 914
-connected to server : 8880
+connected to server : 8888
 
 key : 8       _socket = 8
   _socket_mode = 0
@@ -1148,10 +574,10 @@ Content-Length: 833
 </html>
 
 _size_response = 914
-connected to server : 8880
+connected to server : 8888
 
 send response
-readfds : 4 7 
+readfds : 3 7 
 writefds : 6 
 readfds : 3 4 7 8 
 writefds : 
@@ -1194,7 +620,7 @@ Content-Length: 833
 </html>
 
 _size_response = 914
-connected to server : 8880
+connected to server : 8888
 
 key : 8       _socket = 8
   _socket_mode = 0
@@ -1235,29 +661,387 @@ Content-Length: 833
 </html>
 
 _size_response = 914
-connected to server : 8880
+connected to server : 8888
 
 recvs request
-readfds : 4 7 
+readfds : 3 7 
 writefds : 6 
 readfds : 3 4 8 
 writefds : 7 
 key : 7       _socket = 7
+  _socket_mode = 1
+      _request = GET /picture2.jpg HTTP/1.1
+Host: 10.12.3.3:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://10.12.3.3:8888/
+
+
+ _size_request = 328
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+key : 8       _socket = 8
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+accept new connection
+readfds : 3 8 
+writefds : 7 
+readfds : 3 4 6 8 
+writefds : 7 
+key : 6       _socket = 6
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+key : 7       _socket = 7
+  _socket_mode = 1
+      _request = GET /picture2.jpg HTTP/1.1
+Host: 10.12.3.3:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://10.12.3.3:8888/
+
+
+ _size_request = 328
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+key : 8       _socket = 8
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+send response
+readfds : 3 8 
+writefds : 7 
+readfds : 3 4 6 8 
+writefds : 
+key : 6       _socket = 6
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+key : 8       _socket = 8
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+recvs request
+readfds : 3 8 
+writefds : 7 
+readfds : 3 4 6 
+writefds : 8 
+key : 6       _socket = 6
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+key : 8       _socket = 8
   _socket_mode = 1
       _request = GET /picture3.jpg HTTP/1.1
-Host: localhost:8880
+Host: 10.12.3.3:8888
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
 Accept: image/avif,image/webp,*/*
 Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
+Accept-Encoding: gzip, deflate
 Connection: keep-alive
-Referer: http://localhost:8880/
-Sec-Fetch-Dest: image
-Sec-Fetch-Mode: no-cors
-Sec-Fetch-Site: same-origin
+Referer: http://10.12.3.3:8888/
 
 
- _size_request = 409
+ _size_request = 328
      _response = HTTP/1.1 200 OK
 Content-Type: text/html
 Connection: close
@@ -1293,116 +1077,26 @@ Content-Length: 833
 </html>
 
 _size_response = 914
-connected to server : 8880
-
-key : 8       _socket = 8
-  _socket_mode = 0
-      _request = 
- _size_request = 0
-     _response = HTTP/1.1 200 OK
-Content-Type: text/html
-Connection: close
-Content-Length: 833
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="style0.css">
-</head>
-<body>
-    <header>
-        <h1>Welcome to My Homepage</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section id="gallery">
-        <img src="picture1.jpg" alt="Picture 1">
-        <img src="picture2.jpg" alt="Picture 2">
-        <img src="picture3.jpg" alt="Picture 3">
-        <img src="picture4.jpg" alt="Picture 4">
-    </section>
-</body>
-</html>
-
-_size_response = 914
-connected to server : 8880
-
-send response
-readfds : 8 
-writefds : 7 
-readfds : 3 4 8 
-writefds : 
-key : 8       _socket = 8
-  _socket_mode = 0
-      _request = 
- _size_request = 0
-     _response = HTTP/1.1 200 OK
-Content-Type: text/html
-Connection: close
-Content-Length: 833
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="style0.css">
-</head>
-<body>
-    <header>
-        <h1>Welcome to My Homepage</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section id="gallery">
-        <img src="picture1.jpg" alt="Picture 1">
-        <img src="picture2.jpg" alt="Picture 2">
-        <img src="picture3.jpg" alt="Picture 3">
-        <img src="picture4.jpg" alt="Picture 4">
-    </section>
-</body>
-</html>
-
-_size_response = 914
-connected to server : 8880
+connected to server : 8888
 
 recvs request
-readfds : 8 
-writefds : 7 
-readfds : 3 4 
+readfds : 6 
 writefds : 8 
-key : 8       _socket = 8
+readfds : 3 4 
+writefds : 6 8 
+key : 6       _socket = 6
   _socket_mode = 1
       _request = GET /picture4.jpg HTTP/1.1
-Host: localhost:8880
+Host: 10.12.3.3:8888
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
 Accept: image/avif,image/webp,*/*
 Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
+Accept-Encoding: gzip, deflate
 Connection: keep-alive
-Referer: http://localhost:8880/
-Sec-Fetch-Dest: image
-Sec-Fetch-Mode: no-cors
-Sec-Fetch-Site: same-origin
+Referer: http://10.12.3.3:8888/
 
 
- _size_request = 409
+ _size_request = 328
      _response = HTTP/1.1 200 OK
 Content-Type: text/html
 Connection: close
@@ -1438,15 +1132,120 @@ Content-Length: 833
 </html>
 
 _size_response = 914
-connected to server : 8880
+connected to server : 8888
+
+key : 8       _socket = 8
+  _socket_mode = 1
+      _request = GET /picture3.jpg HTTP/1.1
+Host: 10.12.3.3:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://10.12.3.3:8888/
+
+
+ _size_request = 328
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+send response
+readfds : 6 
+writefds : 8 
+readfds : 3 4 
+writefds : 6 
+key : 6       _socket = 6
+  _socket_mode = 1
+      _request = GET /picture4.jpg HTTP/1.1
+Host: 10.12.3.3:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://10.12.3.3:8888/
+
+
+ _size_request = 328
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
 
 send response
 readfds : 
-writefds : 8 
+writefds : 6 
 readfds : 3 4 
 writefds : 
 accept new connection
-readfds : 4 
+readfds : 3 
 writefds : 
 readfds : 3 4 6 
 writefds : 
@@ -1489,7 +1288,7 @@ Content-Length: 833
 </html>
 
 _size_response = 914
-connected to server : 8880
+connected to server : 8888
 
 recvs request
 readfds : 6 
@@ -1499,19 +1298,16 @@ writefds : 6
 key : 6       _socket = 6
   _socket_mode = 1
       _request = GET /favicon.ico HTTP/1.1
-Host: localhost:8880
+Host: 10.12.3.3:8888
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
 Accept: image/avif,image/webp,*/*
 Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
+Accept-Encoding: gzip, deflate
 Connection: keep-alive
-Referer: http://localhost:8880/
-Sec-Fetch-Dest: image
-Sec-Fetch-Mode: no-cors
-Sec-Fetch-Site: same-origin
+Referer: http://10.12.3.3:8888/
 
 
- _size_request = 408
+ _size_request = 327
      _response = HTTP/1.1 200 OK
 Content-Type: text/html
 Connection: close
@@ -1547,7 +1343,1359 @@ Content-Length: 833
 </html>
 
 _size_response = 914
-connected to server : 8880
+connected to server : 8888
+
+send response
+readfds : 
+writefds : 6 
+readfds : 3 4 
+writefds : 
+accept new connection
+readfds : 3 
+writefds : 
+readfds : 3 4 6 
+writefds : 
+key : 6       _socket = 6
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+recvs request
+readfds : 6 
+writefds : 
+readfds : 3 4 
+writefds : 6 
+key : 6       _socket = 6
+  _socket_mode = 1
+      _request = GET / HTTP/1.1
+Host: 10.12.3.3:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+
+
+ _size_request = 373
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+send response
+readfds : 
+writefds : 6 
+readfds : 3 4 
+writefds : 
+accept new connection
+readfds : 3 
+writefds : 
+readfds : 3 4 6 
+writefds : 
+key : 6       _socket = 6
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+recvs request
+readfds : 6 
+writefds : 
+readfds : 3 4 
+writefds : 6 
+key : 6       _socket = 6
+  _socket_mode = 1
+      _request = GET /style0.css HTTP/1.1
+Host: 10.12.3.3:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
+Accept: text/css,*/*;q=0.1
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://10.12.3.3:8888/
+
+
+ _size_request = 319
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+send response
+readfds : 
+writefds : 6 
+readfds : 3 4 
+writefds : 
+accept new connection
+readfds : 3 
+writefds : 
+readfds : 3 4 6 
+writefds : 
+key : 6       _socket = 6
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+accept new connection
+readfds : 3 6 
+writefds : 
+readfds : 3 4 6 7 
+writefds : 
+key : 6       _socket = 6
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+key : 7       _socket = 7
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+recvs request
+readfds : 3 6 
+writefds : 
+readfds : 3 4 7 
+writefds : 6 
+key : 6       _socket = 6
+  _socket_mode = 1
+      _request = GET /picture1.jpg HTTP/1.1
+Host: 10.12.3.3:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://10.12.3.3:8888/
+
+
+ _size_request = 328
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+key : 7       _socket = 7
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+accept new connection
+readfds : 3 7 
+writefds : 6 
+readfds : 3 4 7 8 
+writefds : 6 
+key : 6       _socket = 6
+  _socket_mode = 1
+      _request = GET /picture1.jpg HTTP/1.1
+Host: 10.12.3.3:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://10.12.3.3:8888/
+
+
+ _size_request = 328
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+key : 7       _socket = 7
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+key : 8       _socket = 8
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+send response
+readfds : 3 7 
+writefds : 6 
+readfds : 3 4 7 8 
+writefds : 
+key : 7       _socket = 7
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+key : 8       _socket = 8
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+recvs request
+readfds : 3 7 
+writefds : 6 
+readfds : 3 4 8 
+writefds : 7 
+key : 7       _socket = 7
+  _socket_mode = 1
+      _request = GET /picture2.jpg HTTP/1.1
+Host: 10.12.3.3:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://10.12.3.3:8888/
+
+
+ _size_request = 328
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+key : 8       _socket = 8
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+accept new connection
+readfds : 3 8 
+writefds : 7 
+readfds : 3 4 6 8 
+writefds : 7 
+key : 6       _socket = 6
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+key : 7       _socket = 7
+  _socket_mode = 1
+      _request = GET /picture2.jpg HTTP/1.1
+Host: 10.12.3.3:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://10.12.3.3:8888/
+
+
+ _size_request = 328
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+key : 8       _socket = 8
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+send response
+readfds : 3 8 
+writefds : 7 
+readfds : 3 4 6 8 
+writefds : 
+key : 6       _socket = 6
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+key : 8       _socket = 8
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+recvs request
+readfds : 3 8 
+writefds : 7 
+readfds : 3 4 6 
+writefds : 8 
+key : 6       _socket = 6
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+key : 8       _socket = 8
+  _socket_mode = 1
+      _request = GET /picture3.jpg HTTP/1.1
+Host: 10.12.3.3:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://10.12.3.3:8888/
+
+
+ _size_request = 328
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+recvs request
+readfds : 6 
+writefds : 8 
+readfds : 3 4 
+writefds : 6 8 
+key : 6       _socket = 6
+  _socket_mode = 1
+      _request = GET /picture4.jpg HTTP/1.1
+Host: 10.12.3.3:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://10.12.3.3:8888/
+
+
+ _size_request = 328
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+key : 8       _socket = 8
+  _socket_mode = 1
+      _request = GET /picture3.jpg HTTP/1.1
+Host: 10.12.3.3:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://10.12.3.3:8888/
+
+
+ _size_request = 328
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+send response
+readfds : 6 
+writefds : 8 
+readfds : 3 4 
+writefds : 6 
+key : 6       _socket = 6
+  _socket_mode = 1
+      _request = GET /picture4.jpg HTTP/1.1
+Host: 10.12.3.3:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://10.12.3.3:8888/
+
+
+ _size_request = 328
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+send response
+readfds : 
+writefds : 6 
+readfds : 3 4 
+writefds : 
+accept new connection
+readfds : 3 
+writefds : 
+readfds : 3 4 6 
+writefds : 
+key : 6       _socket = 6
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
+
+recvs request
+readfds : 6 
+writefds : 
+readfds : 3 4 
+writefds : 6 
+key : 6       _socket = 6
+  _socket_mode = 1
+      _request = GET /favicon.ico HTTP/1.1
+Host: 10.12.3.3:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://10.12.3.3:8888/
+
+
+ _size_request = 327
+     _response = HTTP/1.1 200 OK
+Content-Type: text/html
+Connection: close
+Content-Length: 833
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style0.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Homepage</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="gallery">
+        <img src="picture1.jpg" alt="Picture 1">
+        <img src="picture2.jpg" alt="Picture 2">
+        <img src="picture3.jpg" alt="Picture 3">
+        <img src="picture4.jpg" alt="Picture 4">
+    </section>
+</body>
+</html>
+
+_size_response = 914
+connected to server : 8888
 
 send response
 readfds : 

@@ -103,24 +103,6 @@ void RunServer::recvs_request (int i)
 		Request request_test2(this->_map_clients[i].get_request());
 		request_test2.parseRequest(request_test2.getCurrentRequest());
 
-		std::cout << "Method: " << request_test2.getMethod() << std::endl;
-		std::cout << "Path: " << request_test2.getPath() << std::endl;
-		std::cout << "Version: " << request_test2.getVersion() << std::endl;
-
-
-
-		std::cout << "\nJust printing all the headers : \n";
-		const std::map<std::string, std::string>& headers = request_test2.getHeaders();
-		for (std::map<std::string, std::string>::const_iterator it = headers.begin(); it != headers.end(); ++it)
-		{
-			std::cout << it->first << ": " << it->second << std::endl;
-		}
-
-		std::cout << "printing the host, connection & secfetchdest headers :\n";
-		std::cout << request_test2.getConnection() << std::endl;
-		std::cout << request_test2.getPort() << std::endl;
-		std::cout << request_test2.getHostname() << std::endl;
-		std::cout << request_test2.getSecFetchDest() << std::endl;
 
 	}
 }
