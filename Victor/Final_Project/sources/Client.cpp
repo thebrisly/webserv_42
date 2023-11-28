@@ -1,10 +1,25 @@
 #include "../includes/Client.hpp"
+#include <fstream>
 
 Client::Client(const int socket, const ServerConfig server_config) : _socket(socket), _server_config(server_config)
 {
 
 	
-	const std::string body = std::ifstream("www/index.html");
+	std::string body;
+	std::string current_line;
+
+	std::ifstream webTest;
+	webTest.open("/Users/vgiordan/Desktop/webserv_42/FX/web/index.html");
+
+	while (std::getline (webTest, current_line))
+	{
+		body += current_line;
+		body += "\n";
+
+	}
+	
+	//std::cout << "BODY = " << body << std::endl;
+
 	const std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
 
 	std::string response = header + body;
