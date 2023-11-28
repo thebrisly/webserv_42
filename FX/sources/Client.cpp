@@ -9,7 +9,7 @@ Client::Client(const int socket, const ServerConfig server_config) : _socket(soc
 	std::string current_line;
 
 	std::ifstream webTest;
-	webTest.open("/Users/vgiordan/Desktop/webserv_42/FX/web/index.html");
+	webTest.open("web/index.html");
 
 	while (std::getline (webTest, current_line))
 	{
@@ -95,6 +95,26 @@ ServerConfig Client::get_server_config() const
 
 	return this->_server_config;
 
+}
+
+Response Client::get_response_object() const
+{
+	return this->_response_object;
+}
+
+void Client::set_response_object (Response response_object)
+{
+	this->_response_object = response_object;
+}
+
+Request Client::get_request_object() const
+{
+	return this->_request_object;
+}
+
+void Client::set_request_object (Request request_object)
+{
+	this->_request_object = request_object;
 }
 
 std::ostream& operator<<(std::ostream& os, const Client &cl)

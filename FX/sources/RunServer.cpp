@@ -104,6 +104,11 @@ void RunServer::recvs_request (int i)
 		request_test2.parseRequest(request_test2.getCurrentRequest());
 
 
+		/*Calcul de la reponse*/
+
+		
+
+
 	}
 }
 
@@ -124,6 +129,9 @@ void RunServer::send_response (int i)
 	}
 
 	std::cout << GREEN << "Sent response of " << response.length() << " characters to client "<< i << RESET <<std::endl;
+
+
+
 
 	if (close (i) < 0)
 	{
