@@ -6,7 +6,7 @@
 /*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 13:27:08 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/17 15:57:01 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/11/28 10:28:04 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,24 @@ void 	Request::parseRequest(const std::string& request)
                 std::string key = line.substr(0, colonPos);
                 std::string value = line.substr(colonPos + 2); // Skip ': '
                 this->_headers[key] = value;
+
+				if (key == "Host")
+                {
+					std::cout << "ici 1\n";
+                    parseHostHeader(value, this->_hostname, this->_port);
+                }
+                else if (key == "Connection")
+                {
+                    this->_connection = getConnectionHeader();
+                }
+                else if (key == "Sec-Fetch-Dest")
+                {
+                    this->_secfetchdest = getSecFetchDestHeader();
+                }
             }
 		}
+
+
 	}
 
 	// TODO: Parse body if needed
@@ -111,4 +127,55 @@ std::string Request::readMethod(const std::string& line)
 	}
 
 	return "";
+}
+
+std::string Request::getConnectionHeader() const
+{
+    std::map<std::string, std::string>::const_iterator it = _headers.find("Connection");
+    if (it != _headers.end())
+	{
+        return it->second;
+    }
+	else
+	{
+        return "";
+    }
+}
+
+std::string Request::getHostHeader() const
+{
+    std::map<std::string, std::string>::const_iterator it = _headers.find("Host");
+    if (it != _headers.end())
+	{
+        return it->second;
+    }
+	else
+	{
+        return "";
+    }
+}
+
+std::string Request::getSecFetchDestHeader() const
+{
+    std::map<std::string, std::string>::const_iterator it = _headers.find("Sec-Fetch-Dest");
+    if (it != _headers.end())
+	{
+        return it->second;
+    }
+	else
+	{
+        return "";
+    }
+}
+
+void Request::parseHostHeader(const std::string& hostHeader, std::string& hostname, std::string& port) const
+{
+    std::istringstream stream(hostHeader);
+    std::getline(stream, hostname, ':'); // Read until the colon
+    std::getline(stream, port);          // Read the rest
+
+    // If the port is not present, set a default value
+    if (port.empty()) {
+        port = "80"; // You can choose a different default port if needed
+    }
 }
