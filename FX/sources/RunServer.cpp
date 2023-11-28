@@ -105,10 +105,12 @@ void RunServer::recvs_request (int i)
 
 		this->_map_clients[i].set_request_object(request_object);
 
+
+
 		//this->_map_clients[i].get_request_object().parseRequest(this->_map_clients[i].get_request_object().getCurrentRequest());
 
-		std::cout << "WHAT1 " << request_object.getMethod() << std::endl;
-		std::cout << "WHAT2 " << this->_map_clients[i].get_request_object().getMethod() << std::endl;
+		// std::cout << "WHAT1 " << request_object.getMethod() << std::endl;
+		// std::cout << "WHAT2 " << this->_map_clients[i].get_request_object().getMethod() << std::endl;
 
 		//exit(0);
         // std::string                                 _path;
@@ -146,8 +148,13 @@ void RunServer::send_response (int i)
 	}
 
 	std::cout << GREEN << "Sent response of " << response.length() << " characters to client "<< i << RESET <<std::endl;
+	sleep(1);
+	std::cout << "[" << this->_map_clients[i].get_request_object().getConnection() << "]"<< std::endl;
+	sleep(1);
+	bool debug = this->_map_clients[i].get_request_object().getConnection() == "close";
 
-	std::cout << "ICI : " << this->_map_clients[i].get_request_object().getConnection() << std::endl;
+	std::cout << "LA : " << debug << std::endl;
+
 	if (this->_map_clients[i].get_request_object().getConnection() == "close")
 	{
 		std::cout << "JE VEUX CLOSE !!!" << std::endl;
