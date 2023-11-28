@@ -133,11 +133,22 @@ void RunServer::recvs_request (int i)
 			}
 			header = "HTTP/1.1 200 OK\nContent-Type: text/css\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
 		}
-		else
+		else if (request_test2.getType() == "jpg")
 		{
-			body = "";
-			header = "HTTP/1.1 200 OK\nContent-Type: text/css\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
-
+			std::ifstream file("web/" + request_test2.getPath());
+			std::string current_line;
+			while (std::getline (file, current_line))
+			{
+				body += current_line;
+				body += "\n";
+			}
+			header = "HTTP/1.1 200 OK\nContent-Type: image/jpeg\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+		}
+		else 
+		{
+			body = "The requested resource is not available.";
+			header = "HTTP/1.1 404 Not Found\nContent-Type: text/plain\nConnection: close\n";
+			header += "Content-Length: " + std::to_string(body.length()) + "\r\n\r\n";
 		}
 
 

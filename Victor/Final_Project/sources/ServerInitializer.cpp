@@ -19,11 +19,12 @@ ServerInitializer::ServerInitializer(const ServerConfig config, int size_waiting
 	}
 
 	this->_server_addr.sin_family = AF_INET;
-	
-	if(inet_pton(AF_INET, this->_config.getIPAddress().c_str(), &_server_addr.sin_addr) <= 0) { 
-		perror("Invalid address/ Address not supported");
-		exit(EXIT_FAILURE);
-	}
+	this->_server_addr.sin_addr.s_addr = INADDR_ANY;
+
+	// if(inet_pton(AF_INET, this->_config.getIPAddress().c_str(), &_server_addr.sin_addr) <= 0) { 
+	// 	perror("Invalid address/ Address not supported");
+	// 	exit(EXIT_FAILURE);
+	// }
 
 	//std::cout << "Le port = " << this->_config.getPort() << std::endl;
 
