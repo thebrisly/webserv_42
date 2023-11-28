@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include "ServerConfig.hpp"
+#include "Request.hpp"
+#include "Response.hpp"
 
 class Client
 {
@@ -13,6 +15,9 @@ class Client
 		int _socket_mod;
 		unsigned long _size_response;
 		unsigned long _size_request;
+
+		Response _response_object;
+		Request _request_object;
 
 		const ServerConfig	_server_config;
 
@@ -41,9 +46,17 @@ class Client
 		std::string get_response() const;
 		void set_response (std::string response);
 
+		Response get_response_object() const;
+		void set_response_object (Response response_object);
+
+		Request get_request_object() const;
+		void set_request_object (Request request_object);
+
 };
 
 std::ostream& operator<<(std::ostream& os, const Client &cl);
+
+
 
 
 #endif

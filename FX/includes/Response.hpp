@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   Response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:00:41 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/28 11:35:08 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/11/28 15:23:29 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*ifndef RESPONSE_HPP
+#ifndef RESPONSE_HPP
 # define RESPONSE_HPP
 
 # include <string>
@@ -23,20 +23,20 @@
 class Response
 {
 
-    public :
+    // public :
 
-        // Constructors, Destructors & Overloading operations
-        Response();
-        Response(const std::string& str);
-		~Response();
-		Response& operator=(const Response&);
+    //     // Constructors, Destructors & Overloading operations
+    //     Response();
+    //     Response(const std::string& str);
+	// 	~Response();
+	// 	Response& operator=(const Response&);
 
-	private :
+	// private :
 
-		int											_status_code;
-		std::map<std::string, std::string> 			_headers;
-    	std::string 								_body;
+	// 	int											_status_code;
+	// 	std::map<std::string, std::string> 			_headers;
+    // 	std::string 								_body;
 };
 
 #endif
-*/
+
