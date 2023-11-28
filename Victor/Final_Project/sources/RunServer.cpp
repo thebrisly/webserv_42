@@ -103,25 +103,50 @@ void RunServer::recvs_request (int i)
 		Request request_test2(this->_map_clients[i].get_request());
 		request_test2.parseRequest(request_test2.getCurrentRequest());
 
-		std::cout << "Method: " << request_test2.getMethod() << std::endl;
-		std::cout << "Path: " << request_test2.getPath() << std::endl;
-		std::cout << "Version: " << request_test2.getVersion() << std::endl;
+		std::cout << "CURRENT REQUEST " << request_test2.getCurrentRequest() << std::endl;
+		std::cout << "PATH [" << request_test2.getPath() << "]" << std::endl;
+		std::cout << "VERSION [" << request_test2.getVersion() << "]" << std::endl;
+		std::cout << "TYPE [" << request_test2.getType() << "]" << std::endl;
 
 
-
-		std::cout << "\nJust printing all the headers : \n";
-		const std::map<std::string, std::string>& headers = request_test2.getHeaders();
-		for (std::map<std::string, std::string>::const_iterator it = headers.begin(); it != headers.end(); ++it)
+		std::string body = "";
+		std::string header = "";
+		if (request_test2.getPath() == "/")
 		{
-			std::cout << it->first << ": " << it->second << std::endl;
+			std::ifstream file("web/index.html");
+			std::string current_line;
+			while (std::getline (file, current_line))
+			{
+				body += current_line;
+				body += "\n";
+			}
+			header = "HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+		}
+		else if (request_test2.getType() == "css")
+		{
+			std::ifstream file("web/style0.css");
+			std::string current_line;
+			while (std::getline (file, current_line))
+			{
+				body += current_line;
+				body += "\n";
+			}
+			header = "HTTP/1.1 200 OK\nContent-Type: text/css\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+		}
+		else
+		{
+			body = "";
+			header = "HTTP/1.1 200 OK\nContent-Type: text/css\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+
 		}
 
-		std::cout << "printing the host, connection & secfetchdest headers :\n";
-		std::cout << request_test2.getConnection() << std::endl;
-		std::cout << request_test2.getPort() << std::endl;
-		std::cout << request_test2.getHostname() << std::endl;
-		std::cout << request_test2.getSecFetchDest() << std::endl;
 
+		std::cout << "hostheader" << request_test2.getHostHeader() << std::endl;
+		std::cout << "body" << body << std::endl;
+		
+		std::string response = header + body;
+
+		this->_map_clients[i].set_response(response);
 	}
 }
 
@@ -143,18 +168,16 @@ void RunServer::send_response (int i)
 
 	std::cout << GREEN << "Sent response of " << response.length() << " characters to client "<< i << RESET <<std::endl;
 
-	if (close (i) < 0)
-	{
-		std::cerr << RED << "ERROR : " << RESET;
-		perror("close");
-	}
-	std::cout << YELLOW << "Client " << i << " disconected." << RESET <<std::endl;
+	// if (close (i) < 0)
+	// {
+	// 	std::cerr << RED << "ERROR : " << RESET;
+	// 	perror("close");
+	// }
+	//std::cout << YELLOW << "Client " << i << " disconected." << RESET <<std::endl;
 
 	FD_CLR(i, &this->_cpy_readfds);
 	FD_CLR(i, &this->_cpy_writefds);
-	//std::cout << "erase " << i << " " << this->_map_clients.size() <<std::endl;
 	this->_map_clients.erase(i);
-	//std::cout << "erase " << i << " " << this->_map_clients.size() <<std::endl;
 
 }
 

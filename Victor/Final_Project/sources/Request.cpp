@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:43:38 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/28 11:31:32 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/11/28 16:39:08 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,14 @@ std::string Request::getPort() const
 std::string Request::getHostname() const
 {
         return (this->_hostname);
+}
+
+std::string Request::getType() const
+{
+        return (this->_path.substr(_path.find_last_of(".") + 1));
+}
+
+std::string Request::getDefaultFile() const
+{
+        return (this->_default_file);
 }
