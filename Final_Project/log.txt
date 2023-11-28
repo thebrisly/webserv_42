@@ -23,7 +23,9 @@ readfds : 3 4
 writefds : 6 
 key : 6       _socket = 6
   _socket_mode = 1
-      _request = GET / HTTP/1.1
+      _request = 
+      
+GET / HTTP/1.1
 Host: localhost:8888
 Connection: keep-alive
 sec-ch-ua: "Not.A/Brand";v="8", "Chromium";v="114", "Google Chrome";v="114"

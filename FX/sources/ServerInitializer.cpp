@@ -1,4 +1,4 @@
-#include "ServerInitializer.hpp"
+#include "../includes/ServerInitializer.hpp"
 
 ServerInitializer::ServerInitializer(const ServerConfig config, int size_waiting_list) : _config(config), _size_waiting_list(size_waiting_list)
 {
@@ -12,13 +12,14 @@ ServerInitializer::ServerInitializer(const ServerConfig config, int size_waiting
 	}
 
 	this->_opt = 1;
-	if( setsockopt(this->_sock_server, SOL_SOCKET, SO_REUSEADDR, (char *)&(this->_opt), sizeof(this->_opt)) < 0 ) 
-	{ 
+	if( setsockopt(this->_sock_server, SOL_SOCKET, SO_REUSEADDR, (char *)&(this->_opt), sizeof(this->_opt)) < 0 )
+	{
 		std::cerr << "Could not set socket option" << std::endl;
 		throw std::runtime_error("Could not set socket option");
-	} 
+	}
 
 	this->_server_addr.sin_family = AF_INET;
+	
 	this->_server_addr.sin_addr.s_addr = INADDR_ANY;
 
 	//std::cout << "Le port = " << this->_config.getPort() << std::endl;
@@ -50,18 +51,18 @@ struct sockaddr_in ServerInitializer::get_server_addr()
 
 void ServerInitializer::bind_listen_socket_serv()
 {
-	if (bind(this->_sock_server, (struct sockaddr *)&(this->_server_addr), sizeof(this->_server_addr))<0) 
-	{ 
+	if (bind(this->_sock_server, (struct sockaddr *)&(this->_server_addr), sizeof(this->_server_addr))<0)
+	{
 		std::cerr << "bind : " << strerror(errno) << std::endl;
 		throw std::runtime_error("Could not bind socket to port");
 	}
 
-	if (listen(this->_sock_server, this->_size_waiting_list) < 0) 
-	{ 
+	if (listen(this->_sock_server, this->_size_waiting_list) < 0)
+	{
 		std::cerr << "listen : " << strerror(errno) << std::endl;
 		throw std::runtime_error("Could not listen on socket");
 	}
-	
+
 	if (fcntl(this->_sock_server, F_SETFL, O_NONBLOCK) < 0)
 	{
 		std::cerr << "fcntl : " << strerror(errno) << std::endl;

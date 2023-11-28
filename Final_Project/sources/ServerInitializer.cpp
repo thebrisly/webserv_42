@@ -20,6 +20,8 @@ ServerInitializer::ServerInitializer(const ServerConfig config, int size_waiting
 
 	this->_server_addr.sin_family = AF_INET;
 	this->_server_addr.sin_addr.s_addr = INADDR_ANY;
+	
+	std::cout << "ICI : " << INADDR_ANY << std::endl;
 
 	//std::cout << "Le port = " << this->_config.getPort() << std::endl;
 

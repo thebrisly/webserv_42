@@ -1,4 +1,5 @@
-#include "RunServer.hpp"
+#include "../includes/RunServer.hpp"
+#include "../includes/Request.hpp"
 #include <fstream>
 
 /* RunServer is an object that runs the servers */
@@ -20,7 +21,7 @@ RunServer::RunServer(ServersManager & servers_manager) : _servers_manager(server
 		FD_SET(this->_servers_manager[i].get_sock_server(), &this->_cpy_readfds);
 
 	}
-	
+
 	this->_timeout.tv_sec = 0;
 	this->_timeout.tv_usec = 100000;
 }
@@ -43,14 +44,14 @@ void RunServer::accept_new_connection(int i)
 	}
 	//ServerInitializer & server_init = this->_servers_manager[0];
 
-	if ((new_socket = accept(i, (struct sockaddr *)&(server_init.get_ref_server_addr()), (socklen_t*)&server_init.get_ref_addrlen()))<0) 
-	{ 
+	if ((new_socket = accept(i, (struct sockaddr *)&(server_init.get_ref_server_addr()), (socklen_t*)&server_init.get_ref_addrlen()))<0)
+	{
 		std::cerr << RED << "ERROR : " << RESET;
 		perror("accept");
 	}
 	std::cout << BLUE << "New client connected on socket " << new_socket << " with ip " << inet_ntoa(server_init.get_server_addr().sin_addr) << " on port "<< server_init.get_config().getPort() << RESET << std::endl;
 	FD_SET(new_socket, &this->_cpy_readfds);
-	this->_map_clients.insert(std::pair<int, Client>(new_socket, Client(new_socket, server_init.get_config())));				
+	this->_map_clients.insert(std::pair<int, Client>(new_socket, Client(new_socket, server_init.get_config())));
 }
 
 void RunServer::recvs_request (int i)
@@ -75,9 +76,9 @@ void RunServer::recvs_request (int i)
 
 		std::cout << RED << "Error reading from socket" << RESET <<std::endl;
 	}
-	else if (size_read == 0) 
-	{ 
-		//getpeername(i , (struct sockaddr*)(&(server_init.get_ref_server_addr())) , (socklen_t*)&server_init.get_ref_addrlen()); 
+	else if (size_read == 0)
+	{
+		//getpeername(i , (struct sockaddr*)(&(server_init.get_ref_server_addr())) , (socklen_t*)&server_init.get_ref_addrlen());
 
 		if (close(i) < 0)
 		{
@@ -97,6 +98,30 @@ void RunServer::recvs_request (int i)
 		this->_map_clients[i].set_request(buffer);
 		this->_map_clients[i].set_size_request(size_read);
 		this->_map_clients[i].set_socket_mod(WRITE_M);
+		//std::cout << "ICI : " << this->_map_clients[i].get_request() << std::endl;
+
+		Request request_test2(this->_map_clients[i].get_request());
+		request_test2.parseRequest(request_test2.getCurrentRequest());
+
+		std::cout << "Method: " << request_test2.getMethod() << std::endl;
+		std::cout << "Path: " << request_test2.getPath() << std::endl;
+		std::cout << "Version: " << request_test2.getVersion() << std::endl;
+
+
+
+		std::cout << "\nJust printing all the headers : \n";
+		const std::map<std::string, std::string>& headers = request_test2.getHeaders();
+		for (std::map<std::string, std::string>::const_iterator it = headers.begin(); it != headers.end(); ++it)
+		{
+			std::cout << it->first << ": " << it->second << std::endl;
+		}
+
+		std::cout << "printing the host, connection & secfetchdest headers :\n";
+		std::cout << request_test2.getConnection() << std::endl;
+		std::cout << request_test2.getPort() << std::endl;
+		std::cout << request_test2.getHostname() << std::endl;
+		std::cout << request_test2.getSecFetchDest() << std::endl;
+
 	}
 }
 
@@ -115,15 +140,15 @@ void RunServer::send_response (int i)
 		std::cerr << RED << "ERROR : " << RESET;
 		perror("send");
 	}
-	
+
 	std::cout << GREEN << "Sent response of " << response.length() << " characters to client "<< i << RESET <<std::endl;
-	
+
 	if (close (i) < 0)
 	{
 		std::cerr << RED << "ERROR : " << RESET;
 		perror("close");
 	}
-	std::cout << YELLOW << "Client " << i << " disconected." << RESET <<std::endl;				
+	std::cout << YELLOW << "Client " << i << " disconected." << RESET <<std::endl;
 
 	FD_CLR(i, &this->_cpy_readfds);
 	FD_CLR(i, &this->_cpy_writefds);
@@ -203,15 +228,15 @@ void RunServer::process (std::ofstream & out)
 
 
 	/* select() Delete from readfds and writefds all the sockets not "ready" for an I/O operation. */
-	if (select(max_sd +1 , &this->_readfds, &this->_writefds, NULL, &this->_timeout) < 0) 
-	{ 
+	if (select(max_sd +1 , &this->_readfds, &this->_writefds, NULL, &this->_timeout) < 0)
+	{
 		std::cerr << RED << "ERROR : " << RESET;
 		perror("select");
-	} 
+	}
 
-	for (i = 0; i < max_sd + 1; i++) 
+	for (i = 0; i < max_sd + 1; i++)
 	{
-		if (FD_ISSET(i, &this->_readfds) && this->_servers_manager.is_server_active(i)) 
+		if (FD_ISSET(i, &this->_readfds) && this->_servers_manager.is_server_active(i))
 		{
 			this->accept_new_connection(i);
 			out << "accept new connection" << std::endl;
@@ -219,7 +244,7 @@ void RunServer::process (std::ofstream & out)
 			display_fd_set(out, this->_cpy_readfds, this->_cpy_writefds);
 			display_clients(out, this->_map_clients);
 		}
-		else if (FD_ISSET(i, &this->_readfds)) 
+		else if (FD_ISSET(i, &this->_readfds))
 		{
 			this->recvs_request (i);
 			out << "recvs request" << std::endl;

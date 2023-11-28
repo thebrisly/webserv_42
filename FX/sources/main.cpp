@@ -1,5 +1,5 @@
-#include "ConfigParser.hpp"
-#include "RunServer.hpp"
+#include "../includes/ConfigParser.hpp"
+#include "../includes/RunServer.hpp"
 #include <fstream>
 
 #include <signal.h>
@@ -73,22 +73,22 @@ ServerInitializer & ServersManager::get_server_by_sock(const int sock)
 	throw std::runtime_error("Could not find server by socket");
 }
 
-int main() 
-{ 
+int main()
+{
 	try
 	{
 		signal(SIGPIPE, sigpipeHandle);
 
 		std::vector<ServerConfig> configs;
 	    ConfigParser parser;
-    	configs = parser.parseConfigs("config.config");
+    	configs = parser.parseConfigs("/Users/fcoindre/Desktop/webserv/FX/config/config.config");
 
 		ServersManager servers_manager(configs);
 
 		RunServer run_server(servers_manager);
 		std::ofstream out("log.txt", std::ofstream::out);
-		
-		while(42) 
+
+		while(42)
 		{
 			run_server.process(out);
 		}
@@ -98,5 +98,5 @@ int main()
 		std::cout << "Exception : " << e.what() << std::endl;
 		return EXIT_FAILURE;
 	}
-	return 0; 
+	return 0;
 }

@@ -1,9 +1,9 @@
-#include "Client.hpp"
+#include "../includes/Client.hpp"
 
 Client::Client(const int socket, const ServerConfig server_config) : _socket(socket), _server_config(server_config)
 {
 
-	const std::string body = "<!DOCTYPE html><html><body><h1>My First Heading</h1><h2>My first paragraph.</h2><h2>My web server</h2></body></html>"; 
+	const std::string body = "<!DOCTYPE html><html><body><h1>My First Heading</h1><h2>My first paragraph.</h2><h2>My web server</h2></body></html>";
 	const std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
 
 	std::string response = header + body;
@@ -13,7 +13,7 @@ Client::Client(const int socket, const ServerConfig server_config) : _socket(soc
 	this->_size_response = response.length();
 	this->_size_request = 0;
 
-} 
+}
 
 Client::Client(): _socket(0), _socket_mod(0), _size_response(0), _size_request(0){};
 
