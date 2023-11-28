@@ -6,7 +6,7 @@
 /*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 11:25:13 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/28 09:24:24 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/11/28 11:08:29 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,11 @@ int main()
     {
         std::cout << it->first << ": " << it->second << std::endl;
     }
+
+    std::cout << "printing the host, connection & secfetchdest headers :\n";
+    std::cout << request_test2.getConnection() << std::endl;
+    std::cout << request_test2.getPort() << std::endl;
+    std::cout << request_test2.getHostname() << std::endl;
+    std::cout << request_test2.getSecFetchDest() << std::endl;
 
 }

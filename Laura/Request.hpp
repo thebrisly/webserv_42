@@ -6,7 +6,7 @@
 /*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:37:25 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/17 16:03:45 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/11/28 10:29:04 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,18 @@ class Request {
         std::string                                 getVersion() const;
         std::string                                 getMethod() const;
         std::string                                 getPath() const;
+        std::string                                 getHost() const;
+        std::string                                 getConnection() const;
+        std::string                                 getSecFetchDest() const;
+        std::string                                 getPort() const;
+        std::string                                 getHostname() const;
 
         const std::map<std::string, std::string>&   getHeaders() const;
+        void                                        parseHostHeader(const std::string& hostHeader, std::string& hostname, std::string& port) const;
+
+        std::string                                 getSecFetchDestHeader() const;
+        std::string                                 getHostHeader() const;
+        std::string                                 getConnectionHeader() const;
 
         // variable to store http methods
         static	std::vector<std::string>	        http_methods;
@@ -59,6 +69,11 @@ class Request {
         std::string                                 _path;
         std::string                                 _method;
         std::string                                 _version;
+        std::string                                 _host;
+        std::string                                 _connection;
+        std::string                                 _secfetchdest;
+        std::string                                 _port;
+        std::string                                 _hostname;
 
         std::map<std::string, std::string>	        _headers; //dictionnary of keys, values
 

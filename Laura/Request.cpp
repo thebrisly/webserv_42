@@ -6,7 +6,7 @@
 /*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:43:38 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/17 15:54:23 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/11/28 10:27:14 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,29 @@ std::string Request::getPath() const
 const std::map<std::string, std::string>& Request::getHeaders() const
 {
     return (this->_headers);
+}
+
+std::string Request::getHost() const
+{
+        return (this->_host);
+}
+
+std::string Request::getConnection() const
+{
+        return (this->_connection);
+}
+
+std::string Request::getSecFetchDest() const
+{
+        return (this->_secfetchdest);
+}
+
+std::string Request::getPort() const
+{
+        return (this->_port);
+}
+
+std::string Request::getHostname() const
+{
+        return (this->_hostname);
 }
