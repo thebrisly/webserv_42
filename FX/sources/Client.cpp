@@ -97,15 +97,15 @@ ServerConfig Client::get_server_config() const
 
 }
 
-Response Client::get_response_object() const
-{
-	return this->_response_object;
-}
+// Response Client::get_response_object() const
+// {
+// 	return this->_response_object;
+// }
 
-void Client::set_response_object (Response response_object)
-{
-	this->_response_object = response_object;
-}
+// void Client::set_response_object (Response response_object)
+// {
+// 	this->_response_object = response_object;
+// }
 
 Request Client::get_request_object() const
 {
@@ -114,7 +114,10 @@ Request Client::get_request_object() const
 
 void Client::set_request_object (Request request_object)
 {
+	std::cout << "set_request_object : " << request_object.getConnection() << std::endl;
 	this->_request_object = request_object;
+
+	std::cout << "set_request_object 2 le retour : " << this->get_request_object().getConnection() << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& os, const Client &cl)

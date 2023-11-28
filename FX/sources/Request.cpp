@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:43:38 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/28 11:31:32 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/11/28 16:47:13 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,23 @@ Request::Request(const std::string& str) : _current_request(str) {}
 
 Request::~Request() {}
 
-Request& Request::operator=(const Request& other) {
-	if (this != &other)
+Request& Request::operator=(const Request& other) 
+{
+        if (this != &other)
 	{
-        this->_current_request = other._current_request;
+                this->_current_request = other.getCurrentRequest();
+                this->_path = other.getPath();
+                this->_method = other.getMethod();
+                this->_version = other.getVersion();
+                this->_host = other.getHost();
+                this->_connection = other.getConnection();
+                this->_secfetchdest = other.getSecFetchDest();
+                this->_port = other.getPort();
+                this->_hostname = other.getHostname();
+                this->_headers = other.getHeaders();
+                //this->_body = other.getBo;
 	}
-    return *this;
+        return *this;
 }
 
 
@@ -84,3 +95,5 @@ std::string Request::getHostname() const
 {
         return (this->_hostname);
 }
+
+

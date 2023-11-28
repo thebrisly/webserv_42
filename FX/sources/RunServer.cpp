@@ -100,11 +100,28 @@ void RunServer::recvs_request (int i)
 		this->_map_clients[i].set_socket_mod(WRITE_M);
 		//std::cout << "ICI : " << this->_map_clients[i].get_request() << std::endl;
 
-		Request request_test2(this->_map_clients[i].get_request());
-		request_test2.parseRequest(request_test2.getCurrentRequest());
+		Request request_object(this->_map_clients[i].get_request());
+		request_object.parseRequest(request_object.getCurrentRequest());
+
+		this->_map_clients[i].set_request_object(request_object);
+
+		//this->_map_clients[i].get_request_object().parseRequest(this->_map_clients[i].get_request_object().getCurrentRequest());
+
+		std::cout << "WHAT1 " << request_object.getMethod() << std::endl;
+		std::cout << "WHAT2 " << this->_map_clients[i].get_request_object().getMethod() << std::endl;
+
+		//exit(0);
+        // std::string                                 _path;
+        // std::string                                 _method;
+        // std::string                                 _version;
+        // std::string                                 _host;
+        // std::string                                 _connection;
+        // std::string                                 _secfetchdest;
+        // std::string                                 _port;
+        // std::string                                 _hostname;
 
 
-		/*Calcul de la reponse*/
+		/* Calcul de la reponse */
 
 		
 
@@ -130,6 +147,11 @@ void RunServer::send_response (int i)
 
 	std::cout << GREEN << "Sent response of " << response.length() << " characters to client "<< i << RESET <<std::endl;
 
+	std::cout << "ICI : " << this->_map_clients[i].get_request_object().getConnection() << std::endl;
+	if (this->_map_clients[i].get_request_object().getConnection() == "close")
+	{
+		std::cout << "JE VEUX CLOSE !!!" << std::endl;
+	}
 
 
 
@@ -142,9 +164,7 @@ void RunServer::send_response (int i)
 
 	FD_CLR(i, &this->_cpy_readfds);
 	FD_CLR(i, &this->_cpy_writefds);
-	//std::cout << "erase " << i << " " << this->_map_clients.size() <<std::endl;
 	this->_map_clients.erase(i);
-	//std::cout << "erase " << i << " " << this->_map_clients.size() <<std::endl;
 
 }
 
