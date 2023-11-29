@@ -63,7 +63,7 @@ void 	Request::parseRequest(const std::string& request)
 
 				if (key == "Host")
                 {
-					std::cout << "ici 1\n";
+					//std::cout << "ici 1\n";
                     parseHostHeader(value, this->_hostname, this->_port);
                 }
                 else if (key == "Connection")

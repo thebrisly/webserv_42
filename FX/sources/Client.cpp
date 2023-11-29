@@ -5,28 +5,28 @@ Client::Client(const int socket, const ServerConfig server_config) : _socket(soc
 {
 
 	
-	std::string body;
-	std::string current_line;
+	// std::string body;
+	// std::string current_line;
 
-	std::ifstream webTest;
-	webTest.open("web/index.html");
+	// std::ifstream webTest;
+	// webTest.open("web/index.html");
 
-	while (std::getline (webTest, current_line))
-	{
-		body += current_line;
-		body += "\n";
+	// while (std::getline (webTest, current_line))
+	// {
+	// 	body += current_line;
+	// 	body += "\n";
 
-	}
+	// }
 	
 	//std::cout << "BODY = " << body << std::endl;
 
-	const std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+	// const std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
 
-	std::string response = header + body;
+	// std::string response = header + body;
 
-	this->_response = response;
+	//this->_response = response;
 	this->_socket_mod = 0;
-	this->_size_response = response.length();
+	this->_size_response = 0;
 	this->_size_request = 0;
 
 }
@@ -123,7 +123,7 @@ std::ostream& operator<<(std::ostream& os, const Client &cl)
 	os << "  _socket_mode = " << cl.get_socket_mod() << std::endl;
 	os << "      _request = " << cl.get_request() << std::endl;
 	os << " _size_request = " << cl.get_size_request() << std::endl;
-	os << "     _response = " << cl.get_response() << std::endl;
+	//os << "     _response = " << cl.get_response() << std::endl;
 	os << "_size_response = " << cl.get_size_response() << std::endl;
 	os << "connected to server : " << cl.get_server_config().getPort() << std::endl;
 

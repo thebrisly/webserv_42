@@ -1,0 +1,960 @@
+Initial setup of fd_set
+readfds : 3 4 
+writefds : 
+
+------------------- accept new connection -------------------
+readfds : 4 
+writefds : 
+copy = readfds : 3 4 7 
+writefds : 
+Client : 7
+       _socket = 7
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+------------------- recvs request -------------------
+readfds : 7 
+writefds : 
+copy = readfds : 3 4 
+writefds : 7 
+Client : 7
+       _socket = 7
+  _socket_mode = 1
+      _request = GET / HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+
+
+ _size_request = 471
+_size_response = 914
+connected to server : 8880
+
+------------------- send response -------------------
+readfds : 
+writefds : 7 
+copy = readfds : 3 4 7 
+writefds : 
+Client : 7
+       _socket = 7
+  _socket_mode = 1
+      _request = GET / HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+
+
+ _size_request = 471
+_size_response = 914
+connected to server : 8880
+
+------------------- recvs request -------------------
+readfds : 7 
+writefds : 
+copy = readfds : 3 4 
+writefds : 
+------------------- accept new connection -------------------
+readfds : 4 
+writefds : 
+copy = readfds : 3 4 7 
+writefds : 
+Client : 7
+       _socket = 7
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+------------------- recvs request -------------------
+readfds : 7 
+writefds : 
+copy = readfds : 3 4 
+writefds : 7 
+Client : 7
+       _socket = 7
+  _socket_mode = 1
+      _request = GET /style0.css HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: text/css,*/*;q=0.1
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: style
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 400
+_size_response = 1081
+connected to server : 8880
+
+------------------- send response -------------------
+readfds : 
+writefds : 7 
+copy = readfds : 3 4 7 
+writefds : 
+Client : 7
+       _socket = 7
+  _socket_mode = 1
+      _request = GET /style0.css HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: text/css,*/*;q=0.1
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: style
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 400
+_size_response = 1081
+connected to server : 8880
+
+------------------- recvs request -------------------
+readfds : 7 
+writefds : 
+copy = readfds : 3 4 
+writefds : 
+------------------- accept new connection -------------------
+readfds : 4 
+writefds : 
+copy = readfds : 3 4 7 
+writefds : 
+Client : 7
+       _socket = 7
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+------------------- accept new connection -------------------
+readfds : 4 7 
+writefds : 
+copy = readfds : 3 4 7 8 
+writefds : 
+Client : 7
+       _socket = 7
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+Client : 8
+       _socket = 8
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+------------------- recvs request -------------------
+readfds : 4 7 
+writefds : 
+copy = readfds : 3 4 8 
+writefds : 7 
+Client : 7
+       _socket = 7
+  _socket_mode = 1
+      _request = GET /picture1.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 8
+       _socket = 8
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+------------------- accept new connection -------------------
+readfds : 4 8 
+writefds : 7 
+copy = readfds : 3 4 8 9 
+writefds : 7 
+Client : 7
+       _socket = 7
+  _socket_mode = 1
+      _request = GET /picture1.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 8
+       _socket = 8
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+Client : 9
+       _socket = 9
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+------------------- send response -------------------
+readfds : 4 8 
+writefds : 7 
+copy = readfds : 3 4 7 8 9 
+writefds : 
+Client : 7
+       _socket = 7
+  _socket_mode = 1
+      _request = GET /picture1.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 8
+       _socket = 8
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+Client : 9
+       _socket = 9
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+------------------- recvs request -------------------
+readfds : 4 8 
+writefds : 7 
+copy = readfds : 3 4 7 9 
+writefds : 8 
+Client : 7
+       _socket = 7
+  _socket_mode = 1
+      _request = GET /picture1.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 8
+       _socket = 8
+  _socket_mode = 1
+      _request = GET /picture2.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 9
+       _socket = 9
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+------------------- accept new connection -------------------
+readfds : 4 9 
+writefds : 8 
+copy = readfds : 3 4 7 9 10 
+writefds : 8 
+Client : 7
+       _socket = 7
+  _socket_mode = 1
+      _request = GET /picture1.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 8
+       _socket = 8
+  _socket_mode = 1
+      _request = GET /picture2.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 9
+       _socket = 9
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+Client : 10
+       _socket = 10
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+------------------- send response -------------------
+readfds : 4 9 
+writefds : 8 
+copy = readfds : 3 4 7 8 9 10 
+writefds : 
+Client : 7
+       _socket = 7
+  _socket_mode = 1
+      _request = GET /picture1.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 8
+       _socket = 8
+  _socket_mode = 1
+      _request = GET /picture2.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 9
+       _socket = 9
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+Client : 10
+       _socket = 10
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+------------------- recvs request -------------------
+readfds : 4 9 
+writefds : 8 
+copy = readfds : 3 4 7 8 10 
+writefds : 9 
+Client : 7
+       _socket = 7
+  _socket_mode = 1
+      _request = GET /picture1.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 8
+       _socket = 8
+  _socket_mode = 1
+      _request = GET /picture2.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 9
+       _socket = 9
+  _socket_mode = 1
+      _request = GET /picture3.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 10
+       _socket = 10
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+------------------- send response -------------------
+readfds : 10 
+writefds : 9 
+copy = readfds : 3 4 7 8 9 10 
+writefds : 
+Client : 7
+       _socket = 7
+  _socket_mode = 1
+      _request = GET /picture1.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 8
+       _socket = 8
+  _socket_mode = 1
+      _request = GET /picture2.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 9
+       _socket = 9
+  _socket_mode = 1
+      _request = GET /picture3.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 10
+       _socket = 10
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+------------------- recvs request -------------------
+readfds : 10 
+writefds : 9 
+copy = readfds : 3 4 7 8 9 
+writefds : 10 
+Client : 7
+       _socket = 7
+  _socket_mode = 1
+      _request = GET /picture1.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 8
+       _socket = 8
+  _socket_mode = 1
+      _request = GET /picture2.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 9
+       _socket = 9
+  _socket_mode = 1
+      _request = GET /picture3.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 10
+       _socket = 10
+  _socket_mode = 1
+      _request = GET /picture4.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+------------------- send response -------------------
+readfds : 
+writefds : 10 
+copy = readfds : 3 4 7 8 9 10 
+writefds : 
+Client : 7
+       _socket = 7
+  _socket_mode = 1
+      _request = GET /picture1.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 8
+       _socket = 8
+  _socket_mode = 1
+      _request = GET /picture2.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 9
+       _socket = 9
+  _socket_mode = 1
+      _request = GET /picture3.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 10
+       _socket = 10
+  _socket_mode = 1
+      _request = GET /picture4.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+------------------- accept new connection -------------------
+readfds : 4 
+writefds : 
+copy = readfds : 3 4 7 8 9 10 11 
+writefds : 
+Client : 7
+       _socket = 7
+  _socket_mode = 1
+      _request = GET /picture1.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 8
+       _socket = 8
+  _socket_mode = 1
+      _request = GET /picture2.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 9
+       _socket = 9
+  _socket_mode = 1
+      _request = GET /picture3.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 10
+       _socket = 10
+  _socket_mode = 1
+      _request = GET /picture4.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 11
+       _socket = 11
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8880
+
+------------------- recvs request -------------------
+readfds : 11 
+writefds : 
+copy = readfds : 3 4 7 8 9 10 
+writefds : 
+Client : 7
+       _socket = 7
+  _socket_mode = 1
+      _request = GET /picture1.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 8
+       _socket = 8
+  _socket_mode = 1
+      _request = GET /picture2.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 9
+       _socket = 9
+  _socket_mode = 1
+      _request = GET /picture3.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+
+Client : 10
+       _socket = 10
+  _socket_mode = 1
+      _request = GET /picture4.jpg HTTP/1.1
+Host: localhost:8880
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://localhost:8880/
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+
+ _size_request = 409
+_size_response = 36372
+connected to server : 8880
+

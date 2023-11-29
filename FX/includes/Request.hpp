@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:37:25 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/28 16:37:57 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/11/28 16:37:53 by vgiordan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class Request {
         Request();
         Request(const std::string& str);
 		~Request();
-		Request& operator=(const Request &rhs);
+		Request& operator=(const Request&);
 
 
         // function to initialize http methods
@@ -51,6 +51,9 @@ class Request {
         std::string                                 getSecFetchDest() const;
         std::string                                 getPort() const;
         std::string                                 getHostname() const;
+        std::string                                 getType() const;
+        std::string                                 getDefaultFile() const;
+
 
         const std::map<std::string, std::string>&   getHeaders() const;
         void                                        parseHostHeader(const std::string& hostHeader, std::string& hostname, std::string& port) const;
@@ -78,6 +81,8 @@ class Request {
         std::map<std::string, std::string>	        _headers; //dictionnary of keys, values
 
         std::string                                 _body;
+
+        std::string                                 _default_file;
 
 };
 

@@ -2,10 +2,44 @@
 #include "../includes/Request.hpp"
 #include <fstream>
 
+void display_clients(std::ofstream & out, std::map<int, Client> & map_clients)
+{
+	for (std::map<int, Client>::iterator it = map_clients.begin(); it!= map_clients.end(); ++it)
+	{
+		out << "Client : " << it->first << std::endl;
+		out << (*it).second << std::endl;
+	}
+};
+
+void display_fd_set(std::ofstream & out, const fd_set & readfds, const fd_set & writefds)
+{
+	out << "readfds : ";
+	for (int i = 0; i < MAX_CLIENT; i++)
+	{
+		if (FD_ISSET(i, &readfds))
+		{
+			out << i << " " ;
+		}
+	}
+	out << std::endl;
+	out << "writefds : ";
+	for (int i = 0; i < MAX_CLIENT; i++)
+	{
+		if (FD_ISSET(i, &writefds))
+		{
+			out << i << " " ;
+		}
+	}
+	out << std::endl;
+}
+
 /* RunServer is an object that runs the servers */
 
-RunServer::RunServer(ServersManager & servers_manager) : _servers_manager(servers_manager)
+RunServer::RunServer(ServersManager & servers_manager, std::string log_filename) : _servers_manager(servers_manager)
 {
+
+	this->_out = std::ofstream(log_filename, std::ofstream::out);
+
 	FD_ZERO(&this->_writefds);
 	FD_ZERO(&this->_readfds);
 
@@ -19,8 +53,12 @@ RunServer::RunServer(ServersManager & servers_manager) : _servers_manager(server
 		std::cout << GREEN << this->_servers_manager[i].get_config().getPort() << RESET << std::endl;
 
 		FD_SET(this->_servers_manager[i].get_sock_server(), &this->_cpy_readfds);
-
 	}
+
+	this->_out << "Initial setup of fd_set" << std::endl;
+	display_fd_set(this->_out, this->_cpy_readfds, this->_cpy_writefds);
+	this->_out << std::endl;
+
 
 	this->_timeout.tv_sec = 0;
 	this->_timeout.tv_usec = 100000;
@@ -100,33 +138,63 @@ void RunServer::recvs_request (int i)
 		this->_map_clients[i].set_socket_mod(WRITE_M);
 		//std::cout << "ICI : " << this->_map_clients[i].get_request() << std::endl;
 
-		Request request_object(this->_map_clients[i].get_request());
-		request_object.parseRequest(request_object.getCurrentRequest());
+		Request request_test2(this->_map_clients[i].get_request());
+		request_test2.parseRequest(request_test2.getCurrentRequest());
 
-		this->_map_clients[i].set_request_object(request_object);
-
-
-
-		//this->_map_clients[i].get_request_object().parseRequest(this->_map_clients[i].get_request_object().getCurrentRequest());
-
-		// std::cout << "WHAT1 " << request_object.getMethod() << std::endl;
-		// std::cout << "WHAT2 " << this->_map_clients[i].get_request_object().getMethod() << std::endl;
-
-		//exit(0);
-        // std::string                                 _path;
-        // std::string                                 _method;
-        // std::string                                 _version;
-        // std::string                                 _host;
-        // std::string                                 _connection;
-        // std::string                                 _secfetchdest;
-        // std::string                                 _port;
-        // std::string                                 _hostname;
+		this->_map_clients[i].set_request_object(request_test2);
 
 
-		/* Calcul de la reponse */
 
+		std::string body = "";
+		std::string header = "";
+		if (request_test2.getPath() == "/")
+		{
+			std::ifstream file("web/index.html");
+			std::string current_line;
+			while (std::getline (file, current_line))
+			{
+				body += current_line;
+				body += "\n";
+			}
+			header = "HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+		}
+		else if (request_test2.getType() == "css")
+		{
+			std::ifstream file("web/style0.css");
+			std::string current_line;
+			while (std::getline (file, current_line))
+			{
+				body += current_line;
+				body += "\n";
+			}
+			header = "HTTP/1.1 200 OK\nContent-Type: text/css\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+		}
+		else if (request_test2.getType() == "jpg")
+		{
+			std::ifstream file("web/" + request_test2.getPath());
+			std::string current_line;
+			while (std::getline (file, current_line))
+			{
+				body += current_line;
+				body += "\n";
+			}
+			header = "HTTP/1.1 200 OK\nContent-Type: image/jpeg\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+		}
+		else 
+		{
+			body = "The requested resource is not available.";
+			header = "HTTP/1.1 404 Not Found\nContent-Type: text/plain\nConnection: close\n";
+			header += "Content-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+		}
+
+
+		std::cout << "hostheader" << request_test2.getHostHeader() << std::endl;
+		//std::cout << "body" << body << std::endl;
 		
+		std::string response = header + body;
 
+		this->_map_clients[i].set_response(response);
+		this->_map_clients[i].set_size_response(response.length());
 
 	}
 }
@@ -145,15 +213,15 @@ void RunServer::send_response (int i)
 	{
 		std::cerr << RED << "ERROR : " << RESET;
 		perror("send");
+		exit(0);
 	}
 
 	std::cout << GREEN << "Sent response of " << response.length() << " characters to client "<< i << RESET <<std::endl;
-	sleep(1);
+	//sleep(1);
 	std::cout << "[" << this->_map_clients[i].get_request_object().getConnection() << "]"<< std::endl;
-	sleep(1);
-	bool debug = this->_map_clients[i].get_request_object().getConnection() == "close";
+	//sleep(1);
+	//bool debug = this->_map_clients[i].get_request_object().getConnection() == "close";
 
-	std::cout << "LA : " << debug << std::endl;
 
 	if (this->_map_clients[i].get_request_object().getConnection() == "close")
 	{
@@ -162,50 +230,22 @@ void RunServer::send_response (int i)
 
 
 
-	if (close (i) < 0)
-	{
-		std::cerr << RED << "ERROR : " << RESET;
-		perror("close");
-	}
-	std::cout << YELLOW << "Client " << i << " disconected." << RESET <<std::endl;
+	// if (close (i) < 0)
+	// {
+	// 	std::cerr << RED << "ERROR : " << RESET;
+	// 	perror("close");
+	// }
+	// std::cout << YELLOW << "Client " << i << " disconected." << RESET <<std::endl;
 
-	FD_CLR(i, &this->_cpy_readfds);
+	// FD_CLR(i, &this->_cpy_readfds);
 	FD_CLR(i, &this->_cpy_writefds);
-	this->_map_clients.erase(i);
+	FD_SET(i, &this->_cpy_readfds);
+	this->_map_clients[i].set_socket_mod(WRITE_M);
+	// this->_map_clients.erase(i);
 
 }
 
-void display_clients(std::ofstream & out, std::map<int, Client> & map_clients)
-{
-	for (std::map<int, Client>::iterator it = map_clients.begin(); it!= map_clients.end(); ++it)
-	{
-		out << "key : " << it->first << (*it).second <<std::endl;
-	}
-};
-
-void display_fd_set(std::ofstream & out, const fd_set & readfds, const fd_set & writefds)
-{
-	out << "readfds : ";
-	for (int i = 0; i < MAX_CLIENT; i++)
-	{
-		if (FD_ISSET(i, &readfds))
-		{
-			out << i << " " ;
-		}
-	}
-	out << std::endl;
-	out << "writefds : ";
-	for (int i = 0; i < MAX_CLIENT; i++)
-	{
-		if (FD_ISSET(i, &writefds))
-		{
-			out << i << " " ;
-		}
-	}
-	out << std::endl;
-}
-
-void RunServer::process (std::ofstream & out)
+void RunServer::process ()
 {
 	int i;
 	int max_sd;
@@ -256,26 +296,29 @@ void RunServer::process (std::ofstream & out)
 		if (FD_ISSET(i, &this->_readfds) && this->_servers_manager.is_server_active(i))
 		{
 			this->accept_new_connection(i);
-			out << "accept new connection" << std::endl;
-			display_fd_set(out, this->_readfds, this->_writefds);
-			display_fd_set(out, this->_cpy_readfds, this->_cpy_writefds);
-			display_clients(out, this->_map_clients);
+			this->_out<< "------------------- accept new connection -------------------" << std::endl;
+			display_fd_set(this->_out, this->_readfds, this->_writefds);
+			this->_out<< "copy = ";
+			display_fd_set(this->_out, this->_cpy_readfds, this->_cpy_writefds);
+			display_clients(this->_out, this->_map_clients);
 		}
 		else if (FD_ISSET(i, &this->_readfds))
 		{
 			this->recvs_request (i);
-			out << "recvs request" << std::endl;
-			display_fd_set(out, this->_readfds, this->_writefds);
-			display_fd_set(out, this->_cpy_readfds, this->_cpy_writefds);
-			display_clients(out, this->_map_clients);
+			this->_out<< "------------------- recvs request -------------------" << std::endl;
+			display_fd_set(this->_out, this->_readfds, this->_writefds);
+			this->_out<< "copy = ";
+			display_fd_set(this->_out, this->_cpy_readfds, this->_cpy_writefds);
+			display_clients(this->_out, this->_map_clients);
 		}
 		else if (FD_ISSET(i, &this->_writefds))
 		{
 			this->send_response(i);
-			out << "send response" << std::endl;
-			display_fd_set(out, this->_readfds, this->_writefds);
-			display_fd_set(out, this->_cpy_readfds, this->_cpy_writefds);
-			display_clients(out, this->_map_clients);
+			this->_out<< "------------------- send response -------------------" << std::endl;
+			display_fd_set(this->_out, this->_readfds, this->_writefds);
+			this->_out<< "copy = ";
+			display_fd_set(this->_out, this->_cpy_readfds, this->_cpy_writefds);
+			display_clients(this->_out, this->_map_clients);
 		}
 	}
 }

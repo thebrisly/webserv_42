@@ -1,6 +1,5 @@
 #include "../includes/ConfigParser.hpp"
 #include "../includes/RunServer.hpp"
-#include <fstream>
 
 #include <signal.h>
 
@@ -21,12 +20,12 @@ int main()
 
 		ServersManager servers_manager(configs);
 
-		RunServer run_server(servers_manager);
-		std::ofstream out("log.txt", std::ofstream::out);
+		RunServer run_server(servers_manager, "diary.txt");
+		std::ofstream out_log("log.txt", std::ofstream::out);
 
 		while(42)
 		{
-			run_server.process(out);
+			run_server.process();
 		}
 	}
 	catch(std::exception& e)
