@@ -121,7 +121,8 @@ std::ostream& operator<<(std::ostream& os, const Client &cl)
 {
 	os << "       _socket = " << cl.get_socket() << std::endl;
 	os << "  _socket_mode = " << cl.get_socket_mod() << std::endl;
-	os << "      _request = " << cl.get_request() << std::endl;
+	os << "      _request = " << std::endl;
+	os << cl.get_request();
 	os << " _size_request = " << cl.get_size_request() << std::endl;
 	//os << "     _response = " << cl.get_response() << std::endl;
 	os << "_size_response = " << cl.get_size_response() << std::endl;

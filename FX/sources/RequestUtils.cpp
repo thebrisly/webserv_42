@@ -134,6 +134,7 @@ std::string Request::getConnectionHeader() const
     std::map<std::string, std::string>::const_iterator it = _headers.find("Connection");
     if (it != _headers.end())
 	{
+		//std::cout << "FROM getConnectionHeader [" << "salut\r" << "]" << std::endl;
         return it->second;
     }
 	else

@@ -37,7 +37,7 @@ class RunServer
 		void accept_new_connection(int i);
 		void recvs_request(int i);
 		void send_response(int i);
-		void process();
+		void process(int loop_count);
 };
 
 #endif

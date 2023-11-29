@@ -126,7 +126,7 @@ void RunServer::recvs_request (int i)
 		FD_CLR(i, &this->_cpy_readfds);
 		FD_CLR(i, &this->_cpy_writefds);
 		this->_map_clients.erase(i);
-		std::cout << YELLOW << "Client " << i << " disconected" << RESET << std::endl;
+		std::cout << YELLOW << "Client " << i << " disconected due to empty socket." << RESET << std::endl;
 	}
 	else if (size_read > 0)
 	{
@@ -220,7 +220,7 @@ void RunServer::send_response (int i)
 	//sleep(1);
 	std::cout << "[" << this->_map_clients[i].get_request_object().getConnection() << "]"<< std::endl;
 	//sleep(1);
-	//bool debug = this->_map_clients[i].get_request_object().getConnection() == "close";
+	//bool debug = this->_map_clients[i].get_request_object().getConnection() == "close";this->_map_clients[i].get_request_object().getConnection(
 
 
 	if (this->_map_clients[i].get_request_object().getConnection() == "close")
@@ -240,13 +240,19 @@ void RunServer::send_response (int i)
 	// FD_CLR(i, &this->_cpy_readfds);
 	FD_CLR(i, &this->_cpy_writefds);
 	FD_SET(i, &this->_cpy_readfds);
-	this->_map_clients[i].set_socket_mod(WRITE_M);
+	this->_map_clients[i].set_socket_mod(READ_M);
 	// this->_map_clients.erase(i);
 
 }
 
-void RunServer::process ()
+void RunServer::process (int loop_count)
 {
+	/*
+	Donc la il faut garder alive la socket tant que toutes les requetes sont pas menes à bien et ensuite on ferme la socket
+	Le client se deconnecte car il a pas le temps d'envoyer sa 2eme requete. Les tours de boucle se font trop rapidement.
+	Le referer peut aider...
+	*/
+
 	int i;
 	int max_sd;
 	int max_key;
@@ -293,8 +299,10 @@ void RunServer::process ()
 
 	for (i = 0; i < max_sd + 1; i++)
 	{
+		//std::cout << "Considering client " << i << " : " <<std::endl;
 		if (FD_ISSET(i, &this->_readfds) && this->_servers_manager.is_server_active(i))
 		{
+			std::cout << "Considering client " << i << " on loop " << loop_count << " : " <<std::endl;
 			this->accept_new_connection(i);
 			this->_out<< "------------------- accept new connection -------------------" << std::endl;
 			display_fd_set(this->_out, this->_readfds, this->_writefds);
@@ -304,6 +312,7 @@ void RunServer::process ()
 		}
 		else if (FD_ISSET(i, &this->_readfds))
 		{
+			std::cout << "Considering client " << i << " on loop " << loop_count << " : " <<std::endl;
 			this->recvs_request (i);
 			this->_out<< "------------------- recvs request -------------------" << std::endl;
 			display_fd_set(this->_out, this->_readfds, this->_writefds);
@@ -313,6 +322,7 @@ void RunServer::process ()
 		}
 		else if (FD_ISSET(i, &this->_writefds))
 		{
+			std::cout << "Considering client " << i << " on loop " << loop_count << " : " <<std::endl;
 			this->send_response(i);
 			this->_out<< "------------------- send response -------------------" << std::endl;
 			display_fd_set(this->_out, this->_readfds, this->_writefds);

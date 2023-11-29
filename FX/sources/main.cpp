@@ -23,9 +23,11 @@ int main()
 		RunServer run_server(servers_manager, "diary.txt");
 		std::ofstream out_log("log.txt", std::ofstream::out);
 
+		int loop_count = 0;
 		while(42)
 		{
-			run_server.process();
+			run_server.process(loop_count);
+			loop_count++;
 		}
 	}
 	catch(std::exception& e)
