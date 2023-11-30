@@ -51,7 +51,6 @@ void 	Request::parseRequest(const std::string& request)
 			this->_version = readVersion(line);
 			this->_path = readFirstLine(line);
 		}
-
 		else
 		{
 			size_t colonPos = line.find(':');
@@ -76,10 +75,7 @@ void 	Request::parseRequest(const std::string& request)
                 }
             }
 		}
-
-
 	}
-
 	// TODO: Parse body if needed
 }
 
@@ -183,19 +179,11 @@ void Request::parseHostHeader(const std::string& hostHeader, std::string& hostna
 
 bool Request::isMethodAllowed() const
 {
-
 	if (this->_server_config.issetRoute(this->_path))
 	{
-
-		//std::cout << "Path existe "<< std::endl;
 		std::vector<std::string> authorized_method = this->_server_config.getRoute(this->_path).methods;
-
-		//std::cout << "test 0 " << authorized_method[0] << std:: endl;
-
-
 		for (std::vector<std::string>::const_iterator it = authorized_method.begin(); it!= authorized_method.end(); ++it)
 		{
-			//std::cout << *it << " " << this->_method << std::endl;
 			if (*it == this->_method)
 			{
 				return true;
@@ -204,10 +192,7 @@ bool Request::isMethodAllowed() const
 	}
 	else
 	{
-		//std::cout << "Path existe PAS"<< std::endl;
-
 		std::vector<std::string> authorized_method = this->_server_config.getRoute("/").methods;
-
 		for (std::vector<std::string>::const_iterator it = authorized_method.begin(); it!= authorized_method.end(); ++it)
 		{
 			if (*it == this->_method)
@@ -215,22 +200,36 @@ bool Request::isMethodAllowed() const
 				return true;
 			}
 		}
-
 	}
 	return false;
 }
 
+bool Request::fileIsAvaible() const
+{
+
+	return true;
+
+}
 
 std::string Request::calculateResponse()
 {
-
-	//std::cout << this->_method << this->getMethod() << std::endl;
-
-	std::cout << this->_path << this->getPath() << std::endl;
-
-	//std::cout << "Path existe ? : " <<this->_server_config.issetRoute(this->_path) << std::endl;
-	
-
-
 	return "";
+}
+
+
+std::ostream& operator<<(std::ostream& os, const Request &request)
+{
+	os << "current request : " << request.getCurrentRequest() << std::endl;
+	os << "           path : " << request.getPath() << std::endl;
+	os << "         method : " << request.getMethod() << std::endl;
+	os << "        version : " << request.getVersion() << std::endl;
+	os << "           host : " << request.getHost() << std::endl;
+	os << "     connection : " << request.getConnection() <<std::endl;
+	os << "   secfetchdest : " << request.getSecFetchDest() << std::endl;
+	os << "           port : " << request.getPort() << std::endl;
+	os << "       hostname : " << request.getHostname() << std::endl;
+	//os << "        headers : " << request.getHeaders() << std::endl;
+	os << "   default file : " << request.getDefaultFile() << std::endl;
+
+	return os;
 }

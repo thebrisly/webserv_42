@@ -147,6 +147,7 @@ void RunServer::recvs_request (int i)
 
 		std::cout << "is allowed method : " << request_test2.isMethodAllowed() <<std::endl;
 
+		std::cout << request_test2 << std::endl;
 
 		std::string body = "";
 		std::string header = "";

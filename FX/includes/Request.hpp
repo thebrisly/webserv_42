@@ -66,6 +66,9 @@ class Request {
 
         std::string                                 calculateResponse();
         bool                                        isMethodAllowed() const;
+
+        bool                                        fileIsAvaible() const;
+
         // variable to store http methods
         static	std::vector<std::string>	        http_methods;
 
@@ -91,5 +94,7 @@ class Request {
         const ServerConfig                          _server_config;
 
 };
+
+std::ostream& operator<<(std::ostream& os, const Request &request);
 
 #endif
