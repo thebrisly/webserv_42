@@ -21,6 +21,9 @@ class Client
 
 		const ServerConfig	_server_config;
 
+		clock_t	_session_time;
+		
+
 
 	public :
 		Client(int socket, const ServerConfig server_config);
@@ -30,6 +33,10 @@ class Client
 		int get_socket() const;
 
 		ServerConfig get_server_config() const;
+
+		clock_t get_session_time() const;
+		void set_session_time (clock_t session_time);
+
 
 		unsigned long get_size_response() const;
 		void set_size_response (unsigned long size_response);

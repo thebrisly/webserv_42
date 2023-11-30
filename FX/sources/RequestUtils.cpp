@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RequestUtils.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 13:27:08 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/28 11:31:35 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/11/30 11:08:37 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,7 @@ std::string Request::getConnectionHeader() const
     std::map<std::string, std::string>::const_iterator it = _headers.find("Connection");
     if (it != _headers.end())
 	{
-		//std::cout << "FROM getConnectionHeader [" << "salut\r" << "]" << std::endl;
-        return it->second;
+        return it->second.substr(0, it->second.size() - 1);
     }
 	else
 	{

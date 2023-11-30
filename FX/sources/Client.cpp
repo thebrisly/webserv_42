@@ -3,28 +3,19 @@
 
 Client::Client(const int socket, const ServerConfig server_config) : _socket(socket), _server_config(server_config)
 {
+	/*
+	#include <ctime>
+    ...
+    temps_initial = clock ();
 
+    temps_final = clock ();
+    temps_cpu = (temps_final - temps_initial) / CLOCKS_PER_SEC * 1000; // millisecondes
 	
-	// std::string body;
-	// std::string current_line;
+	*/
 
-	// std::ifstream webTest;
-	// webTest.open("web/index.html");
+	this->_session_time = clock();
 
-	// while (std::getline (webTest, current_line))
-	// {
-	// 	body += current_line;
-	// 	body += "\n";
 
-	// }
-	
-	//std::cout << "BODY = " << body << std::endl;
-
-	// const std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
-
-	// std::string response = header + body;
-
-	//this->_response = response;
 	this->_socket_mod = 0;
 	this->_size_response = 0;
 	this->_size_request = 0;
@@ -34,6 +25,16 @@ Client::Client(const int socket, const ServerConfig server_config) : _socket(soc
 Client::Client(): _socket(0), _socket_mod(0), _size_response(0), _size_request(0){};
 
 Client::~Client() {};
+
+clock_t Client::get_session_time() const
+{
+	return this->_session_time;
+}
+
+void Client::set_session_time (clock_t session_time)
+{
+	this->_session_time = session_time;
+}
 
 int Client::get_socket() const
 {
