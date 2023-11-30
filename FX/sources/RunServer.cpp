@@ -34,10 +34,8 @@ void display_fd_set(std::ofstream & out, const fd_set & readfds, const fd_set & 
 
 /* RunServer is an object that runs the servers */
 
-RunServer::RunServer(ServersManager & servers_manager, std::string log_filename) : _servers_manager(servers_manager), _out(log_filename, std::ofstream::out)
+RunServer::RunServer(ServersManager & servers_manager, std::string log_filename) : _servers_manager(servers_manager), _out(log_filename, std::ofstream::out), _time_start(time(NULL))
 {
-
-
 
 	FD_ZERO(&this->_writefds);
 	FD_ZERO(&this->_readfds);
@@ -45,11 +43,11 @@ RunServer::RunServer(ServersManager & servers_manager, std::string log_filename)
 	FD_ZERO(&this->_cpy_readfds);
 	FD_ZERO(&this->_cpy_writefds);
 
-	std::cout << "number of servers : " << this->_servers_manager.get_servers().size() << std::endl;
+	std::cout << "[" << time(0) - this->_time_start << "] " << "number of servers : " << this->_servers_manager.get_servers().size() << std::endl;
 
 	for (unsigned long i = 0; i < this->_servers_manager.get_servers().size(); i++)
 	{
-		std::cout << GREEN << this->_servers_manager[i].get_config().getPort() << RESET << std::endl;
+		std::cout << GREEN << "[" << time(0) - this->_time_start << "] " << this->_servers_manager[i].get_config().getPort() << RESET << std::endl;
 
 		FD_SET(this->_servers_manager[i].get_sock_server(), &this->_cpy_readfds);
 	}
@@ -69,24 +67,21 @@ void RunServer::accept_new_connection(int i)
 {
 	int new_socket;
 
-	//std::cout << "i = " << i << std::endl;
 	ServerInitializer & server_init = this->_servers_manager.get_server_by_sock(i);
 
-	//std::cout << i << " " << this->_servers_manager[0].get_sock_server() << std::endl;
-	//sleep(10);
 	if (i != server_init.get_sock_server())
 	{
 		std::cerr << RED << "ERROR : accept_new_connection " << i << " " << server_init.get_sock_server() << RESET << std::endl;
 		sleep(10);
 	}
-	//ServerInitializer & server_init = this->_servers_manager[0];
 
 	if ((new_socket = accept(i, (struct sockaddr *)&(server_init.get_ref_server_addr()), (socklen_t*)&server_init.get_ref_addrlen()))<0)
 	{
 		std::cerr << RED << "ERROR : " << RESET;
 		perror("accept");
 	}
-	std::cout << BLUE << "New client connected on socket " << new_socket << " with ip " << inet_ntoa(server_init.get_server_addr().sin_addr) << " on port "<< server_init.get_config().getPort() << RESET << std::endl;
+
+	std::cout << BLUE << "[" << time(0) - this->_time_start << "]" << " New client connected on socket " << new_socket << " with ip " << inet_ntoa(server_init.get_server_addr().sin_addr) << " on port "<< server_init.get_config().getPort() << RESET << std::endl;
 	FD_SET(new_socket, &this->_cpy_readfds);
 	this->_map_clients.insert(std::pair<int, Client>(new_socket, Client(new_socket, server_init.get_config())));
 }
@@ -130,11 +125,11 @@ void RunServer::recvs_request (int i)
 		FD_CLR(i, &this->_cpy_readfds);
 		FD_CLR(i, &this->_cpy_writefds);
 		this->_map_clients.erase(i);
-		std::cout << YELLOW << "Client " << i << " disconected due to empty socket." << RESET << std::endl;
+		std::cout << YELLOW << "[" << time(0) - this->_time_start << "] " << "Client " << i << " disconected due to empty socket." << RESET << std::endl;
 	}
 	else if (size_read > 0)
 	{
-		std::cout << GREEN << "Received request of " << size_read << " characters from client " << i << RESET << std::endl;
+		std::cout << GREEN << "[" << time(0) - this->_time_start << "] " << "Received request of " << size_read << " characters from client " << i << RESET << std::endl;
 		FD_CLR(i, &this->_cpy_readfds);
 		FD_SET(i, &this->_cpy_writefds);
 		this->_map_clients[i].set_request(buffer);
@@ -223,7 +218,7 @@ void RunServer::send_response (int i)
 		exit(0);
 	}
 
-	std::cout << GREEN << "Sent response of " << response.length() << " characters to client "<< i << RESET <<std::endl;
+	std::cout << GREEN << "[" << time(0) - this->_time_start << "] " << "Sent response of " << response.length() << " characters to client "<< i << RESET <<std::endl;
 
 	if (this->_map_clients[i].get_request_object().getConnection() == "close")
 	{
@@ -236,7 +231,7 @@ void RunServer::send_response (int i)
 		FD_CLR(i, &this->_cpy_writefds);
 		this->_map_clients.erase(i);
 
-		std::cout << YELLOW << "Client " << i << " disconected." << RESET <<std::endl;
+		std::cout << YELLOW << "[" << time(0) - this->_time_start << "] " << "Client " << i << " disconected." << RESET <<std::endl;
 		//exit(0);
 	}
 	else

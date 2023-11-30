@@ -29,6 +29,8 @@ class RunServer
 
 		std::ofstream	_out;
 
+		const time_t _time_start;
+
 
 	public :
 		RunServer(ServersManager & server_manager, std::string log_filename);
