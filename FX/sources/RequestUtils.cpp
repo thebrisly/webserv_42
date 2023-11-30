@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 13:27:08 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/30 17:00:18 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/11/30 18:11:22 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,4 +178,59 @@ void Request::parseHostHeader(const std::string& hostHeader, std::string& hostna
     if (port.empty()) {
         port = "80"; // You can choose a different default port if needed
     }
+}
+
+
+bool Request::isMethodAllowed() const
+{
+
+	if (this->_server_config.issetRoute(this->_path))
+	{
+
+		//std::cout << "Path existe "<< std::endl;
+		std::vector<std::string> authorized_method = this->_server_config.getRoute(this->_path).methods;
+
+		//std::cout << "test 0 " << authorized_method[0] << std:: endl;
+
+
+		for (std::vector<std::string>::const_iterator it = authorized_method.begin(); it!= authorized_method.end(); ++it)
+		{
+			//std::cout << *it << " " << this->_method << std::endl;
+			if (*it == this->_method)
+			{
+				return true;
+			}
+		}
+	}
+	else
+	{
+		//std::cout << "Path existe PAS"<< std::endl;
+
+		std::vector<std::string> authorized_method = this->_server_config.getRoute("/").methods;
+
+		for (std::vector<std::string>::const_iterator it = authorized_method.begin(); it!= authorized_method.end(); ++it)
+		{
+			if (*it == this->_method)
+			{
+				return true;
+			}
+		}
+
+	}
+	return false;
+}
+
+
+std::string Request::calculateResponse()
+{
+
+	//std::cout << this->_method << this->getMethod() << std::endl;
+
+	std::cout << this->_path << this->getPath() << std::endl;
+
+	//std::cout << "Path existe ? : " <<this->_server_config.issetRoute(this->_path) << std::endl;
+	
+
+
+	return "";
 }

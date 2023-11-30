@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:37:25 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/30 16:59:59 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/11/30 17:48:28 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@
 # include <iostream>
 # include <sstream>
 
+#include "ServerConfig.hpp"
+
 class Request {
 
     public :
         // Constructors, Destructors & Overloading operations
         Request();
-        Request(const std::string& str);
+        Request(const std::string& str, const ServerConfig server_config);
 		~Request();
 		Request& operator=(const Request&);
 
@@ -62,6 +64,8 @@ class Request {
         std::string                                 getHostHeader() const;
         std::string                                 getConnectionHeader() const;
 
+        std::string                                 calculateResponse();
+        bool                                        isMethodAllowed() const;
         // variable to store http methods
         static	std::vector<std::string>	        http_methods;
 
@@ -83,6 +87,8 @@ class Request {
         std::string                                 _body;
 
         std::string                                 _default_file;
+
+        const ServerConfig                          _server_config;
 
 };
 

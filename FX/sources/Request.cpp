@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:43:38 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/28 16:39:08 by vgiordan         ###   ########.fr       */
+/*   Updated: 2023/11/30 17:11:16 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 Request::Request() {}
 
-Request::Request(const std::string& str) : _current_request(str) {}
+Request::Request(const std::string& str, const ServerConfig server_config) : _current_request(str), _server_config(server_config) {}
 
 Request::~Request() {}
 

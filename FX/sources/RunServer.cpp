@@ -140,11 +140,12 @@ void RunServer::recvs_request (int i)
 		this->_map_clients[i].set_session_time(clock());
 
 
-		Request request_test2(this->_map_clients[i].get_request());
+		Request request_test2(this->_map_clients[i].get_request(), this->_map_clients[i].get_server_config());
 		request_test2.parseRequest(request_test2.getCurrentRequest());
 
 		this->_map_clients[i].set_request_object(request_test2);
 
+		std::cout << "is allowed method : " << request_test2.isMethodAllowed() <<std::endl;
 
 
 		std::string body = "";
