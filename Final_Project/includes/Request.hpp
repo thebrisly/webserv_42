@@ -6,7 +6,7 @@
 /*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:37:25 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/01 14:12:12 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:42:17 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <string>
 # include <iostream>
 # include <sstream>
+# include <fstream>
 
 #include "ServerConfig.hpp"
 
@@ -55,6 +56,7 @@ class Request {
         std::string                                 getHostname() const;
         std::string                                 getType() const;
         std::string                                 getDefaultFile() const;
+        std::string                                 getResponse() const;
 
 
         const std::map<std::string, std::string>&   getHeaders() const;
@@ -66,18 +68,20 @@ class Request {
 
         void                                        checkRequest();
         bool                                        checkHttpVersion() const;
-        bool                                        ckeck_host_port() const;
+        bool                                        check_host_port() const;
         bool                                        checkPathType() const;
         bool                                        checkFileOrDirectory() const;
         bool                                        checkActionAuthorization() const;
+        bool                                        checkMethods() const;
 
-        std::string	                                prepareResponse() const;
+        void    	                                prepareResponse() const;
 
 
         bool                                        fileIsAvaible() const;
 
 
         bool                                        issetFile() const;
+        bool                                        isFile() const;
 
         // variable to store http methods
         static	std::vector<std::string>	        http_methods;
@@ -97,10 +101,12 @@ class Request {
 
         std::string                                 _response;
         int                                         _status_code;
+        std::string                                 _status_string;
 
         std::map<std::string, std::string>	        _headers; //dictionnary of keys, values
 
-        std::string                                 _body;
+        std::string                                 _response_body;
+        std::string                                 _response_header;
 
         std::string                                 _default_file;
 

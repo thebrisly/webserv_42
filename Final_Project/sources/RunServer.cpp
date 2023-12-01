@@ -146,21 +146,22 @@ void RunServer::recvs_request (int i)
 		this->_map_clients[i].set_request_object(request_test2);
 
 
-		request_test2.ckeck_host_port();
+		// request_test2.check_host_port();
 
-		std::cout << request_test2 << std::endl;
+		// std::cout << request_test2 << std::endl;
 
 		request_test2.parseRequest(request_test2.getCurrentRequest());
 
+		request_test2.checkRequest();
 
-		request_test2.issetFile();
+		// request_test2.issetFile();
 
 
 
 		std::string body = "";
 		std::string header = "";
 
-		if (request_test2.ckeck_host_port() == false)
+		if (request_test2.check_host_port() == false)
 		{
 
 			body = "Host and port are not valid";

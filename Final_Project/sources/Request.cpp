@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:43:38 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/30 17:11:16 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:20:11 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ Request::Request(const std::string& str, const ServerConfig server_config) : _cu
 
 Request::~Request() {}
 
-Request& Request::operator=(const Request& other) 
+Request& Request::operator=(const Request& other)
 {
         if (this != &other)
 	{
@@ -106,4 +106,8 @@ std::string Request::getDefaultFile() const
         return (this->_default_file);
 }
 
+std::string Request::getResponse() const
+{
+        return (this->_response);
+}
 

@@ -6,7 +6,7 @@
 /*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:00:57 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/01 14:12:34 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:52:27 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,46 +22,109 @@
 
 void Request::checkRequest()
 {
+	std::cout << "ICI ?? " << std::endl;
 	if (!checkHttpVersion()) {
 		this->_status_code = 505;
+		std::cout << "RESULT VERSION  : " << checkHttpVersion() << std::endl;
 	}
 
-	if (!ckeck_host_port()) {
+	else if (!check_host_port()) {
 		this->_status_code = 505; //trouver le bon code erreur
+		std::cout << "RESULT Check_host: " << check_host_port() << std::endl;
 	}
 
-	// if (!checkPathType()) {
+	// else if (!checkPathType()) {
 	// 	this->_status_code = 505; // trouver le bon code erreur
 	// }
 
-	// if (!checkFileOrDirectory()) {
-	// 	this->_status_code = 404; //page not found error
-	// }
+	else if (!issetFile()) {
+		this->_status_code = 404; //page not found error
+		this->_status_string + "Not Found";
+		std::cout << "RESULT SET FILE : " << issetFile() << std::endl;
+	}
 
-	// if (!checkActionAuthorization()) {
-	// 	this->_status_code = 403; //worng authorizations
-	// }
+	else if (!checkMethods()) {
+		this->_status_code = 403; //worng authorizations
+		this->_status_string = "Forbidden";
+		std::cout << "RESULT CHECK_METHODS : " << checkMethods() << std::endl;
+	}
 
-	this->_status_code = 200; // if all good then return Success
+	else
+	{
+		this->_status_code = 200; // if all good then return Success
+		this->_status_string = " OK";
+	}
 }
 
-std::string	Request::prepareResponse() const
+/*void	Request::prepareResponse() const
 {
-	return "response";
-}
+	std::string		response;
+	std::string		body;
+
+	checkRequest(); //pour set le status_code et le status_string
+	std::cout << "STATUS CODE :" << this->_status_code << std::endl;
+
+	if (this->_status_code != 200) //s'il y a une erreur on envoie une page d'erreur
+	{
+		std::string errorPagePath = "../web/error_pages/" + std::to_string(_status_code) + ".html";
+        std::ifstream file(errorPagePath);
+
+		if (file.is_open())
+		{
+            std::ostringstream fileContent;
+            fileContent << file.rdbuf();
+            body = fileContent.str();
+
+            response = this->_version + " " + std::to_string(this->_status_code) + " " + this->_status_string + "\r\n";
+            response += "Content-Type: text/html\r\n";
+            response += "Connection: keep-alive\r\n";
+            response += "Content-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+            response += body;
+        }
+		else
+            response = "HTTP/1.1 500 Internal Server Error\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n500 - Internal Server Error";
+
+		// response = this->._version + " " + this->_status_code + this->status_string + "\nContent-Type: ../web/error_pages" + this->_status_code + ".html";
+	}
+
+	else if (this->_status_code == 200)
+	{
+		std::ifstream file("web" + _path);
+
+		if (file.is_open()) {
+			std::ostringstream fileContent;
+			fileContent << file.rdbuf();
+			std::string fileContentStr = fileContent.str();
+
+			if (!fileContentStr.empty()) {
+				response = _version + " 200 OK\r\n";
+				response += "Content-Type: " + getMimeType(_path) + "\r\n";
+				response += "Connection: keep-alive\r\n";
+				response += "Content-Length: " + std::to_string(fileContentStr.length()) + "\r\n\r\n";
+				response += fileContentStr;
+			} else {
+				response = "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\nConnection: keep-alive\r\n\r\n404 - Not Found";
+			}
+		} else {
+			response = "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\nConnection: keep-alive\r\n\r\n404 - Not Found";
+		}
+	}
+
+	this->_response = response;
+}*/
 
 
 // 1. Check version HTTP —> si marche pas : envoyer response error 505
 
 bool Request::checkHttpVersion() const
 {
-	if (this->_version == "HTTP/1.1")
+	if (this->_version == "HTTP/1.1\r")
 		return 1;
 	else
 		return 0;
 }
 
-bool Request::ckeck_host_port() const
+bool Request::check_host_port() const
 {
 	if (this->_hostname != this->_server_config.getServerName() && this->_hostname != this->_server_config.getIPAddress())
 	{
@@ -82,33 +145,100 @@ bool Request::ckeck_host_port() const
 
 bool Request::issetFile() const
 {
-	std::string path_complete = this->_server_config.getRoot() + this->_path;
+	std::string root = this->_server_config.getRoot();
+	std::string root_path_file = root + this->_path;
+	std::string file_location;
+	std::vector<RouteConfig> RoutesConfig = this->_server_config.getRoutes();
+	std::ifstream file;
+
+	// std::cout << "Ressource : " << root_path_file << std::endl;
+
+	size_t i = root_path_file.rfind('/', root_path_file.length());
+	if (i != std::string::npos)
+	{
+		file_location = root_path_file.substr(0, i + 1);
+	}
+	else
+	{
+		std::cerr << RED << "ERROR A DEBUG !!!" << std::endl;
+		return false;
+	}
+
+	for (std::vector<RouteConfig>::iterator it = RoutesConfig.begin(); it!= RoutesConfig.end(); ++it)
+	{
+	//std::cout << file_location << "||" << root+it->path << std::endl;
+		if (file_location == root+it->path)
+		{
+			file.open(root_path_file);
+			if (file)
+			{
+				//std::cout << "OUI LA RESSOURCE EST DISPO" <<std::endl;
+				return true;
+			}
+			else
+			{
+				//std::cout << "NON RESSOURCE PAS DISPO" <<std::endl;
+				return false;
+			}
+		}
+	}
+	return false;
+}
 
 
+bool Request::checkMethods() const
+{
+	std::string root = this->_server_config.getRoot();
+	std::string root_path_file = root + this->_path;
+	std::string file_location;
+	std::vector<RouteConfig> RoutesConfig = this->_server_config.getRoutes();
+	std::ifstream file;
+	std::vector<std::string> authorized_methods;
 
 
-	// this->_server_config.getRoutes();
+	// std::cout << "Ressource : " << root_path_file << std::endl;
 
+	size_t i = root_path_file.rfind('/', root_path_file.length());
+	if (i != std::string::npos)
+	{
+		file_location = root_path_file.substr(0, i + 1);
+	}
+	else
+	{
+		std::cerr << RED << "ERROR A DEBUG !!!" << std::endl;
+		return false;
+	}
 
-	// if (!std::filesystem::exists(path_complete))
-	// {
-	// 	std::cerr << RED << "NO FILE OR DIRECTORY " << path_complete << RESET << std::endl;
-	// 	return false;
-	// }
+	for (std::vector<RouteConfig>::iterator it = RoutesConfig.begin(); it!= RoutesConfig.end(); ++it)
+	{
+	//std::cout << file_location << "||" << root+it->path << std::endl;
+		if (file_location == root+it->path)
+		{
+			authorized_methods = it->methods;
 
+			for (std::vector<std::string>::const_iterator it = authorized_methods.begin(); it!= authorized_methods.end(); ++it)
+			{
+				if (*it == this->_method)
+				{
+					// std::cout << "OUI LA METHODE EST DISPO" <<std::endl;
+					return true;
+				}
 
-	std::cout << "path complete : " << path_complete << std::endl;
+			}
+		}
+	}
+	// std::cout << "NON METHODE PAS DISPO" <<std::endl;
+	return false;
 
-	return true;
 }
 
 
 // 1 if file, 0 if folder
-bool isFile() const
+bool Request::isFile() const
 {
-	size_t lastSlashPos = _path.find_last_of('/');
+	size_t lastSlashPos = this->_path.find_last_of('/');
 
-	if (lastSlashPos != std::string::npos && lastSlashPos > _path.find_last_of('.')) {
+	if (lastSlashPos != std::string::npos && lastSlashPos > this->_path.find_last_of('.')) {
 		return false;
 	}
 
