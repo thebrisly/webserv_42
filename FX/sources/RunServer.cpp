@@ -145,13 +145,25 @@ void RunServer::recvs_request (int i)
 
 		this->_map_clients[i].set_request_object(request_test2);
 
-		std::cout << "is allowed method : " << request_test2.isMethodAllowed() <<std::endl;
 
-		std::cout << request_test2 << std::endl;
+		request_test2.ckeck_host_port();
 
+		//std::cout << request_test2 << std::endl;
+
+		request_test2.parseRequest(request_test2.getCurrentRequest());
 		std::string body = "";
 		std::string header = "";
-		if (request_test2.getPath() == "/")
+
+		if (request_test2.ckeck_host_port() == false)
+		{
+
+			body = "Host and port are not valid";
+
+			header = "HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: keep-alive\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+
+
+		}
+		else if (request_test2.getPath() == "/")
 		{
 			std::ifstream file("web/index.html");
 			std::string current_line;

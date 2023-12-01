@@ -43,8 +43,9 @@ class ServerConfig
 
 		bool issetRoute(const std::string& path) const;
 		
-
-		
 };
+
+std::ostream& operator<<(std::ostream& os, const ServerConfig &server_config);
+
 
 #endif

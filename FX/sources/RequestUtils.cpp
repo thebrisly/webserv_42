@@ -6,11 +6,12 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 13:27:08 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/30 18:11:22 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/12/01 12:08:55 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Request.hpp"
+#include "../includes/Color.hpp"
 
 // https://en.wikipedia.org/wiki/HTTP#Request_methods
 // For the webserv project we only need GET, POST and DELETE
@@ -176,6 +177,28 @@ void Request::parseHostHeader(const std::string& hostHeader, std::string& hostna
     }
 }
 
+bool Request::ckeck_host_port() const
+{
+	//std::cout << this->_hostname << " " << this->_port << std::endl;
+	//std::cout << this->_server_config.getIPAddress()<< " " << this->_server_config.getServerName() << " " << this->_server_config.getPort() << std::endl;
+
+	if (this->_hostname != this->_server_config.getServerName() && this->_hostname != this->_server_config.getIPAddress())
+	{
+		std::cerr << RED << "NO RESOLVE FOR " << this->_hostname << RESET << std::endl;
+		return false;
+	}	
+
+	unsigned long ul_port = std::stoul(this->_port);
+
+	if (ul_port != this->_server_config.getPort())
+	{
+		std::cerr << RED << "NO RESOLVE FOR " << this->_port << RESET << std::endl;
+		return false;
+	}
+
+	return true;
+}
+
 
 bool Request::isMethodAllowed() const
 {
@@ -219,17 +242,24 @@ std::string Request::calculateResponse()
 
 std::ostream& operator<<(std::ostream& os, const Request &request)
 {
-	os << "current request : " << request.getCurrentRequest() << std::endl;
-	os << "           path : " << request.getPath() << std::endl;
-	os << "         method : " << request.getMethod() << std::endl;
-	os << "        version : " << request.getVersion() << std::endl;
-	os << "           host : " << request.getHost() << std::endl;
-	os << "     connection : " << request.getConnection() <<std::endl;
-	os << "   secfetchdest : " << request.getSecFetchDest() << std::endl;
-	os << "           port : " << request.getPort() << std::endl;
-	os << "       hostname : " << request.getHostname() << std::endl;
-	//os << "        headers : " << request.getHeaders() << std::endl;
-	os << "   default file : " << request.getDefaultFile() << std::endl;
+	os << CYAN <<"current request : " << RESET<< request.getCurrentRequest() << std::endl;
+	os << CYAN <<"           path : " << RESET<< request.getPath() << std::endl;
+	os << CYAN <<"         method : " << RESET<< request.getMethod() << std::endl;
+	os << CYAN <<"        version : " << RESET<< request.getVersion() << std::endl;
+	os << CYAN <<"           host : " << RESET<< request.getHost() << std::endl;
+	os << CYAN <<"     connection : " << RESET<< request.getConnection() <<std::endl;
+	os << CYAN <<"   secfetchdest : " << RESET<< request.getSecFetchDest() << std::endl;
+	os << CYAN <<"           port : " << RESET<< request.getPort() << std::endl;
+	os << CYAN <<"       hostname : " << RESET<< request.getHostname() << std::endl;
+	os << CYAN << "        headers : " << RESET << std::endl;
+
+	for (std::map<std::string, std::string>::const_iterator it = request.getHeaders().begin(); it!= request.getHeaders().end(); ++it)
+	{
+		os << "           * " << it->first << " : " << it->second << std::endl;
+	}
+
+
+	os << CYAN <<"   default file : " << RESET<< request.getDefaultFile() << std::endl;
 
 	return os;
 }

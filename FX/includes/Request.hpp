@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:37:25 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/30 17:48:28 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/12/01 11:31:32 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ class Request {
         bool                                        isMethodAllowed() const;
 
         bool                                        fileIsAvaible() const;
+        bool                                        ckeck_host_port() const;
 
         // variable to store http methods
         static	std::vector<std::string>	        http_methods;
@@ -92,6 +93,9 @@ class Request {
         std::string                                 _default_file;
 
         const ServerConfig                          _server_config;
+
+
+
 
 };
 
