@@ -1,4 +1,5 @@
 #include "../includes/ConfigParser.hpp"
+#include <algorithm>
 
 void print_stack(std::stack<std::string> stack)
 {
@@ -31,6 +32,20 @@ void print_stack(std::stack<std::string> stack)
 //     // }
 // }
 
+void ConfigParser::checkForDuplicateServers()
+{
+    for (size_t i = 0; i < configs.size(); i++)
+    {
+        for (size_t j = 0; j < configs.size(); j++)
+        {
+            if (i == j)
+                continue;
+            if (configs[i].getIPAddress() == configs[j].getIPAddress() && configs[i].getPort() == configs[j].getPort())
+                throw std::runtime_error("Duplicate server configuration");
+        }
+    }
+}
+
 void ConfigParser::processErrorPages(const std::string& key, const std::string& value, ServerConfig& config)
 {
     try {
@@ -43,8 +58,15 @@ void ConfigParser::processErrorPages(const std::string& key, const std::string& 
 
 void ConfigParser::processLocation(const std::string& key, const std::string& value, RouteConfig& route)
 {
+    std::string str = value;
     if (key == "methods") {
-        route.methods.push_back(value);
+        str.erase(remove_if(str.begin(), str.end(), isspace), str.end());
+        std::string method;
+        std::istringstream iss(str);
+        while (std::getline(iss, method, ','))
+            if (method != "GET" && method != "POST" && method != "DELETE" && method != "PUT")
+                throw std::runtime_error("Unknown method: " + method);
+            route.methods.push_back(method);
     } else if (key == "directory_listing") {
         if (value == "on")
             route.directory_listing = true;
@@ -97,7 +119,6 @@ void ConfigParser::processRedirect(const std::string &key, const std::string &va
 
 std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename) {
     std::stack<std::string> contexts;
-    std::vector<ServerConfig> configs;
     std::cout << "Parsing config file: " << filename << std::endl;
     ServerConfig serverConfig;
     std::ifstream file(filename.c_str());
@@ -225,6 +246,9 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
         }
     }
     configs.push_back(serverConfig);
+
+    checkForDuplicateServers();
+
     return configs;
 }
 //                 if (newServerBlockStarted) {
