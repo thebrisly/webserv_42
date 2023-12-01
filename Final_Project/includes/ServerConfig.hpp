@@ -41,6 +41,7 @@ class ServerConfig
 
 		RouteConfig getRoute(const std::string& path) const;
 
+		void displayConfig();
 
 
 		
