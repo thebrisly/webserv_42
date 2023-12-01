@@ -6,7 +6,7 @@
 /*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:37:25 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/01 13:07:10 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:10:26 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,17 @@ class Request {
         std::string                                 getHostHeader() const;
         std::string                                 getConnectionHeader() const;
 
-        std::string                                 calculateResponse();
-        bool                                        isMethodAllowed() const;
+        void                                        checkRequest();
+        bool                                        checkHttpVersion() const;
+        bool                                        ckeck_host_port() const;
+        bool                                        checkPathType() const;
+        bool                                        checkFileOrDirectory() const;
+        bool                                        checkActionAuthorization() const;
+
+        std::string	                                prepareResponse() const;
+
 
         bool                                        fileIsAvaible() const;
-        bool                                        ckeck_host_port() const;
-        void                                        checkRequest() const;
-        bool                                        checkHttpVersion();
 
         // variable to store http methods
         static	std::vector<std::string>	        http_methods;

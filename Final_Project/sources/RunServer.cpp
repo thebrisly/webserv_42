@@ -115,7 +115,7 @@ void RunServer::recvs_request (int i)
 		std::cout << CLOCKS_PER_SEC <<std::endl;
 
 		std::cout << "Since creation : " << clock() - this->_map_clients[i].get_session_time() << std::endl;
-	
+
 
 		if (close(i) < 0)
 		{
@@ -148,7 +148,7 @@ void RunServer::recvs_request (int i)
 
 		request_test2.ckeck_host_port();
 
-		//std::cout << request_test2 << std::endl;
+		std::cout << request_test2 << std::endl;
 
 		request_test2.parseRequest(request_test2.getCurrentRequest());
 		std::string body = "";
@@ -196,7 +196,7 @@ void RunServer::recvs_request (int i)
 			}
 			header = "HTTP/1.1 200 OK\nContent-Type: image/jpeg\nConnection: keep-alive\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
 		}
-		else 
+		else
 		{
 			body = "The requested resource is not available.";
 			header = "HTTP/1.1 404 Not Found\nContent-Type: text/plain\nConnection: keep-alive\n";
@@ -206,7 +206,7 @@ void RunServer::recvs_request (int i)
 
 		//std::cout << "hostheader" << request_test2.getHostHeader() << std::endl;
 		//std::cout << "body" << body << std::endl;
-		
+
 		std::string response = header + body;
 
 		this->_map_clients[i].set_response(response);

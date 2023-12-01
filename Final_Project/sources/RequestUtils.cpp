@@ -6,7 +6,7 @@
 /*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 13:27:08 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/01 13:07:53 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:10:25 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,19 +203,6 @@ void Request::parseHostHeader(const std::string& hostHeader, std::string& hostna
 // 	}
 // 	return false;
 // }
-
-bool Request::fileIsAvaible() const
-{
-
-	return true;
-
-}
-
-std::string Request::calculateResponse()
-{
-	return "";
-}
-
 
 std::ostream& operator<<(std::ostream& os, const Request &request)
 {

@@ -6,7 +6,7 @@
 /*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:00:57 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/01 13:09:11 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:10:24 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,45 +20,46 @@
 // Créer une fonction qui renvoie la response si toutes (5) les verifications suivantes sont correctes :
 
 
-// void Request::checkRequest() const
-// {
-// 	if (!checkHttpVersion()) {
-// 		this->_status_code = 505;
-// 	}
+void Request::checkRequest()
+{
+	if (!checkHttpVersion()) {
+		this->_status_code = 505;
+	}
 
-// 	if (!ckeck_host_port()) {
-// 		this->_status_code = 505; //trouver le bon code erreur
-// 	}
+	if (!ckeck_host_port()) {
+		this->_status_code = 505; //trouver le bon code erreur
+	}
 
-// 	if (!checkPathType()) {
-// 		this->_status_code = 505; // trouver le bon code erreur
-// 	}
+	// if (!checkPathType()) {
+	// 	this->_status_code = 505; // trouver le bon code erreur
+	// }
 
-// 	if (!checkFileOrDirectory()) {
-// 		this->_status_code = 404; //page not found error
-// 	}
+	// if (!checkFileOrDirectory()) {
+	// 	this->_status_code = 404; //page not found error
+	// }
 
-// 	if (!checkActionAuthorization()) {
-// 		this->_status_code = 403; //worng authorizations
-// 	}
+	// if (!checkActionAuthorization()) {
+	// 	this->_status_code = 403; //worng authorizations
+	// }
 
-// 	return 200; // if all good then return Success
-// }
+	this->_status_code = 200; // if all good then return Success
+}
 
-// std::string	prepareResponse() const {
+std::string	Request::prepareResponse() const
+{
+	return "response";
+}
 
-// }
 
+// 1. Check version HTTP —> si marche pas : envoyer response error 505
 
-// // 1. Check version HTTP —> si marche pas : envoyer response error 505
-
-// bool Request::checkHttpVersion()
-// {
-// 	if (this->_version == "HTTP/1.1")
-// 		return 1;
-// 	else
-// 		return 0;
-// }
+bool Request::checkHttpVersion() const
+{
+	if (this->_version == "HTTP/1.1")
+		return 1;
+	else
+		return 0;
+}
 
 bool Request::ckeck_host_port() const
 {
@@ -80,6 +81,23 @@ bool Request::ckeck_host_port() const
 	}
 
 	return true;
+}
+
+
+// 1 if file, 0 if folder
+bool isFile() const
+{
+	size_t lastSlashPos = _path.find_last_of('/');
+
+	if (lastSlashPos != std::string::npos && lastSlashPos > _path.find_last_of('.')) {
+		return false;
+	}
+
+	if (lastSlashPos == std::string::npos && _path.find_last_of('.') != std::string::npos) {
+		return true;
+	}
+
+	return false;
 }
 
 
