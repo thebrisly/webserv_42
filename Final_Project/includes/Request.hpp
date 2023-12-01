@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:37:25 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/01 13:07:10 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/12/01 13:30:10 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,9 @@ class Request {
         bool                                        ckeck_host_port() const;
         void                                        checkRequest() const;
         bool                                        checkHttpVersion();
+
+
+        bool                                        issetFile() const;
 
         // variable to store http methods
         static	std::vector<std::string>	        http_methods;
