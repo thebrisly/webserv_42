@@ -6,7 +6,7 @@
 /*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:00:57 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/01 15:52:27 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:54:45 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void Request::checkRequest()
 	}
 }
 
-/*void	Request::prepareResponse() const
+void	Request::prepareResponse() const
 {
 	std::string		response;
 	std::string		body;
@@ -111,7 +111,7 @@ void Request::checkRequest()
 	}
 
 	this->_response = response;
-}*/
+}
 
 
 // 1. Check version HTTP —> si marche pas : envoyer response error 505
