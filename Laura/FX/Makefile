@@ -1,4 +1,4 @@
-SRCS = $(wildcard *.cpp)
+SRCS = $(wildcard sources/*.cpp)
 
 NAME = ./server
 

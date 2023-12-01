@@ -1,4 +1,4 @@
-#include "ServerConfig.hpp"
+#include "../includes/ServerConfig.hpp"
 
 // Constructor
 ServerConfig::ServerConfig() : port(0), ip_address(""), max_body_size(0), server_name(""), root("") {}
@@ -67,4 +67,16 @@ RouteConfig ServerConfig::getRoute(const std::string& path) const
     }
 
     throw std::runtime_error("Route not found for path: " + path); // or handle the case as appropriate
+}
+
+bool ServerConfig::issetRoute(const std::string& path) const
+{
+    for (std::vector<RouteConfig>::const_iterator it = routes.begin(); it != routes.end(); ++it)
+    {
+        if (it->path == path)
+        {
+            return true;
+        }
+    }
+    return false;
 }
