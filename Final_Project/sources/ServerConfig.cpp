@@ -1,4 +1,5 @@
 #include "../includes/ServerConfig.hpp"
+#include "../includes/Color.hpp"
 
 // Constructor
 ServerConfig::ServerConfig() : port(0), ip_address(""), max_body_size(0), server_name(""), root("") {}
@@ -68,3 +69,34 @@ RouteConfig ServerConfig::getRoute(const std::string& path) const
 
     throw std::runtime_error("Route not found for path: " + path); // or handle the case as appropriate
 }
+
+std::ostream& operator<<(std::ostream& os, const ServerConfig &config)
+{
+	os << CYAN <<"\n   server name : " << RESET<< config.getServerName() << std::endl;
+	os << CYAN <<"     ip address : " << RESET<< config.getIPAddress() << std::endl;
+	os << CYAN <<"           port : " << RESET<< config.getPort() << std::endl;
+	os << CYAN <<"  max body size : " << RESET<< config.getMaxBodySize() << std::endl;
+	os << CYAN <<"           root : " << RESET<< config.getRoot() << std::endl;
+
+    for (std::map<int, std::string>::const_iterator it = config.getErrorPages().begin(); it!= config.getErrorPages().end(); ++it)
+    {
+        os << CYAN << "     error code : " << RESET << it->first << YELLOW << "   error page : " << RESET << it->second << std::endl;
+    }
+
+    for (std::vector<RouteConfig>::const_iterator  it = config.getRoutes().begin(); it!= config.getRoutes().end(); ++it)
+    {
+        os << CYAN << "         route path : " << RESET << it->path << std::endl;
+
+        for (std::vector<std::string>::const_iterator it2 = it->methods.begin(); it2!= it->methods.end(); ++it2)
+        {
+            os << CYAN << "         route method : " << RESET << *it2 << std::endl;
+        }
+        os << CYAN << " route default file : " << RESET << it->default_file << std::endl;
+        os << CYAN << "  directory listing : " << RESET << it->directory_listing << std::endl;
+    }
+
+
+
+	return os;
+}
+
