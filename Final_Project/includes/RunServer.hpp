@@ -12,6 +12,8 @@
 #define WRITE_M 1
 
 #include <map>
+#include <fstream>
+
 
 class RunServer
 {
@@ -25,14 +27,19 @@ class RunServer
 		fd_set			_cpy_writefds;
 		struct timeval	_timeout;
 
+		std::ofstream	_out;
+
+		const time_t _time_start;
+
+
 	public :
-		RunServer(ServersManager & server_manager);
+		RunServer(ServersManager & server_manager, std::string log_filename);
 		~RunServer();
 
 		void accept_new_connection(int i);
 		void recvs_request(int i);
 		void send_response(int i);
-		void process(std::ofstream & out);
+		void process(int loop_count);
 };
 
 #endif

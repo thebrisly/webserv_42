@@ -1,16 +1,23 @@
 #include "../includes/Client.hpp"
+#include <fstream>
 
 Client::Client(const int socket, const ServerConfig server_config) : _socket(socket), _server_config(server_config)
 {
+	/*
+	#include <ctime>
+    ...
+    temps_initial = clock ();
 
-	const std::string body = "<!DOCTYPE html><html><body><h1>My First Heading</h1><h2>My first paragraph.</h2><h2>My web server</h2></body></html>";
-	const std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: close\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+    temps_final = clock ();
+    temps_cpu = (temps_final - temps_initial) / CLOCKS_PER_SEC * 1000; // millisecondes
+	
+	*/
 
-	std::string response = header + body;
+	this->_session_time = clock();
 
-	this->_response = response;
+
 	this->_socket_mod = 0;
-	this->_size_response = response.length();
+	this->_size_response = 0;
 	this->_size_request = 0;
 
 }
@@ -18,6 +25,16 @@ Client::Client(const int socket, const ServerConfig server_config) : _socket(soc
 Client::Client(): _socket(0), _socket_mod(0), _size_response(0), _size_request(0){};
 
 Client::~Client() {};
+
+clock_t Client::get_session_time() const
+{
+	return this->_session_time;
+}
+
+void Client::set_session_time (clock_t session_time)
+{
+	this->_session_time = session_time;
+}
 
 int Client::get_socket() const
 {
@@ -81,13 +98,34 @@ ServerConfig Client::get_server_config() const
 
 }
 
+// Response Client::get_response_object() const
+// {
+// 	return this->_response_object;
+// }
+
+// void Client::set_response_object (Response response_object)
+// {
+// 	this->_response_object = response_object;
+// }
+
+Request Client::get_request_object() const
+{
+	return this->_request_object;
+}
+
+void Client::set_request_object (Request request_object)
+{
+	this->_request_object = request_object;
+}
+
 std::ostream& operator<<(std::ostream& os, const Client &cl)
 {
 	os << "       _socket = " << cl.get_socket() << std::endl;
 	os << "  _socket_mode = " << cl.get_socket_mod() << std::endl;
-	os << "      _request = " << cl.get_request() << std::endl;
+	os << "      _request = " << std::endl;
+	os << cl.get_request();
 	os << " _size_request = " << cl.get_size_request() << std::endl;
-	os << "     _response = " << cl.get_response() << std::endl;
+	//os << "     _response = " << cl.get_response() << std::endl;
 	os << "_size_response = " << cl.get_size_response() << std::endl;
 	os << "connected to server : " << cl.get_server_config().getPort() << std::endl;
 
