@@ -59,15 +59,24 @@ void ConfigParser::processErrorPages(const std::string& key, const std::string& 
 void ConfigParser::processLocation(const std::string& key, const std::string& value, RouteConfig& route)
 {
     std::string str = value;
-    if (key == "methods") {
-        str.erase(remove_if(str.begin(), str.end(), isspace), str.end());
-        std::string method;
-        std::istringstream iss(str);
-        while (std::getline(iss, method, ','))
-            if (method != "GET" && method != "POST" && method != "DELETE" && method != "PUT")
-                throw std::runtime_error("Unknown method: " + method);
-            route.methods.push_back(method);
-    } else if (key == "directory_listing") {
+if (key == "methods") {
+    std::istringstream iss(str);
+    std::string method;
+    while (std::getline(iss, method, ',')) {
+        // Trim leading and trailing spaces from the method
+        method.erase(method.find_last_not_of(" \n\r\t")+1);
+        method.erase(0, method.find_first_not_of(" \n\r\t"));
+
+        // Check if the method is valid
+        if (method != "GET" && method != "POST" && method != "DELETE" && method != "PUT") {
+            throw std::runtime_error("Unknown method: " + method);
+        }
+
+        route.methods.push_back(method);
+        std::cout << "METHOD " << method << " is a valid method" << std::endl;
+    }
+}
+ else if (key == "directory_listing") {
         if (value == "on")
             route.directory_listing = true;
         else if (value == "off")
