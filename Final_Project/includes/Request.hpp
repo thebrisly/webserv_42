@@ -6,7 +6,7 @@
 /*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:37:25 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/28 10:29:04 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/12/01 13:07:10 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@
 # include <iostream>
 # include <sstream>
 
+#include "ServerConfig.hpp"
+
 class Request {
 
     public :
         // Constructors, Destructors & Overloading operations
         Request();
-        Request(const std::string& str);
+        Request(const std::string& str, const ServerConfig server_config);
 		~Request();
 		Request& operator=(const Request&);
 
@@ -51,6 +53,9 @@ class Request {
         std::string                                 getSecFetchDest() const;
         std::string                                 getPort() const;
         std::string                                 getHostname() const;
+        std::string                                 getType() const;
+        std::string                                 getDefaultFile() const;
+
 
         const std::map<std::string, std::string>&   getHeaders() const;
         void                                        parseHostHeader(const std::string& hostHeader, std::string& hostname, std::string& port) const;
@@ -58,6 +63,14 @@ class Request {
         std::string                                 getSecFetchDestHeader() const;
         std::string                                 getHostHeader() const;
         std::string                                 getConnectionHeader() const;
+
+        std::string                                 calculateResponse();
+        bool                                        isMethodAllowed() const;
+
+        bool                                        fileIsAvaible() const;
+        bool                                        ckeck_host_port() const;
+        void                                        checkRequest() const;
+        bool                                        checkHttpVersion();
 
         // variable to store http methods
         static	std::vector<std::string>	        http_methods;
@@ -75,10 +88,22 @@ class Request {
         std::string                                 _port;
         std::string                                 _hostname;
 
+        std::string                                 _response;
+        int                                         _status_code;
+
         std::map<std::string, std::string>	        _headers; //dictionnary of keys, values
 
         std::string                                 _body;
 
+        std::string                                 _default_file;
+
+        const ServerConfig                          _server_config;
+
+
+
+
 };
+
+std::ostream& operator<<(std::ostream& os, const Request &request);
 
 #endif
