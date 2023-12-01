@@ -82,7 +82,6 @@ int main()
 		std::vector<ServerConfig> configs;
 	    ConfigParser parser;
     	configs = parser.parseConfigs("/Users/vgiordan/Desktop/webserv_42/Final_Project/config/config.config");
-		
 
 		ServersManager servers_manager(configs);
 
