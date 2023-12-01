@@ -71,9 +71,7 @@ if (key == "methods") {
         if (method != "GET" && method != "POST" && method != "DELETE" && method != "PUT") {
             throw std::runtime_error("Unknown method: " + method);
         }
-
         route.methods.push_back(method);
-        std::cout << "METHOD " << method << " is a valid method" << std::endl;
     }
 }
  else if (key == "directory_listing") {
@@ -254,6 +252,7 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
             }
         }
     }
+
     configs.push_back(serverConfig);
 
     checkForDuplicateServers();
@@ -287,3 +286,13 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
 //     file.close();
 //     return configs;
 // }
+
+
+std::ostream& operator<<(std::ostream& os, const std::vector<ServerConfig> &configs)
+{
+    for (std::vector<ServerConfig>::const_iterator it = configs.begin(); it!= configs.end(); ++it)
+    {
+        std::cout << *it << std::endl;
+    }
+    return os;
+}

@@ -85,14 +85,16 @@ std::ostream& operator<<(std::ostream& os, const ServerConfig &config)
 
     for (std::vector<RouteConfig>::const_iterator  it = config.getRoutes().begin(); it!= config.getRoutes().end(); ++it)
     {
-        os << CYAN << "         route path : " << RESET << it->path << std::endl;
-
+        os << CYAN << "      -  route path : " << RESET << it->path << std::endl;
+        os << CYAN << "       route method : " << RESET;
         for (std::vector<std::string>::const_iterator it2 = it->methods.begin(); it2!= it->methods.end(); ++it2)
         {
-            os << CYAN << "         route method : " << RESET << *it2 << std::endl;
+            os << *it2 << " ";
         }
+        os << std::endl;
         os << CYAN << " route default file : " << RESET << it->default_file << std::endl;
         os << CYAN << "  directory listing : " << RESET << it->directory_listing << std::endl;
+        os << CYAN << "        redirection : " << YELLOW << "(from) " << RESET << it->redirect.first << RED << " (to) " << RESET << it->redirect.second << std::endl;
     }
 
 
