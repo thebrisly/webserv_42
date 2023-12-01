@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:00:57 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/01 13:09:11 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/12/01 13:44:42 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,6 @@
 
 bool Request::ckeck_host_port() const
 {
-	//std::cout << this->_hostname << " " << this->_port << std::endl;
-	//std::cout << this->_server_config.getIPAddress()<< " " << this->_server_config.getServerName() << " " << this->_server_config.getPort() << std::endl;
-
 	if (this->_hostname != this->_server_config.getServerName() && this->_hostname != this->_server_config.getIPAddress())
 	{
 		std::cerr << RED << "NO RESOLVE FOR " << this->_hostname << RESET << std::endl;
@@ -79,6 +76,28 @@ bool Request::ckeck_host_port() const
 		return false;
 	}
 
+	return true;
+}
+
+bool Request::issetFile() const
+{
+	std::string path_complete = this->_server_config.getRoot() + this->_path;
+
+	
+
+
+	// this->_server_config.getRoutes();
+
+
+	// if (!std::filesystem::exists(path_complete))
+	// {
+	// 	std::cerr << RED << "NO FILE OR DIRECTORY " << path_complete << RESET << std::endl;
+	// 	return false;
+	// }
+
+
+	std::cout << "path complete : " << path_complete << std::endl;
+	
 	return true;
 }
 
