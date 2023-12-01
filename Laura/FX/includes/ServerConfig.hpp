@@ -41,6 +41,9 @@ class ServerConfig
 
 		RouteConfig getRoute(const std::string& path) const;
 
+		bool issetRoute(const std::string& path) const;
+		
+
 		
 };
 

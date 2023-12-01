@@ -1,4 +1,4 @@
-#include "ConfigParser.hpp"
+#include "../includes/ConfigParser.hpp"
 
 void print_stack(std::stack<std::string> stack)
 {
@@ -147,8 +147,8 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
             // std::cout << "***************************************" << std::endl;
             // print_stack(contexts);
             // std::cout << key + ":" + value << " Contexte size " <<  static_cast<int>(contexts.size()) << " Indentation " << currentIndentation <<  std::endl;
-            // std::cout << "****************************************\n" << std::endl; 
-            
+            // std::cout << "****************************************\n" << std::endl;
+
             if (!contexts.empty())
                 currentContext = contexts.top();
             else

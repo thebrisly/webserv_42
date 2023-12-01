@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   RequestUtils.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 13:27:08 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/11/28 10:28:04 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/11/30 18:11:22 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Request.hpp"
+#include "../includes/Request.hpp"
 
 // https://en.wikipedia.org/wiki/HTTP#Request_methods
 // For the webserv project we only need GET, POST and DELETE
@@ -51,7 +51,6 @@ void 	Request::parseRequest(const std::string& request)
 			this->_version = readVersion(line);
 			this->_path = readFirstLine(line);
 		}
-
 		else
 		{
 			size_t colonPos = line.find(':');
@@ -63,7 +62,7 @@ void 	Request::parseRequest(const std::string& request)
 
 				if (key == "Host")
                 {
-					std::cout << "ici 1\n";
+					//std::cout << "ici 1\n";
                     parseHostHeader(value, this->_hostname, this->_port);
                 }
                 else if (key == "Connection")
@@ -76,10 +75,7 @@ void 	Request::parseRequest(const std::string& request)
                 }
             }
 		}
-
-
 	}
-
 	// TODO: Parse body if needed
 }
 
@@ -134,7 +130,7 @@ std::string Request::getConnectionHeader() const
     std::map<std::string, std::string>::const_iterator it = _headers.find("Connection");
     if (it != _headers.end())
 	{
-        return it->second;
+        return it->second.substr(0, it->second.size() - 1);
     }
 	else
 	{
@@ -178,4 +174,62 @@ void Request::parseHostHeader(const std::string& hostHeader, std::string& hostna
     if (port.empty()) {
         port = "80"; // You can choose a different default port if needed
     }
+}
+
+
+bool Request::isMethodAllowed() const
+{
+	if (this->_server_config.issetRoute(this->_path))
+	{
+		std::vector<std::string> authorized_method = this->_server_config.getRoute(this->_path).methods;
+		for (std::vector<std::string>::const_iterator it = authorized_method.begin(); it!= authorized_method.end(); ++it)
+		{
+			if (*it == this->_method)
+			{
+				return true;
+			}
+		}
+	}
+	else
+	{
+		std::vector<std::string> authorized_method = this->_server_config.getRoute("/").methods;
+		for (std::vector<std::string>::const_iterator it = authorized_method.begin(); it!= authorized_method.end(); ++it)
+		{
+			if (*it == this->_method)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool Request::fileIsAvaible() const
+{
+
+	return true;
+
+}
+
+std::string Request::calculateResponse()
+{
+	return "";
+}
+
+
+std::ostream& operator<<(std::ostream& os, const Request &request)
+{
+	os << "current request : " << request.getCurrentRequest() << std::endl;
+	os << "           path : " << request.getPath() << std::endl;
+	os << "         method : " << request.getMethod() << std::endl;
+	os << "        version : " << request.getVersion() << std::endl;
+	os << "           host : " << request.getHost() << std::endl;
+	os << "     connection : " << request.getConnection() <<std::endl;
+	os << "   secfetchdest : " << request.getSecFetchDest() << std::endl;
+	os << "           port : " << request.getPort() << std::endl;
+	os << "       hostname : " << request.getHostname() << std::endl;
+	//os << "        headers : " << request.getHeaders() << std::endl;
+	os << "   default file : " << request.getDefaultFile() << std::endl;
+
+	return os;
 }
