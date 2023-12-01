@@ -18,6 +18,8 @@ int main()
 	    ConfigParser parser;
     	configs = parser.parseConfigs("config/config.config");
 
+		std::cout << "Configs : " << configs << std::endl;
+
 		ServersManager servers_manager(configs);
 
 		RunServer run_server(servers_manager, "diary.txt");

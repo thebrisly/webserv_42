@@ -23,4 +23,6 @@ class ConfigParser
 		std::vector<ServerConfig> configs;
 };
 
+std::ostream& operator<<(std::ostream& os, const std::vector<ServerConfig> &configs);
+
 #endif

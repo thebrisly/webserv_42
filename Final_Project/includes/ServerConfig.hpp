@@ -46,4 +46,6 @@ class ServerConfig
 		
 };
 
+std::ostream& operator<<(std::ostream& os, const ServerConfig &config);
+
 #endif

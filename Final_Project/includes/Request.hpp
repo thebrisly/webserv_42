@@ -6,7 +6,7 @@
 /*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:37:25 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/01 14:10:26 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:12:12 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,9 @@ class Request {
 
 
         bool                                        fileIsAvaible() const;
+
+
+        bool                                        issetFile() const;
 
         // variable to store http methods
         static	std::vector<std::string>	        http_methods;

@@ -151,6 +151,12 @@ void RunServer::recvs_request (int i)
 		std::cout << request_test2 << std::endl;
 
 		request_test2.parseRequest(request_test2.getCurrentRequest());
+
+
+		request_test2.issetFile();
+
+
+
 		std::string body = "";
 		std::string header = "";
 
