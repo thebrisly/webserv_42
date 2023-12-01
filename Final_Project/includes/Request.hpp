@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Request.hpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 07:37:25 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/01 15:42:17 by lfabbian         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef REQUEST_HPP
 # define REQUEST_HPP
 
@@ -74,7 +62,7 @@ class Request {
         bool                                        checkActionAuthorization() const;
         bool                                        checkMethods() const;
 
-        void    	                                prepareResponse() const;
+        void    	                                prepareResponse();
 
 
         bool                                        fileIsAvaible() const;

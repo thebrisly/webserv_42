@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Response.cpp                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/17 16:00:57 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/01 15:54:45 by lfabbian         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/Request.hpp"
 #include "../includes/Color.hpp"
 
@@ -30,25 +18,21 @@ void Request::checkRequest()
 
 	else if (!check_host_port()) {
 		this->_status_code = 505; //trouver le bon code erreur
-		std::cout << "RESULT Check_host: " << check_host_port() << std::endl;
 	}
 
 	// else if (!checkPathType()) {
 	// 	this->_status_code = 505; // trouver le bon code erreur
 	// }
 
-	else if (!issetFile()) {
+	else if (!issetFile()) 
+	{
 		this->_status_code = 404; //page not found error
 		this->_status_string + "Not Found";
-		std::cout << "RESULT SET FILE : " << issetFile() << std::endl;
 	}
-
 	else if (!checkMethods()) {
 		this->_status_code = 403; //worng authorizations
 		this->_status_string = "Forbidden";
-		std::cout << "RESULT CHECK_METHODS : " << checkMethods() << std::endl;
 	}
-
 	else
 	{
 		this->_status_code = 200; // if all good then return Success
@@ -56,12 +40,12 @@ void Request::checkRequest()
 	}
 }
 
-void	Request::prepareResponse() const
+void	Request::prepareResponse()
 {
 	std::string		response;
 	std::string		body;
 
-	checkRequest(); //pour set le status_code et le status_string
+	this->checkRequest(); //pour set le status_code et le status_string
 	std::cout << "STATUS CODE :" << this->_status_code << std::endl;
 
 	if (this->_status_code != 200) //s'il y a une erreur on envoie une page d'erreur
@@ -87,28 +71,28 @@ void	Request::prepareResponse() const
 		// response = this->._version + " " + this->_status_code + this->status_string + "\nContent-Type: ../web/error_pages" + this->_status_code + ".html";
 	}
 
-	else if (this->_status_code == 200)
-	{
-		std::ifstream file("web" + _path);
+	// else if (this->_status_code == 200)
+	// {
+	// 	std::ifstream file("web" + _path);
 
-		if (file.is_open()) {
-			std::ostringstream fileContent;
-			fileContent << file.rdbuf();
-			std::string fileContentStr = fileContent.str();
+	// 	if (file.is_open()) {
+	// 		std::ostringstream fileContent;
+	// 		fileContent << file.rdbuf();
+	// 		std::string fileContentStr = fileContent.str();
 
-			if (!fileContentStr.empty()) {
-				response = _version + " 200 OK\r\n";
-				response += "Content-Type: " + getMimeType(_path) + "\r\n";
-				response += "Connection: keep-alive\r\n";
-				response += "Content-Length: " + std::to_string(fileContentStr.length()) + "\r\n\r\n";
-				response += fileContentStr;
-			} else {
-				response = "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\nConnection: keep-alive\r\n\r\n404 - Not Found";
-			}
-		} else {
-			response = "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\nConnection: keep-alive\r\n\r\n404 - Not Found";
-		}
-	}
+	// 		if (!fileContentStr.empty()) {
+	// 			response = _version + " 200 OK\r\n";
+	// 			response += "Content-Type: " + getMimeType(_path) + "\r\n";
+	// 			response += "Connection: keep-alive\r\n";
+	// 			response += "Content-Length: " + std::to_string(fileContentStr.length()) + "\r\n\r\n";
+	// 			response += fileContentStr;
+	// 		} else {
+	// 			response = "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\nConnection: keep-alive\r\n\r\n404 - Not Found";
+	// 		}
+	// 	} else {
+	// 		response = "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\nConnection: keep-alive\r\n\r\n404 - Not Found";
+	// 	}
+	// }
 
 	this->_response = response;
 }

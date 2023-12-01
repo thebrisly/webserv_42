@@ -85,7 +85,7 @@ std::ostream& operator<<(std::ostream& os, const ServerConfig &config)
 
     for (std::vector<RouteConfig>::const_iterator  it = config.getRoutes().begin(); it!= config.getRoutes().end(); ++it)
     {
-        os << CYAN << "      -  route path : " << RESET << it->path << std::endl;
+        os << GREEN << "      -  route path : " << RESET << it->path << std::endl;
         os << CYAN << "       route method : " << RESET;
         for (std::vector<std::string>::const_iterator it2 = it->methods.begin(); it2!= it->methods.end(); ++it2)
         {
