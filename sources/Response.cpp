@@ -12,15 +12,24 @@
 
 void Request::checkRequest()
 {
+	int id_route;
 	if (!checkHttpVersion())
 	{
 		this->_status_code = 505;
 		std::cout << MAGENTA << "Response error 505 : bad version." << RESET << std::endl;
 	}
 
-	else if (!check_host_port()) {
+	else if (!check_host_port()) 
+	{
 		this->_status_code = 505; //trouver le bon code erreur
 		std::cout << MAGENTA << "Response error 500 : host - port not resolved." << RESET << std::endl;
+	}
+	else if ((id_route = this->getLocation()) == -1)
+	{
+		this->_status_code = 400; //page not found error
+
+		std::cout << MAGENTA << "Response error 400 : location issue." << RESET << std::endl;
+
 	}
 
 	// else if (!checkPathType()) {

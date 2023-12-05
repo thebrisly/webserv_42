@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RequestUtils.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 13:27:08 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/01 14:10:25 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/12/05 15:25:56 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ std::vector<std::string>		Request::initMethods()
 // Méthode pour parser la requête
 void 	Request::parseRequest(const std::string& request)
 {
+
+
+
 	// Clear existing data
 	clearRequest();
 
@@ -49,8 +52,12 @@ void 	Request::parseRequest(const std::string& request)
 		if (this->_method.empty())
 		{
 			this->_method = readMethod(line);
-			this->_version = readVersion(line);
+			this->_version = readVersion(line);			
 			this->_path = readFirstLine(line);
+			if (this->_path.back() == '/')
+			{
+				this->_path = this->_path.substr(0, this->_path.size() - 1);
+			}
 		}
 		else
 		{

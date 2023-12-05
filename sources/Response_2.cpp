@@ -1,59 +1,67 @@
 #include "../includes/Request.hpp"
-
+#include "../includes/Color.hpp"
+#include <unistd.h>
 
 int Request::getLocation() const
 {
+	std::cout << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
 
-	const std::string path_to_test = this->_path;
+	std::string path_to_test = this->_path;
 
+	// std::cout << "path_to_test : " << path_to_test << std::endl;
+
+
+	if (this->isFile() == 1)
+	{
+		path_to_test = path_to_test.substr(0, path_to_test.find_last_of('/') + 1);
+	}
+
+	// std::cout << "path_to_test : [" << path_to_test << "]" << std::endl;
+	
 	std::vector<RouteConfig> routes = this->_server_config.getRoutes();
 
-	for (unsigned long i = 0; i < routes.size(); i++)
-	{
-		std::cout << "route " << i << " : " << routes[i].path << std::endl;
+	unsigned long i;
 
-		if (routes[i].path.length() <= this->getPath().length())
-		{
-			std::cout << routes[i].path.compare(0, routes[i].path.length(), path_to_test) << std::endl;
-		}
-	}
-
-	/*
-	
-	int main() 
+	while (path_to_test != "/")
 	{
 
-		const std::string location_path = "/home/user/Desktop/";
-
-		std::string str = "/home/user/Desktop/test.txt";
-
-		if (str.length() >= location_path.length())
+		for (i = 0; i < routes.size(); i++)
 		{
-			std::cout << location_path.compare(0, location_path.length(), str.substr(0,location_path.length())) << std::endl;
+			if (routes[i].path == path_to_test)
+			{
+				//std::cout << RED << "J ai trouve une location valide ! " << routes[i].path << RESET <<std::endl;
 
+				return i;
+			}
 		}
-		return 0;
+
+		path_to_test = path_to_test.substr(0, path_to_test.find_last_of('/'));
+
+		if (path_to_test.length() == 0)
+		{
+			path_to_test = "/";
+		}
+
+		// std::cout << "new path_to_test : [" << path_to_test << "]" << std::endl;
+		// sleep(1);
 
 	}
-	
-	*/
+
+	for (i = 0; i < routes.size(); i++)
+	{
+		if (routes[i].path == path_to_test)
+		{
+			//std::cout << RED << "J ai trouve une location valide ! " << routes[i].path << RESET <<std::endl;
+
+			return i;
+		}
+	}	
 
 
 
 
-
-	exit(0);
-
-	return 2147483647;
+	return -1;
 }
-
-/*
-bool compare_str_reference(const std::string& ref, const std::string& str) {
-    if (ref.length() > str.length()) {
-        return false;
-    }
-    return str.compare(0, ref.length(), ref) == 0;
-}
-
-
-*/
