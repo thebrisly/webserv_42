@@ -11,7 +11,7 @@
 
 void Request::checkRequest()
 {
-	if (!checkHttpVersion()) 
+	if (!checkHttpVersion())
 	{
 		this->_status_code = 505;
 		std::cout << MAGENTA << "Response error 505 : bad version." << RESET << std::endl;
@@ -26,7 +26,7 @@ void Request::checkRequest()
 	// 	this->_status_code = 505; // trouver le bon code erreur
 	// }
 
-	else if (!issetFile()) 
+	else if (!issetFile())
 	{
 		this->_status_code = 404; //page not found error
 		this->_status_string + "Not Found";
@@ -47,6 +47,8 @@ void Request::checkRequest()
 
 void	Request::prepareResponse()
 {
+	const std::map<int, std::string>& errorPages = this->_server_config.getErrorPages();
+	std::string 	errorPagePath;
 	std::string		response;
 	std::string		body;
 
@@ -55,7 +57,17 @@ void	Request::prepareResponse()
 
 	if (this->_status_code != 200) //s'il y a une erreur on envoie une page d'erreur
 	{
-		std::string errorPagePath = "web/default_error_pages/" + std::to_string(_status_code) + ".html";
+		std::map<int, std::string>::const_iterator it = errorPages.find(this->_status_code);
+        if (it != errorPages.end())
+		{
+            errorPagePath = it->second;
+        }
+        else
+		{
+           errorPagePath = "web/default_error_pages/" + std::to_string(_status_code) + ".html";
+        }
+
+		std::cout << "FICHIER DE REFERENCE : " << errorPagePath << std::endl;
         std::ifstream file(errorPagePath);
 
 		if (file.is_open())
@@ -72,7 +84,7 @@ void	Request::prepareResponse()
         }
 		else
 		{
-			
+
             response = "HTTP/1.1 500 Internal Server Error\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n500 - Internal Server Error";
 		}
 		// response = this->._version + " " + this->_status_code + this->status_string + "\nContent-Type: ../web/error_pages" + this->_status_code + ".html";
