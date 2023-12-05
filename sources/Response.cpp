@@ -36,18 +36,18 @@ void Request::checkRequest()
 	// 	this->_status_code = 505; // trouver le bon code erreur
 	// }
 
-	// else if (!issetFile())
-	// {
-	// 	this->_status_code = 404; //page not found error
-	// 	this->_status_string + "Not Found";
-	// 	std::cout << MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
-	// }
-	// else if (!checkMethods()) {
-	// 	this->_status_code = 403; //wrong authorizations
-	// 	this->_status_string = "Forbidden";
-	// 	std::cout << MAGENTA << "Response error 403 : forbidden method." << RESET << std::endl;
-	// }
-	else if (checkRedirection())
+	else if (!issetFile())
+	{
+		this->_status_code = 404; //page not found error
+		this->_status_string + "Not Found";
+		std::cout << MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
+	}
+	else if (!checkMethods()) {
+		this->_status_code = 403; //wrong authorizations
+		this->_status_string = "Forbidden";
+		std::cout << MAGENTA << "Response error 403 : forbidden method." << RESET << std::endl;
+	}
+	else if (checkRedirection(id_route))
 	{
 		this->checkRequest();
 		return ;
@@ -75,10 +75,11 @@ void	Request::prepareResponse()
 		std::map<int, std::string>::const_iterator it = errorPages.find(this->_status_code);
         if (it != errorPages.end())
 		{
-            errorPagePath = it->second;
+            errorPagePath = this->_server_config.getRoot() + it->second;
         }
         else
 		{
+			std::cout << "ERREUR : page d'erreur non trouvée." << std::endl;
            errorPagePath = "web/default_error_pages/" + std::to_string(_status_code) + ".html";
         }
 
@@ -253,25 +254,27 @@ bool Request::checkMethods() const
 }
 
 
-std::string getDirectoryFromFilePath(const std::string& filePath) {
-    size_t lastSlashPos = filePath.find_last_of('/');
+// std::string getDirectoryFromFilePath(const std::string& filePath) {
+//     size_t lastSlashPos = filePath.find_last_of('/');
 
-    // If the last slash is at the start or no slash is found, return the root ("/")
-    if (lastSlashPos == 0 || lastSlashPos == std::string::npos) {
-        return "/";
-    }
+//     // If the last slash is at the start or no slash is found, return the root ("/")
+//     if (lastSlashPos == 0 || lastSlashPos == std::string::npos) {
+//         return "/";
+//     }
 
-    // Extract and return the directory part of the path
-    return filePath.substr(0, lastSlashPos);
-}
+//     // Extract and return the directory part of the path
+//     return filePath.substr(0, lastSlashPos);
+// }
 
-bool Request::checkRedirection()
+bool Request::checkRedirection(int id_route)
 {
     std::cout << "Checking for Redirection" << std::endl;
     std::cout << "Current Path: " << this->_path << std::endl;
 	std::string usingPath = this->_path;
 
+	RouteConfig route = this->_server_config.getRoutes()[id_route];
 
+	std::cout << RED << "Route " << route.path << RESET << std::endl;
 	// if (isFile())
 	// {
 	// 	std::cout << RED << "File" << RESET << std::endl;
@@ -279,17 +282,6 @@ bool Request::checkRedirection()
 	// 	std::cout << "Using Path: " << usingPath << std::endl;
 	// }
 
-    RouteConfig route;
-    try
-    {
-        route = this->_server_config.getRoute(usingPath);
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-        return false; // Return false if an exception occurs
-    }
-    
     // Check if redirection is specified in the route configuration
 
 	//std::cout <<  RED << "Redirect: " << route.redirect.first << " to: " << route.redirect.second << RESET << std::endl;
