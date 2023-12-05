@@ -6,7 +6,7 @@
 /*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:43:38 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/01 15:20:11 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/12/05 10:29:49 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,3 +111,7 @@ std::string Request::getResponse() const
         return (this->_response);
 }
 
+ServerConfig Request::getServerConfig() const
+{
+        return (this->_server_config);
+}

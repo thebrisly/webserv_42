@@ -45,6 +45,7 @@ class Request {
         std::string                                 getType() const;
         std::string                                 getDefaultFile() const;
         std::string                                 getResponse() const;
+        ServerConfig                                getServerConfig() const;
 
 
         const std::map<std::string, std::string>&   getHeaders() const;
