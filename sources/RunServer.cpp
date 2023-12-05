@@ -215,7 +215,7 @@ void RunServer::recvs_request (int i)
 
 		// std::string response = header + body;
 
-		std::cout << "Response = " << request_test2.getResponse() << std::endl;
+		//std::cout << "Response = " << request_test2.getResponse() << std::endl;
 
 		this->_map_clients[i].set_response(request_test2.getResponse());
 		this->_map_clients[i].set_size_response(request_test2.getResponse().length());

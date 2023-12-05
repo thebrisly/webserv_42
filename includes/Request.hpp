@@ -62,6 +62,7 @@ class Request {
         bool                                        checkFileOrDirectory() const;
         bool                                        checkActionAuthorization() const;
         bool                                        checkMethods() const;
+        bool                                        checkRedirection();
 
         void    	                                prepareResponse();
 

@@ -2,6 +2,7 @@
 #include "../includes/Utils.hpp"
 #include "../includes/Color.hpp"
 
+
 // No constructor as the response is just a variable of the object "Request"
 
 // VERIFICATIONS BEFORE SENDING THE RESPONSE :
@@ -26,16 +27,21 @@ void Request::checkRequest()
 	// 	this->_status_code = 505; // trouver le bon code erreur
 	// }
 
-	else if (!issetFile())
+	// else if (!issetFile())
+	// {
+	// 	this->_status_code = 404; //page not found error
+	// 	this->_status_string + "Not Found";
+	// 	std::cout << MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
+	// }
+	// else if (!checkMethods()) {
+	// 	this->_status_code = 403; //wrong authorizations
+	// 	this->_status_string = "Forbidden";
+	// 	std::cout << MAGENTA << "Response error 403 : forbidden method." << RESET << std::endl;
+	// }
+	else if (checkRedirection())
 	{
-		this->_status_code = 404; //page not found error
-		this->_status_string + "Not Found";
-		std::cout << MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
-	}
-	else if (!checkMethods()) {
-		this->_status_code = 403; //worng authorizations
-		this->_status_string = "Forbidden";
-		std::cout << MAGENTA << "Response error 403 : forbidden method." << RESET << std::endl;
+		this->checkRequest();
+		return ;
 	}
 	else
 	{
@@ -238,20 +244,83 @@ bool Request::checkMethods() const
 }
 
 
-// 1 if file, 0 if folder
-bool Request::isFile() const
+std::string getDirectoryFromFilePath(const std::string& filePath) {
+    size_t lastSlashPos = filePath.find_last_of('/');
+
+    // If the last slash is at the start or no slash is found, return the root ("/")
+    if (lastSlashPos == 0 || lastSlashPos == std::string::npos) {
+        return "/";
+    }
+
+    // Extract and return the directory part of the path
+    return filePath.substr(0, lastSlashPos);
+}
+
+bool Request::checkRedirection()
 {
-	size_t lastSlashPos = this->_path.find_last_of('/');
+    std::cout << "Checking for Redirection" << std::endl;
+    std::cout << "Current Path: " << this->_path << std::endl;
+	std::string usingPath = this->_path;
 
-	if (lastSlashPos != std::string::npos && lastSlashPos > this->_path.find_last_of('.')) {
-		return false;
+
+	if (isFile())
+	{
+		std::cout << RED << "File" << RESET << std::endl;
+		usingPath = getDirectoryFromFilePath(this->_path);
+		std::cout << "Using Path: " << usingPath << std::endl;
 	}
 
-	if (lastSlashPos == std::string::npos && _path.find_last_of('.') != std::string::npos) {
-		return true;
-	}
+    RouteConfig route;
+    try
+    {
+        route = this->_server_config.getRoute(usingPath);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return false; // Return false if an exception occurs
+    }
+    
+    // Check if redirection is specified in the route configuration
+	//std::cout <<  RED << "Redirect: " << route.redirect.first << " to: " << route.redirect.second << RESET << std::endl;
+    if (route.redirect.first != "" && route.redirect.second != "")
+    {
+        // Check if the current path matches the path to redirect from
+        if (usingPath == route.redirect.first)
+        {
+            std::cout << RED << "Redirecting to: " << RESET << route.redirect.second << std::endl;
+            this->_path = route.redirect.second;
+            return true;	
+        }
+    }
 
-	return false;
+    return false;
+}
+
+
+
+// 1 if file, 0 if folder
+bool Request::isFile() const {
+    size_t lastSlashPos = this->_path.find_last_of('/');
+    size_t lastDotPos = this->_path.find_last_of('.');
+
+    // Case 1: No dot in the path, likely a directory
+    if (lastDotPos == std::string::npos) {
+        return false;
+    }
+
+    // Case 2: Dot present, but no slash - could be a file without directories
+    if (lastSlashPos == std::string::npos) {
+        return true;
+    }
+
+    // Case 3: Dot after the last slash - likely a file
+    if (lastDotPos > lastSlashPos) {
+        return true;
+    }
+
+    // Default case: Likely a directory
+    return false;
 }
 
 
