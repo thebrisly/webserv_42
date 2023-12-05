@@ -2,7 +2,7 @@ Initial setup of fd_set
 readfds : 3 4 
 writefds : 
 
-Considering client 3 on loop 745 : 
+Considering client 3 on loop 192 : 
 ------------------- accept new connection -------------------
 readfds : 3 
 writefds : 
@@ -16,7 +16,7 @@ Client : 7
 _size_response = 0
 connected to server : 8888
 
-Considering client 7 on loop 746 : 
+Considering client 7 on loop 193 : 
 ------------------- recvs request -------------------
 readfds : 7 
 writefds : 
@@ -43,7 +43,7 @@ Sec-Fetch-User: ?1
 _size_response = 1042
 connected to server : 8888
 
-Considering client 7 on loop 747 : 
+Considering client 7 on loop 194 : 
 ------------------- send response -------------------
 readfds : 
 writefds : 7 
@@ -70,7 +70,7 @@ Sec-Fetch-User: ?1
 _size_response = 1042
 connected to server : 8888
 
-Considering client 7 on loop 748 : 
+Considering client 7 on loop 195 : 
 ------------------- recvs request -------------------
 readfds : 7 
 writefds : 
@@ -96,7 +96,7 @@ Sec-Fetch-Site: same-origin
 _size_response = 1090
 connected to server : 8888
 
-Considering client 3 on loop 749 : 
+Considering client 3 on loop 196 : 
 ------------------- accept new connection -------------------
 readfds : 3 
 writefds : 7 
@@ -130,7 +130,7 @@ Client : 8
 _size_response = 0
 connected to server : 8888
 
-Considering client 7 on loop 749 : 
+Considering client 7 on loop 196 : 
 ------------------- send response -------------------
 readfds : 3 
 writefds : 7 
@@ -164,7 +164,7 @@ Client : 8
 _size_response = 0
 connected to server : 8888
 
-Considering client 8 on loop 750 : 
+Considering client 8 on loop 197 : 
 ------------------- recvs request -------------------
 readfds : 8 
 writefds : 
@@ -210,7 +210,7 @@ Sec-Fetch-Site: same-origin
 _size_response = 36379
 connected to server : 8888
 
-Considering client 8 on loop 751 : 
+Considering client 8 on loop 198 : 
 ------------------- send response -------------------
 readfds : 
 writefds : 8 
@@ -256,7 +256,7 @@ Sec-Fetch-Site: same-origin
 _size_response = 36379
 connected to server : 8888
 
-Considering client 8 on loop 752 : 
+Considering client 8 on loop 199 : 
 ------------------- recvs request -------------------
 readfds : 8 
 writefds : 
@@ -302,7 +302,7 @@ Sec-Fetch-Site: same-origin
 _size_response = 732
 connected to server : 8888
 
-Considering client 8 on loop 753 : 
+Considering client 8 on loop 200 : 
 ------------------- send response -------------------
 readfds : 
 writefds : 8 
@@ -348,7 +348,7 @@ Sec-Fetch-Site: same-origin
 _size_response = 732
 connected to server : 8888
 
-Considering client 8 on loop 847 : 
+Considering client 8 on loop 402 : 
 ------------------- recvs request -------------------
 readfds : 8 
 writefds : 
@@ -378,7 +378,7 @@ Client : 8
        _socket = 8
   _socket_mode = 1
       _request = 
-GET /heeeome.html HTTP/1.1
+GET /img/ HTTP/1.1
 Host: localhost:8888
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
@@ -391,11 +391,11 @@ Sec-Fetch-Mode: navigate
 Sec-Fetch-Site: none
 Sec-Fetch-User: ?1
 
- _size_request = 483
-_size_response = 732
+ _size_request = 475
+_size_response = 91
 connected to server : 8888
 
-Considering client 8 on loop 848 : 
+Considering client 8 on loop 403 : 
 ------------------- send response -------------------
 readfds : 
 writefds : 8 
@@ -425,7 +425,7 @@ Client : 8
        _socket = 8
   _socket_mode = 0
       _request = 
-GET /heeeome.html HTTP/1.1
+GET /img/ HTTP/1.1
 Host: localhost:8888
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
@@ -438,125 +438,7 @@ Sec-Fetch-Mode: navigate
 Sec-Fetch-Site: none
 Sec-Fetch-User: ?1
 
- _size_request = 483
-_size_response = 732
-connected to server : 8888
-
-Considering client 8 on loop 849 : 
-------------------- recvs request -------------------
-readfds : 8 
-writefds : 
-copy = readfds : 3 4 7 
-writefds : 8 
-Client : 7
-       _socket = 7
-  _socket_mode = 0
-      _request = 
-GET /style0.css HTTP/1.1
-Host: localhost:8888
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
-Accept: text/css,*/*;q=0.1
-Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
-Connection: keep-alive
-Referer: http://localhost:8888/home.html
-Sec-Fetch-Dest: style
-Sec-Fetch-Mode: no-cors
-Sec-Fetch-Site: same-origin
-
- _size_request = 409
-_size_response = 1090
-connected to server : 8888
-
-Client : 8
-       _socket = 8
-  _socket_mode = 1
-      _request = 
-GET /favicon.ico HTTP/1.1
-Host: localhost:8888
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
-Accept: image/avif,image/webp,*/*
-Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
-Connection: keep-alive
-Referer: http://localhost:8888/heeeome.html
-Sec-Fetch-Dest: image
-Sec-Fetch-Mode: no-cors
-Sec-Fetch-Site: same-origin
-
- _size_request = 420
-_size_response = 732
-connected to server : 8888
-
-Considering client 8 on loop 850 : 
-------------------- send response -------------------
-readfds : 
-writefds : 8 
-copy = readfds : 3 4 7 8 
-writefds : 
-Client : 7
-       _socket = 7
-  _socket_mode = 0
-      _request = 
-GET /style0.css HTTP/1.1
-Host: localhost:8888
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
-Accept: text/css,*/*;q=0.1
-Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
-Connection: keep-alive
-Referer: http://localhost:8888/home.html
-Sec-Fetch-Dest: style
-Sec-Fetch-Mode: no-cors
-Sec-Fetch-Site: same-origin
-
- _size_request = 409
-_size_response = 1090
-connected to server : 8888
-
-Client : 8
-       _socket = 8
-  _socket_mode = 0
-      _request = 
-GET /favicon.ico HTTP/1.1
-Host: localhost:8888
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
-Accept: image/avif,image/webp,*/*
-Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
-Connection: keep-alive
-Referer: http://localhost:8888/heeeome.html
-Sec-Fetch-Dest: image
-Sec-Fetch-Mode: no-cors
-Sec-Fetch-Site: same-origin
-
- _size_request = 420
-_size_response = 732
-connected to server : 8888
-
-Considering client 8 on loop 851 : 
-------------------- recvs request -------------------
-readfds : 8 
-writefds : 
-copy = readfds : 3 4 7 
-writefds : 
-Client : 7
-       _socket = 7
-  _socket_mode = 0
-      _request = 
-GET /style0.css HTTP/1.1
-Host: localhost:8888
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0
-Accept: text/css,*/*;q=0.1
-Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-Accept-Encoding: gzip, deflate, br
-Connection: keep-alive
-Referer: http://localhost:8888/home.html
-Sec-Fetch-Dest: style
-Sec-Fetch-Mode: no-cors
-Sec-Fetch-Site: same-origin
-
- _size_request = 409
-_size_response = 1090
+ _size_request = 475
+_size_response = 91
 connected to server : 8888
 

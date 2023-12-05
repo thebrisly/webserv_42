@@ -14,6 +14,11 @@
 void Request::checkRequest()
 {
 	int id_route;
+	bool is_file = this->isFile();
+
+
+	std::cout << "is_file : " << is_file << std::endl;
+
 	if (!checkHttpVersion())
 	{
 		this->_status_code = 505;
@@ -40,16 +45,31 @@ void Request::checkRequest()
 		this->checkRequest();
 		return ;
 	}
-	else if (!this->issetFile(id_route))
-	{
-		this->_status_code = 404; //page not found error
-		this->_status_string + "Not Found";
-		std::cout << MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
-	}
 	else
 	{
-		this->_status_code = 200;
+		if (this->isFile() == 1)
+		{
+			if (!this->issetFile(id_route))
+			{
+				this->_status_code = 404; //page not found error
+				this->_status_string + "Not Found";
+				std::cout << MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
+			}
+			else
+			{
+				this->_status_code = 200;
+				std::cout << MAGENTA << "Response OK 200" << RESET << std::endl;
+
+			}
+		}
+		else
+		{
+			/*Your playground Victor*/
+		}
+
+
 	}
+
 	
 	std::cout << MAGENTA << "Response OK" << RESET << std::endl;
 	//exit(10);
