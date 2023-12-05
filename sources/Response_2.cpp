@@ -1,59 +1,36 @@
 #include "../includes/Request.hpp"
-
+#include "../includes/Color.hpp"
+#include <unistd.h>
 
 int Request::getLocation() const
 {
 
-	const std::string path_to_test = this->_path;
+	std::string path_to_test = this->_path;
 
+
+	if (path_to_test.length() > 1 && path_to_test.back() == '/')
+	{
+		path_to_test = path_to_test.substr(0, path_to_test.size()-1);
+	}
+
+	std::cout << "path_to_test : " << path_to_test << std::endl;
+	
 	std::vector<RouteConfig> routes = this->_server_config.getRoutes();
 
-	for (unsigned long i = 0; i < routes.size(); i++)
+	unsigned long i;
+	for (i = 0; i < routes.size(); i++)
 	{
 		std::cout << "route " << i << " : " << routes[i].path << std::endl;
 
-		if (routes[i].path.length() <= this->getPath().length())
+		if (routes[i].path.compare(0, routes[i].path.length(), path_to_test.substr(0, routes[i].path.length())) == 0)
 		{
-			std::cout << routes[i].path.compare(0, routes[i].path.length(), path_to_test) << std::endl;
+			std::cout << RED << "J ai trouve une location valide !" << RESET <<std::endl;
+//			sleep(1);
+			return i;
 		}
+
 	}
 
-	/*
-	
-	int main() 
-	{
 
-		const std::string location_path = "/home/user/Desktop/";
-
-		std::string str = "/home/user/Desktop/test.txt";
-
-		if (str.length() >= location_path.length())
-		{
-			std::cout << location_path.compare(0, location_path.length(), str.substr(0,location_path.length())) << std::endl;
-
-		}
-		return 0;
-
-	}
-	
-	*/
-
-
-
-
-
-	exit(0);
-
-	return 2147483647;
+	return -1;
 }
-
-/*
-bool compare_str_reference(const std::string& ref, const std::string& str) {
-    if (ref.length() > str.length()) {
-        return false;
-    }
-    return str.compare(0, ref.length(), ref) == 0;
-}
-
-
-*/
