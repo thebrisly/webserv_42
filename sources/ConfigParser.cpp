@@ -115,10 +115,16 @@ void ConfigParser::processServer(const std::string& key, const std::string& valu
 
 void ConfigParser::processRedirect(const std::string &key, const std::string &value, RouteConfig &route) {
 
+    static std::string from, to;
     if (key == "from") {
-        route.redirect.first = value;
+        from = value;
     } else if (key == "to") {
-        route.redirect.second = value;
+        to = value;
+        if (!from.empty()) {
+            route.redirections.push_back(std::make_pair(from, to));
+            from.clear();  // Clear the from and to values after adding to the vector
+            to.clear();
+        }
     } else {
         throw std::runtime_error("Unknown key or wrong context: " + key);
     }

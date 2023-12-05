@@ -29,3 +29,21 @@ std::string findMimeType (std::string extension)
 
 	return ext_to_MimeType[extension];
 }
+
+
+std::string reducePath(std::string& path)
+{
+    if (path == "/") {
+        return path;
+    }
+
+    size_t lastSlashPos = path.find_last_of('/');
+
+    if (lastSlashPos == std::string::npos || lastSlashPos == 0) {
+        path = "/";
+    } else {
+        path = path.substr(0, lastSlashPos);
+    }
+
+    return path;
+}

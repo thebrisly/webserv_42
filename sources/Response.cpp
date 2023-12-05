@@ -263,12 +263,12 @@ bool Request::checkRedirection()
 	std::string usingPath = this->_path;
 
 
-	if (isFile())
-	{
-		std::cout << RED << "File" << RESET << std::endl;
-		usingPath = getDirectoryFromFilePath(this->_path);
-		std::cout << "Using Path: " << usingPath << std::endl;
-	}
+	// if (isFile())
+	// {
+	// 	std::cout << RED << "File" << RESET << std::endl;
+	// 	usingPath = getDirectoryFromFilePath(this->_path);
+	// 	std::cout << "Using Path: " << usingPath << std::endl;
+	// }
 
     RouteConfig route;
     try
@@ -282,18 +282,29 @@ bool Request::checkRedirection()
     }
     
     // Check if redirection is specified in the route configuration
-	//std::cout <<  RED << "Redirect: " << route.redirect.first << " to: " << route.redirect.second << RESET << std::endl;
-    if (route.redirect.first != "" && route.redirect.second != "")
-    {
-        // Check if the current path matches the path to redirect from
-        if (usingPath == route.redirect.first)
-        {
-            std::cout << RED << "Redirecting to: " << RESET << route.redirect.second << std::endl;
-            this->_path = route.redirect.second;
-            return true;	
-        }
-    }
 
+	//std::cout <<  RED << "Redirect: " << route.redirect.first << " to: " << route.redirect.second << RESET << std::endl;
+	std::string checking_path = this->_path;
+	while (42)
+	{
+		for (std::vector<std::pair<std::string, std::string> >::const_iterator it = route.redirections.begin(); it!= route.redirections.end(); ++it)
+		{
+			std::pair<std::string, std::string> redirection = *it;
+			if (redirection.first != "" && redirection.second != "")
+			{
+				// Check if the current path matches the path to redirect from
+				if (checking_path == redirection.first)
+				{
+					std::cout << RED << "Redirecting to: " << RESET << redirection.second << std::endl;
+					this->_path = redirection.second;
+					return true;	
+				}
+			}
+		}
+		checking_path = reducePath(checking_path);
+		if (checking_path == "/")
+			break;
+	}
     return false;
 }
 
