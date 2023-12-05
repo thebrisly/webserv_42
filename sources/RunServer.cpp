@@ -152,6 +152,8 @@ void RunServer::recvs_request (int i)
 
 		request_test2.parseRequest(request_test2.getCurrentRequest());
 
+		request_test2.getLocation();
+
 		request_test2.checkRequest();
 
 
