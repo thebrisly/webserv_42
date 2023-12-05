@@ -1,6 +1,7 @@
 #include "../includes/Request.hpp"
 #include "../includes/Utils.hpp"
 #include "../includes/Color.hpp"
+#include <unistd.h>
 
 
 // No constructor as the response is just a variable of the object "Request"
@@ -18,7 +19,6 @@ void Request::checkRequest()
 		this->_status_code = 505;
 		std::cout << MAGENTA << "Response error 505 : bad version." << RESET << std::endl;
 	}
-
 	else if (!check_host_port()) 
 	{
 		this->_status_code = 505; //trouver le bon code erreur
@@ -27,22 +27,10 @@ void Request::checkRequest()
 	else if ((id_route = this->getLocation()) == -1)
 	{
 		this->_status_code = 400; //page not found error
-
 		std::cout << MAGENTA << "Response error 400 : location issue." << RESET << std::endl;
-
 	}
-
-	// else if (!checkPathType()) {
-	// 	this->_status_code = 505; // trouver le bon code erreur
-	// }
-
-	else if (!issetFile())
+	else if (!checkMethods(id_route)) 
 	{
-		this->_status_code = 404; //page not found error
-		this->_status_string + "Not Found";
-		std::cout << MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
-	}
-	else if (!checkMethods()) {
 		this->_status_code = 403; //wrong authorizations
 		this->_status_string = "Forbidden";
 		std::cout << MAGENTA << "Response error 403 : forbidden method." << RESET << std::endl;
@@ -52,12 +40,30 @@ void Request::checkRequest()
 		this->checkRequest();
 		return ;
 	}
+	else if (!this->issetFile(id_route))
+	{
+		this->_status_code = 404; //page not found error
+		this->_status_string + "Not Found";
+		std::cout << MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
+	}
 	else
 	{
-		this->_status_code = 200; // if all good then return Success
-		this->_status_string = " OK";
-		std::cout << MAGENTA << "Response OK" << RESET << std::endl;
+		this->_status_code = 200;
 	}
+	
+	std::cout << MAGENTA << "Response OK" << RESET << std::endl;
+	//exit(10);
+
+	// else if (!checkPathType()) {
+	// 	this->_status_code = 505; // trouver le bon code erreur
+	// }
+
+	// else
+	// {
+	// 	this->_status_code = 200; // if all good then return Success
+	// 	this->_status_string = " OK";
+	// 	std::cout << MAGENTA << "Response OK" << RESET << std::endl;
+	// }
 }
 
 void	Request::prepareResponse()
@@ -164,93 +170,73 @@ bool Request::check_host_port() const
 	return true;
 }
 
-bool Request::issetFile() const
+bool Request::issetFile(int id_route) const
 {
+
+	RouteConfig route = this->_server_config.getRoutes()[id_route];
+
 	std::string root = this->_server_config.getRoot();
 	std::string root_path_file = root + this->_path;
-	std::string file_location;
-	std::vector<RouteConfig> RoutesConfig = this->_server_config.getRoutes();
+
+
+
+
+	// std::string file_location;
+	// std::vector<RouteConfig> RoutesConfig = this->_server_config.getRoutes();
 	std::ifstream file;
 
-	// std::cout << "Ressource : " << root_path_file << std::endl;
-
-	size_t i = root_path_file.rfind('/', root_path_file.length());
-	if (i != std::string::npos)
+	file.open(root_path_file);
+	if (file)
 	{
-		file_location = root_path_file.substr(0, i + 1);
+		//std::cout << "OUI LA RESSOURCE EST DISPO" <<std::endl;
+		file.close();
+		return true;
 	}
 	else
 	{
-		std::cerr << RED << "ERROR A DEBUG !!!" << std::endl;
+		//std::cout << "NON RESSOURCE PAS DISPO" <<std::endl;
 		return false;
 	}
+	// std::cout << "Ressource : " << root_path_file << std::endl;
 
-	for (std::vector<RouteConfig>::iterator it = RoutesConfig.begin(); it!= RoutesConfig.end(); ++it)
-	{
-	//std::cout << file_location << "||" << root+it->path << std::endl;
-		if (file_location == root+it->path)
-		{
-			file.open(root_path_file);
-			if (file)
-			{
-				//std::cout << "OUI LA RESSOURCE EST DISPO" <<std::endl;
-				return true;
-			}
-			else
-			{
-				//std::cout << "NON RESSOURCE PAS DISPO" <<std::endl;
-				return false;
-			}
-		}
-	}
-	return false;
+	// size_t i = root_path_file.rfind('/', root_path_file.length());
+	// if (i != std::string::npos)
+	// {
+	// 	file_location = root_path_file.substr(0, i + 1);
+	// }
+	// else
+	// {
+	// 	std::cerr << RED << "ERROR A DEBUG !!!" << std::endl;
+	// 	return false;
+	// }
+
+	// for (std::vector<RouteConfig>::iterator it = RoutesConfig.begin(); it!= RoutesConfig.end(); ++it)
+	// {
+	// //std::cout << file_location << "||" << root+it->path << std::endl;
+	// 	if (file_location == root+it->path)
+	// 	{
+	// 	}
+	// }
+	// return false;
 }
 
 
-bool Request::checkMethods() const
+bool Request::checkMethods(int id_route) const
 {
-	std::string root = this->_server_config.getRoot();
-	std::string root_path_file = root + this->_path;
-	std::string file_location;
-	std::vector<RouteConfig> RoutesConfig = this->_server_config.getRoutes();
-	std::ifstream file;
-	std::vector<std::string> authorized_methods;
+	RouteConfig route = this->_server_config.getRoutes()[id_route];
+	std::vector<std::string> authorized_methods = route.methods;
 
-
-	// std::cout << "Ressource : " << root_path_file << std::endl;
-
-	size_t i = root_path_file.rfind('/', root_path_file.length());
-	if (i != std::string::npos)
+	for (std::vector<std::string>::const_iterator it = authorized_methods.begin(); it!= authorized_methods.end(); ++it)
 	{
-		file_location = root_path_file.substr(0, i + 1);
-	}
-	else
-	{
-		std::cerr << RED << "ERROR A DEBUG !!!" << std::endl;
-		return false;
-	}
-
-	for (std::vector<RouteConfig>::iterator it = RoutesConfig.begin(); it!= RoutesConfig.end(); ++it)
-	{
-	//std::cout << file_location << "||" << root+it->path << std::endl;
-		if (file_location == root+it->path)
+		if (*it == this->_method)
 		{
-			authorized_methods = it->methods;
-
-			for (std::vector<std::string>::const_iterator it = authorized_methods.begin(); it!= authorized_methods.end(); ++it)
-			{
-				if (*it == this->_method)
-				{
-					// std::cout << "OUI LA METHODE EST DISPO" <<std::endl;
-					return true;
-				}
-
-			}
+			// std::cout << "OUI LA METHODE EST DISPO" <<std::endl;
+			return true;
 		}
-	}
-	// std::cout << "NON METHODE PAS DISPO" <<std::endl;
-	return false;
 
+	}
+
+	return false;
 }
 
 

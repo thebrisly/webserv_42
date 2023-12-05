@@ -61,7 +61,7 @@ class Request {
         bool                                        checkPathType() const;
         bool                                        checkFileOrDirectory() const;
         bool                                        checkActionAuthorization() const;
-        bool                                        checkMethods() const;
+        bool                                        checkMethods(int id_route) const;
         bool                                        checkRedirection(int id_route);
 
         void    	                                prepareResponse();
@@ -70,7 +70,7 @@ class Request {
         bool                                        fileIsAvaible() const;
 
 
-        bool                                        issetFile() const;
+        bool                                        issetFile(int id_route) const;
         bool                                        isFile() const;
 
 
