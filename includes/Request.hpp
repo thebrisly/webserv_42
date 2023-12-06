@@ -82,7 +82,7 @@ class Request {
         int                                         getLocation() const;
 
         // variable to store http methods
-        static	std::vector<std::string>	        http_methods;
+        // static	std::vector<std::string>	        http_methods;
 
     private :
 
@@ -109,7 +109,7 @@ class Request {
         std::string                                 _response_header;
 
 
-        const ServerConfig                          _server_config;
+        ServerConfig                                _server_config;
 
 
 

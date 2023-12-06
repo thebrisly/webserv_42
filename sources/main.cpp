@@ -8,8 +8,17 @@ void sigpipeHandle (int sig)
 	std::cerr << "sigpipeHandle : PROBLEME ECRITURE SOCKET : " << sig <<std::endl;
 }
 
-int main()
+int main(/*int argc, char *argv[]*/)
 {
+
+	// std::string configFile;
+	// if (argc == 0)
+	// {
+
+
+	// }
+
+
 	try
 	{
 		signal(SIGPIPE, sigpipeHandle);

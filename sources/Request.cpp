@@ -16,6 +16,8 @@
 // CONSTRUCTORS & DESTRUCTORS //
 /////////////////////////////////
 
+#include <unistd.h>
+
 Request::Request() {}
 
 Request::Request(const std::string& str, const ServerConfig server_config) : _current_request(str), _server_config(server_config) 
@@ -26,6 +28,7 @@ Request::~Request() {}
 
 Request& Request::operator=(const Request& other)
 {
+        
         if (this != &other)
 	{
                 this->_current_request = other.getCurrentRequest();
@@ -44,9 +47,7 @@ Request& Request::operator=(const Request& other)
                 this->_response = other.getResponse();
                 this->_response_body = other.getResponseBody();
                 this->_response_header = other.getResponseHeader();
-                //this->_server_config = other.getServerConfig();
-
-
+                this->_server_config = other.getServerConfig();
 
                 //this->_body = other.getBody
 	}

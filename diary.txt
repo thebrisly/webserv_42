@@ -1,19 +1,250 @@
 Initial setup of fd_set
-readfds : 4 
+readfds : 4 5 
 writefds : 
 
-Considering client 4 on loop 28 : 
+Considering client 4 on loop 66 : 
 ------------------- accept new connection -------------------
 readfds : 4 
 writefds : 
-copy = readfds : 4 7 
+copy = readfds : 4 5 8 
 writefds : 
-Client : 7
-       _socket = 7
+Client : 8
+       _socket = 8
   _socket_mode = 0
       _request = 
  _size_request = 0
 _size_response = 0
 connected to server : 8888
 
-Considering client 7 on loop 29 : 
+Considering client 8 on loop 67 : 
+------------------- recvs request -------------------
+readfds : 8 
+writefds : 
+copy = readfds : 4 5 
+writefds : 8 
+Client : 8
+       _socket = 8
+  _socket_mode = 1
+      _request = 
+GET /home.html HTTP/1.1
+Host: 127.0.0.1:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+
+ _size_request = 480
+_size_response = 1042
+connected to server : 8888
+
+Considering client 8 on loop 68 : 
+------------------- send response -------------------
+readfds : 
+writefds : 8 
+copy = readfds : 4 5 8 
+writefds : 
+Client : 8
+       _socket = 8
+  _socket_mode = 0
+      _request = 
+GET /home.html HTTP/1.1
+Host: 127.0.0.1:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+
+ _size_request = 480
+_size_response = 1042
+connected to server : 8888
+
+Considering client 8 on loop 69 : 
+------------------- recvs request -------------------
+readfds : 8 
+writefds : 
+copy = readfds : 4 5 
+writefds : 8 
+Client : 8
+       _socket = 8
+  _socket_mode = 1
+      _request = 
+GET /style0.css HTTP/1.1
+Host: 127.0.0.1:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: text/css,*/*;q=0.1
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://127.0.0.1:8888/home.html
+Sec-Fetch-Dest: style
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+ _size_request = 409
+_size_response = 1090
+connected to server : 8888
+
+Considering client 8 on loop 70 : 
+------------------- send response -------------------
+readfds : 
+writefds : 8 
+copy = readfds : 4 5 8 
+writefds : 
+Client : 8
+       _socket = 8
+  _socket_mode = 0
+      _request = 
+GET /style0.css HTTP/1.1
+Host: 127.0.0.1:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: text/css,*/*;q=0.1
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://127.0.0.1:8888/home.html
+Sec-Fetch-Dest: style
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+ _size_request = 409
+_size_response = 1090
+connected to server : 8888
+
+Considering client 4 on loop 71 : 
+------------------- accept new connection -------------------
+readfds : 4 
+writefds : 
+copy = readfds : 4 5 8 9 
+writefds : 
+Client : 8
+       _socket = 8
+  _socket_mode = 0
+      _request = 
+GET /style0.css HTTP/1.1
+Host: 127.0.0.1:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: text/css,*/*;q=0.1
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://127.0.0.1:8888/home.html
+Sec-Fetch-Dest: style
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+ _size_request = 409
+_size_response = 1090
+connected to server : 8888
+
+Client : 9
+       _socket = 9
+  _socket_mode = 0
+      _request = 
+ _size_request = 0
+_size_response = 0
+connected to server : 8888
+
+Considering client 9 on loop 72 : 
+------------------- recvs request -------------------
+readfds : 9 
+writefds : 
+copy = readfds : 4 5 8 
+writefds : 9 
+Client : 8
+       _socket = 8
+  _socket_mode = 0
+      _request = 
+GET /style0.css HTTP/1.1
+Host: 127.0.0.1:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: text/css,*/*;q=0.1
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://127.0.0.1:8888/home.html
+Sec-Fetch-Dest: style
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+ _size_request = 409
+_size_response = 1090
+connected to server : 8888
+
+Client : 9
+       _socket = 9
+  _socket_mode = 1
+      _request = 
+GET /picture1.jpg HTTP/1.1
+Host: 127.0.0.1:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://127.0.0.1:8888/home.html
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+ _size_request = 418
+_size_response = 36379
+connected to server : 8888
+
+Considering client 9 on loop 73 : 
+------------------- send response -------------------
+readfds : 
+writefds : 9 
+copy = readfds : 4 5 8 9 
+writefds : 
+Client : 8
+       _socket = 8
+  _socket_mode = 0
+      _request = 
+GET /style0.css HTTP/1.1
+Host: 127.0.0.1:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: text/css,*/*;q=0.1
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://127.0.0.1:8888/home.html
+Sec-Fetch-Dest: style
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+ _size_request = 409
+_size_response = 1090
+connected to server : 8888
+
+Client : 9
+       _socket = 9
+  _socket_mode = 0
+      _request = 
+GET /picture1.jpg HTTP/1.1
+Host: 127.0.0.1:8888
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0
+Accept: image/avif,image/webp,*/*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://127.0.0.1:8888/home.html
+Sec-Fetch-Dest: image
+Sec-Fetch-Mode: no-cors
+Sec-Fetch-Site: same-origin
+
+ _size_request = 418
+_size_response = 36379
+connected to server : 8888
+

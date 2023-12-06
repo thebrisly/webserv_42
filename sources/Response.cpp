@@ -14,34 +14,35 @@
 void Request::checkRequest()
 {
 	int id_route;
-	bool is_file = this->isFile();
-
-
-	std::cout << "is_file : " << is_file << std::endl;
+	//bool is_file = this->isFile();
 
 	if (!checkHttpVersion())
 	{
 		this->_status_code = 505;
-		std::cout << MAGENTA << "Response error 505 : bad version." << RESET << std::endl;
+		this->_status_string = "HTTP Version Not Supported";
+		std::cout << "[response info] " << MAGENTA << "505 : HTTP Version Not Supported" << RESET << std::endl;
 	}
 	else if (!check_host_port()) 
 	{
-		this->_status_code = 505; //trouver le bon code erreur
-		std::cout << MAGENTA << "Response error 500 : host - port not resolved." << RESET << std::endl;
+		this->_status_code = 503; //trouver le bon code erreur
+		this->_status_string = "Service Unavailable";
+		std::cout << "[response info] " << MAGENTA << "503 : Service Unavailable (host - port not resolved)" << RESET << std::endl;
 	}
 	else if ((id_route = this->getLocation()) == -1)
 	{
 		this->_status_code = 400; //page not found error
-		std::cout << MAGENTA << "Response error 400 : location issue." << RESET << std::endl;
+		this->_status_string = "Bad Request";
+		std::cout << "[response info] " << MAGENTA << "400 : Bad Request" << RESET << std::endl;
 	}
 	else if (!checkMethods(id_route)) 
 	{
 		this->_status_code = 403; //wrong authorizations
 		this->_status_string = "Forbidden";
-		std::cout << MAGENTA << "Response error 403 : forbidden method." << RESET << std::endl;
+		std::cout << "[response info] " << MAGENTA << "403 : Bad Request (method not allowed)" << RESET << std::endl;
 	}
 	else if (checkRedirection(id_route))
 	{
+		std::cout << "[response info] " << MAGENTA << "Redirection ..." << RESET << std::endl;
 		this->checkRequest();
 		return ;
 	}
@@ -52,42 +53,21 @@ void Request::checkRequest()
 			if (!this->issetFile(id_route))
 			{
 				this->_status_code = 404; //page not found error
-				this->_status_string + "Not Found";
-				std::cout << MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
+				this->_status_string = "Not Found";
+				std::cout << "[response info] "<< MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
 			}
 			else
 			{
 				this->_status_code = 200;
 				this->_status_string = "OK";
-				std::cout << MAGENTA << "Response OK 200" << RESET << std::endl;
-
+				std::cout << "[response info] "<< MAGENTA << "Response OK 200" << RESET << std::endl;
 			}
 		}
 		else
 		{
 			/*Your playground Victor*/
-
-
-
 		}
-
-
 	}
-
-	
-	std::cout << MAGENTA << "Response OK" << RESET << std::endl;
-	//exit(10);
-
-	// else if (!checkPathType()) {
-	// 	this->_status_code = 505; // trouver le bon code erreur
-	// }
-
-	// else
-	// {
-	// 	this->_status_code = 200; // if all good then return Success
-	// 	this->_status_string = " OK";
-	// 	std::cout << MAGENTA << "Response OK" << RESET << std::endl;
-	// }
 }
 
 void	Request::prepareResponse()
@@ -130,10 +110,19 @@ void	Request::prepareResponse()
         }
 		else
 		{
+			std::ifstream file_rescue("web/default_error_pages/505.html");
 
-            response = "HTTP/1.1 500 Internal Server Error\r\nContent-Type: text/plain\r\nConnection: close\r\n\r\n500 - Internal Server Error";
+            std::ostringstream fileContent;
+            fileContent << file_rescue.rdbuf();
+            body = fileContent.str();
+
+            response = this->_version + " " + std::to_string(this->_status_code) + " " + this->_status_string + "\r\n";
+            response += "Content-Type: text/html\r\n";
+            response += "Connection: keep-alive\r\n";
+            response += "Content-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+            response += body;
+
 		}
-		// response = this->._version + " " + this->_status_code + this->status_string + "\nContent-Type: ../web/error_pages" + this->_status_code + ".html";
 	}
 
 	else if (this->_status_code == 200)
@@ -157,7 +146,17 @@ void	Request::prepareResponse()
 				response = "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\nConnection: keep-alive\r\n\r\n404 - Not Found";
 			}
 		} else {
-			response = "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\nConnection: keep-alive\r\n\r\n404 - Not Found";
+			std::ifstream file_rescue("web/default_error_pages/505.html");
+
+            std::ostringstream fileContent;
+            fileContent << file_rescue.rdbuf();
+            body = fileContent.str();
+
+            response = this->_version + " " + std::to_string(this->_status_code) + " " + this->_status_string + "\r\n";
+            response += "Content-Type: text/html\r\n";
+            response += "Connection: keep-alive\r\n";
+            response += "Content-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+            response += body;
 		}
 	}
 
@@ -170,16 +169,22 @@ void	Request::prepareResponse()
 bool Request::checkHttpVersion() const
 {
 	if (this->_version == "HTTP/1.1\r")
+	{
+		std::cout << "[response info] " << GREEN << "checkHttpVersion : OK" << RESET << std::endl; 
 		return 1;
+	}
 	else
+	{
+		std::cout << "[response info] " << RED << "checkHttpVersion : KO" << RESET << std::endl; 
 		return 0;
+	}
 }
 
 bool Request::check_host_port() const
 {
 	if (this->_hostname != this->_server_config.getServerName() && this->_hostname != this->_server_config.getIPAddress())
 	{
-		std::cerr << RED << "NO RESOLVE FOR " << this->_hostname << RESET << std::endl;
+		std::cout << "[response info] " << RED << "check_host_port : KO " << this->_hostname << RESET << std::endl;
 		return false;
 	}
 
@@ -187,61 +192,35 @@ bool Request::check_host_port() const
 
 	if (ul_port != this->_server_config.getPort())
 	{
-		std::cerr << RED << "NO RESOLVE FOR " << this->_port << RESET << std::endl;
+		std::cout << "[response info] " << RED << "check_host_port : KO " << this->_port << RESET << std::endl;
 		return false;
 	}
 
+	std::cout << "[response info] " << GREEN << "check_host_port : OK " << this->_port << RESET << std::endl;
 	return true;
 }
 
 bool Request::issetFile(int id_route) const
 {
-
-	RouteConfig route = this->_server_config.getRoutes()[id_route];
-
-	std::string root = this->_server_config.getRoot();
-	std::string root_path_file = root + this->_path;
+	(void) id_route;
+	//RouteConfig route = this->_server_config.getRoutes()[id_route];
 
 
-
-
-	// std::string file_location;
-	// std::vector<RouteConfig> RoutesConfig = this->_server_config.getRoutes();
+	std::string root_path_file = this->_server_config.getRoot() + this->_path;
 	std::ifstream file;
 
 	file.open(root_path_file);
 	if (file)
 	{
-		//std::cout << "OUI LA RESSOURCE EST DISPO" <<std::endl;
 		file.close();
+		std::cout << "[response info] " << GREEN << "issetFile : OK " << RESET << root_path_file << std::endl;
 		return true;
 	}
 	else
 	{
-		//std::cout << "NON RESSOURCE PAS DISPO" <<std::endl;
+		std::cout << "[response info] " << RED << "issetFile : KO " << RESET << root_path_file << std::endl;
 		return false;
 	}
-	// std::cout << "Ressource : " << root_path_file << std::endl;
-
-	// size_t i = root_path_file.rfind('/', root_path_file.length());
-	// if (i != std::string::npos)
-	// {
-	// 	file_location = root_path_file.substr(0, i + 1);
-	// }
-	// else
-	// {
-	// 	std::cerr << RED << "ERROR A DEBUG !!!" << std::endl;
-	// 	return false;
-	// }
-
-	// for (std::vector<RouteConfig>::iterator it = RoutesConfig.begin(); it!= RoutesConfig.end(); ++it)
-	// {
-	// //std::cout << file_location << "||" << root+it->path << std::endl;
-	// 	if (file_location == root+it->path)
-	// 	{
-	// 	}
-	// }
-	// return false;
 }
 
 
@@ -254,37 +233,24 @@ bool Request::checkMethods(int id_route) const
 	{
 		if (*it == this->_method)
 		{
-			// std::cout << "OUI LA METHODE EST DISPO" <<std::endl;
+			std::cout << "[response info] " << GREEN << "checkMethods : OK " << RESET << std::endl;
 			return true;
 		}
-
 	}
 
+	std::cout << "[response info] " << RED << "checkMethods : OK " << RESET << std::endl;
 	return false;
 }
 
-
-// std::string getDirectoryFromFilePath(const std::string& filePath) {
-//     size_t lastSlashPos = filePath.find_last_of('/');
-
-//     // If the last slash is at the start or no slash is found, return the root ("/")
-//     if (lastSlashPos == 0 || lastSlashPos == std::string::npos) {
-//         return "/";
-//     }
-
-//     // Extract and return the directory part of the path
-//     return filePath.substr(0, lastSlashPos);
-// }
-
 bool Request::checkRedirection(int id_route)
 {
-    std::cout << "Checking for Redirection" << std::endl;
-    std::cout << "Current Path: " << this->_path << std::endl;
+    //std::cout << "Checking for Redirection" << std::endl;
+    //std::cout << "Current Path: " << this->_path << std::endl;
 	std::string usingPath = this->_path;
 
 	RouteConfig route = this->_server_config.getRoutes()[id_route];
 
-	std::cout << RED << "Route " << route.path << RESET << std::endl;
+	//std::cout << RED << "Route " << route.path << RESET << std::endl;
 	// if (isFile())
 	// {
 	// 	std::cout << RED << "File" << RESET << std::endl;
@@ -306,7 +272,7 @@ bool Request::checkRedirection(int id_route)
 				// Check if the current path matches the path to redirect from
 				if (checking_path == redirection.first)
 				{
-					std::cout << RED << "Redirecting to: " << RESET << redirection.second << std::endl;
+					std::cout << "[response info] " << GREEN << "checkRedirection : " << RESET << "Redirecting to " << redirection.second << " from " << redirection.first <<std::endl;
 					this->_path = redirection.second;
 					return true;	
 				}
@@ -316,6 +282,8 @@ bool Request::checkRedirection(int id_route)
 		if (checking_path == "/")
 			break;
 	}
+
+	std::cout << "[response info] " << GREEN << "checkRedirection : " << RESET <<  " No Redirection found"<< std::endl;
     return false;
 }
 
@@ -362,20 +330,17 @@ vector<string> getWords(string s){
     return res;
 }
 
-
-
 */
+/*
+std::string getDirectoryFromFilePath(const std::string& filePath) {
+    size_t lastSlashPos = filePath.find_last_of('/');
 
-// 2a. Vérifier que le nom de domaine correspondent au port (check que host_name et port de  l’objet request = server_name et port du fichier config)
-// 2b. Vérifier que l’ip corresponde au port (check que ip et port de  l’objet request)
+    // If the last slash is at the start or no slash is found, return the root ("/")
+    if (lastSlashPos == 0 || lastSlashPos == std::string::npos) {
+        return "/";
+    }
 
-
-// 3. Vérifier si le path = fichier ou dossier
-
-
-// 4. Vérifier que le fichier ou dossier demandé (root + path dans request) existe —> si fichier : renvoyer fichier, si dossier renvoyer default file—> si n’existe pas, check redirection —> renvoyer le bon truc—> si marche pas :  error 404
-
-
-
-// 5. Vérifier que l’action demandée est autorisée pour la location —> si marche pas : envoyer response error 403
-
+    // Extract and return the directory part of the path
+    return filePath.substr(0, lastSlashPos);
+}
+*/

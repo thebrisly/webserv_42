@@ -105,92 +105,29 @@ void RunServer::recvs_request (int i)
 		this->_map_clients[i].set_request(buffer);
 		this->_map_clients[i].set_size_request(size_read);
 		this->_map_clients[i].set_socket_mod(WRITE_M);
-		//std::cout << "ICI : " << this->_map_clients[i].get_request() << std::endl;
 
 		this->_map_clients[i].set_session_time(clock());
 
 
-		Request request_test2(this->_map_clients[i].get_request(), this->_map_clients[i].get_server_config());
-		request_test2.parseRequest(request_test2.getCurrentRequest());
-
-		this->_map_clients[i].set_request_object(request_test2);
-
-
-		// request_test2.check_host_port();
+		Request current_request(this->_map_clients[i].get_request(), this->_map_clients[i].get_server_config());
+		current_request.parseRequest(current_request.getCurrentRequest());
+		this->_map_clients[i].set_request_object(current_request);
 
 
-		request_test2.parseRequest(request_test2.getCurrentRequest());
-
-		// request_test2.getLocation();
-
-		request_test2.checkRequest();
+		current_request.parseRequest(current_request.getCurrentRequest());
 
 
-		request_test2.prepareResponse();
+		//current_request.checkRequest();
 
-		std::cout << request_test2 << std::endl;
-		// request_test2.issetFile();
+		std::cout << "[Request info] "  << std::endl;
+		std::cout <<  current_request << std::endl;
+
+		current_request.prepareResponse();
 
 
 
-		// std::string body = "";
-		// std::string header = "";
-
-		// if (request_test2.check_host_port() == false)
-		// {
-
-		// 	body = "Host and port are not valid";
-
-		// 	header = "HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: keep-alive\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
-
-
-		// }
-		// else if (request_test2.getPath() == "/")
-		// {
-		// 	std::ifstream file("web/index.html");
-		// 	std::string current_line;
-		// 	while (std::getline (file, current_line))
-		// 	{
-		// 		body += current_line;
-		// 		body += "\n";
-		// 	}
-		// 	header = "HTTP/1.1 200 OK\nContent-Type: text/html\nConnection: keep-alive\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
-		// }
-		// else if (request_test2.getType() == "css")
-		// {
-		// 	std::ifstream file("web/style0.css");
-		// 	std::string current_line;
-		// 	while (std::getline (file, current_line))
-		// 	{
-		// 		body += current_line;
-		// 		body += "\n";
-		// 	}
-		// 	header = "HTTP/1.1 200 OK\nContent-Type: text/css\nConnection: keep-alive\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
-		// }
-		// else if (request_test2.getType() == "jpg")
-		// {
-		// 	std::ifstream file("web/" + request_test2.getPath());
-		// 	std::string current_line;
-		// 	while (std::getline (file, current_line))
-		// 	{
-		// 		body += current_line;
-		// 		body += "\n";
-		// 	}
-		// 	header = "HTTP/1.1 200 OK\nContent-Type: image/jpeg\nConnection: keep-alive\nContent-Length: " + std::to_string(body.length()) + "\r\n\r\n";
-		// }
-		// else
-		// {
-		// 	body = "The requested resource is not available.";
-		// 	header = "HTTP/1.1 404 Not Found\nContent-Type: text/plain\nConnection: keep-alive\n";
-		// 	header += "Content-Length: " + std::to_string(body.length()) + "\r\n\r\n";
-		// }
-
-		// std::string response = header + body;
-
-		//std::cout << "Response = " << request_test2.getResponse() << std::endl;
-
-		this->_map_clients[i].set_response(request_test2.getResponse());
-		this->_map_clients[i].set_size_response(request_test2.getResponse().length());
+		this->_map_clients[i].set_response(current_request.getResponse());
+		this->_map_clients[i].set_size_response(current_request.getResponse().length());
 
 	}
 }
