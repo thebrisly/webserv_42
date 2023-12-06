@@ -18,7 +18,9 @@
 
 Request::Request() {}
 
-Request::Request(const std::string& str, const ServerConfig server_config) : _current_request(str), _server_config(server_config) {}
+Request::Request(const std::string& str, const ServerConfig server_config) : _current_request(str), _server_config(server_config) 
+{        
+}
 
 Request::~Request() {}
 
@@ -36,7 +38,17 @@ Request& Request::operator=(const Request& other)
                 this->_port = other.getPort();
                 this->_hostname = other.getHostname();
                 this->_headers = other.getHeaders();
-                //this->_body = other.getBo;
+                this->_default_file = other.getDefaultFile();
+                this->_status_code = other.getStatusCode();
+                this->_status_string = other.getStatusString();
+                this->_response = other.getResponse();
+                this->_response_body = other.getResponseBody();
+                this->_response_header = other.getResponseHeader();
+                //this->_server_config = other.getServerConfig();
+
+
+
+                //this->_body = other.getBody
 	}
         return *this;
 }
@@ -115,3 +127,27 @@ ServerConfig Request::getServerConfig() const
 {
         return (this->_server_config);
 }
+
+
+int Request::getStatusCode() const
+{
+        return this->_status_code;
+}
+
+std::string Request::getStatusString() const
+{
+        return this->_status_string;
+}
+
+
+
+std::string Request::getResponseBody() const
+{
+        return this->_response_body;
+}
+
+std::string Request::getResponseHeader() const
+{
+        return this->_response_header;
+}
+

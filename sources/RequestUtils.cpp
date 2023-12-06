@@ -184,36 +184,12 @@ void Request::parseHostHeader(const std::string& hostHeader, std::string& hostna
     }
 }
 
-// bool Request::isMethodAllowed() const
-// {
-// 	if (this->_server_config.issetRoute(this->_path))
-// 	{
-// 		std::vector<std::string> authorized_method = this->_server_config.getRoute(this->_path).methods;
-// 		for (std::vector<std::string>::const_iterator it = authorized_method.begin(); it!= authorized_method.end(); ++it)
-// 		{
-// 			if (*it == this->_method)
-// 			{
-// 				return true;
-// 			}
-// 		}
-// 	}
-// 	else
-// 	{
-// 		std::vector<std::string> authorized_method = this->_server_config.getRoute("/").methods;
-// 		for (std::vector<std::string>::const_iterator it = authorized_method.begin(); it!= authorized_method.end(); ++it)
-// 		{
-// 			if (*it == this->_method)
-// 			{
-// 				return true;
-// 			}
-// 		}
-// 	}
-// 	return false;
-// }
-
 std::ostream& operator<<(std::ostream& os, const Request &request)
 {
-	os << CYAN <<"current request : " << RESET<< request.getCurrentRequest() << std::endl;
+	//os << CYAN <<"current request : " << RESET<< request.getCurrentRequest() << std::endl;
+	
+
+	os << BLUE <<" -------------------- VARIABLES REQUEST -------------------- " << RESET << std::endl;
 	os << CYAN <<"           path : " << RESET<< request.getPath() << std::endl;
 	os << CYAN <<"         method : " << RESET<< request.getMethod() << std::endl;
 	os << CYAN <<"        version : " << RESET<< request.getVersion() << std::endl;
@@ -222,15 +198,26 @@ std::ostream& operator<<(std::ostream& os, const Request &request)
 	os << CYAN <<"   secfetchdest : " << RESET<< request.getSecFetchDest() << std::endl;
 	os << CYAN <<"           port : " << RESET<< request.getPort() << std::endl;
 	os << CYAN <<"       hostname : " << RESET<< request.getHostname() << std::endl;
-	os << CYAN << "        headers : " << RESET << std::endl;
+	os << CYAN <<"        headers : " << RESET << std::endl;
 
 	for (std::map<std::string, std::string>::const_iterator it = request.getHeaders().begin(); it!= request.getHeaders().end(); ++it)
 	{
-		os << "           * " << it->first << " : " << it->second << std::endl;
+		os << "           * " << MAGENTA << it->first << RESET << " : " << it->second << std::endl;
 	}
 
-
 	os << CYAN <<"   default file : " << RESET<< request.getDefaultFile() << std::endl;
+
+	os << CYAN <<"  server_config : " << RESET << request.getServerConfig().getServerName() << MAGENTA <<  " on port " << RESET << request.getServerConfig().getPort() << std::endl;
+
+	os << BLUE <<" -------------------- VARIABLES RESPONSE -------------------- " << RESET << std::endl;
+
+	os << CYAN <<"    status_code : " << RESET << request.getStatusCode() <<std::endl;
+	os << CYAN <<"  status_string : " << RESET << request.getStatusString() <<std::endl;
+	os << CYAN <<"response_header : " << RESET << request.getResponseHeader() <<std::endl;
+	os << CYAN <<"  response_body : " << RESET << request.getResponseBody().substr(0, 100) << " ... " <<std::endl;
+	os << CYAN <<"       response : " << RESET << std::endl;
+	os << request.getResponse().substr(0, 200) << " ... " <<std::endl;
+
 
 	return os;
 }

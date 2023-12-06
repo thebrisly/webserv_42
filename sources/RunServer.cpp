@@ -1,36 +1,6 @@
 #include "../includes/RunServer.hpp"
 #include "../includes/Request.hpp"
-
-void display_clients(std::ofstream & out, std::map<int, Client> & map_clients)
-{
-	for (std::map<int, Client>::iterator it = map_clients.begin(); it!= map_clients.end(); ++it)
-	{
-		out << "Client : " << it->first << std::endl;
-		out << (*it).second << std::endl;
-	}
-};
-
-void display_fd_set(std::ofstream & out, const fd_set & readfds, const fd_set & writefds)
-{
-	out << "readfds : ";
-	for (int i = 0; i < MAX_CLIENT; i++)
-	{
-		if (FD_ISSET(i, &readfds))
-		{
-			out << i << " " ;
-		}
-	}
-	out << std::endl;
-	out << "writefds : ";
-	for (int i = 0; i < MAX_CLIENT; i++)
-	{
-		if (FD_ISSET(i, &writefds))
-		{
-			out << i << " " ;
-		}
-	}
-	out << std::endl;
-}
+#include "../includes/Utils.hpp"
 
 /* RunServer is an object that runs the servers */
 
@@ -112,7 +82,7 @@ void RunServer::recvs_request (int i)
 	{
 		//getpeername(i , (struct sockaddr*)(&(server_init.get_ref_server_addr())) , (socklen_t*)&server_init.get_ref_addrlen());
 
-		std::cout << CLOCKS_PER_SEC <<std::endl;
+		//std::cout << CLOCKS_PER_SEC <<std::endl;
 
 		std::cout << "Since creation : " << clock() - this->_map_clients[i].get_session_time() << std::endl;
 
@@ -148,7 +118,6 @@ void RunServer::recvs_request (int i)
 
 		// request_test2.check_host_port();
 
-		std::cout << request_test2 << std::endl;
 
 		request_test2.parseRequest(request_test2.getCurrentRequest());
 
@@ -159,6 +128,7 @@ void RunServer::recvs_request (int i)
 
 		request_test2.prepareResponse();
 
+		std::cout << request_test2 << std::endl;
 		// request_test2.issetFile();
 
 

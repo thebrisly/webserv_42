@@ -47,3 +47,34 @@ std::string reducePath(std::string& path)
 
     return path;
 }
+
+void display_clients(std::ofstream & out, std::map<int, Client> & map_clients)
+{
+	for (std::map<int, Client>::iterator it = map_clients.begin(); it!= map_clients.end(); ++it)
+	{
+		out << "Client : " << it->first << std::endl;
+		out << (*it).second << std::endl;
+	}
+}
+
+void display_fd_set(std::ofstream & out, const fd_set & readfds, const fd_set & writefds)
+{
+	out << "readfds : ";
+	for (int i = 0; i < MAX_CLIENT; i++)
+	{
+		if (FD_ISSET(i, &readfds))
+		{
+			out << i << " " ;
+		}
+	}
+	out << std::endl;
+	out << "writefds : ";
+	for (int i = 0; i < MAX_CLIENT; i++)
+	{
+		if (FD_ISSET(i, &writefds))
+		{
+			out << i << " " ;
+		}
+	}
+	out << std::endl;
+}

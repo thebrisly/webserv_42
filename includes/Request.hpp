@@ -45,7 +45,12 @@ class Request {
         std::string                                 getType() const;
         std::string                                 getDefaultFile() const;
         std::string                                 getResponse() const;
+        std::string                                 getResponseBody() const;
+        std::string                                 getResponseHeader() const;
         ServerConfig                                getServerConfig() const;
+
+        int                                         getStatusCode() const;
+        std::string                                 getStatusString() const;
 
 
         const std::map<std::string, std::string>&   getHeaders() const;
@@ -92,16 +97,17 @@ class Request {
         std::string                                 _port;
         std::string                                 _hostname;
 
-        std::string                                 _response;
+        std::map<std::string, std::string>	        _headers; //dictionnary of keys, values
+        std::string                                 _default_file;
+
         int                                         _status_code;
         std::string                                 _status_string;
 
-        std::map<std::string, std::string>	        _headers; //dictionnary of keys, values
 
+        std::string                                 _response;
         std::string                                 _response_body;
         std::string                                 _response_header;
 
-        std::string                                 _default_file;
 
         const ServerConfig                          _server_config;
 

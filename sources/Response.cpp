@@ -58,6 +58,7 @@ void Request::checkRequest()
 			else
 			{
 				this->_status_code = 200;
+				this->_status_string = "OK";
 				std::cout << MAGENTA << "Response OK 200" << RESET << std::endl;
 
 			}
@@ -65,6 +66,9 @@ void Request::checkRequest()
 		else
 		{
 			/*Your playground Victor*/
+
+
+
 		}
 
 
