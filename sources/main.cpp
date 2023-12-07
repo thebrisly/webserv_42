@@ -8,16 +8,45 @@ void sigpipeHandle (int sig)
 	std::cerr << "sigpipeHandle : PROBLEME ECRITURE SOCKET : " << sig <<std::endl;
 }
 
-int main(/*int argc, char *argv[]*/)
+bool fileExist(const std::string fileName)
+{
+	std::ifstream file;
+	file.open(fileName);
+
+	if (file)
+	{
+		file.close();
+		return true;
+	}
+	return false;
+}
+
+
+
+int main(int argc, char *argv[])
 {
 
-	// std::string configFile;
-	// if (argc == 0)
-	// {
+	std::string configFile;
+	if (argc == 1)
+	{
+		configFile = "config/config.config";
 
+	}
+	else if (argc == 2)
+	{
+		std::cout << argv[1] << std::endl;
+		configFile = argv[1];
+		if (!fileExist(configFile))
+		{
+			std::cerr << RED << "Error : " << RESET << "Invalid config file" << std::endl;
+			return 0;
+		}
+	}
+	else
+	{
+		std::cerr << RED << "Error : " << RESET << "Invalid number of arguments" << std::endl;
 
-	// }
-
+	}
 
 	try
 	{
@@ -25,7 +54,7 @@ int main(/*int argc, char *argv[]*/)
 
 		std::vector<ServerConfig> configs;
 	    ConfigParser parser;
-    	configs = parser.parseConfigs("config/config.config");
+    	configs = parser.parseConfigs(configFile);
 
 		std::cout << "Configs : " << configs << std::endl;
 

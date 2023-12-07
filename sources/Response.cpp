@@ -296,20 +296,24 @@ bool Request::isFile() const {
 
     // Case 1: No dot in the path, likely a directory
     if (lastDotPos == std::string::npos) {
+		std::cout << "[response info] " << GREEN << "isFile : " << RESET << "not a file" << std::endl;
         return false;
     }
 
     // Case 2: Dot present, but no slash - could be a file without directories
     if (lastSlashPos == std::string::npos) {
+		std::cout << "[response info] " << GREEN << "isFile : " << RESET << "OK file" <<std::endl;
         return true;
     }
 
     // Case 3: Dot after the last slash - likely a file
     if (lastDotPos > lastSlashPos) {
+		std::cout << "[response info] " << GREEN << "isFile : " << RESET << "OK file" <<std::endl;
         return true;
     }
 
     // Default case: Likely a directory
+	std::cout << "[response info] " << GREEN << "isFile : " << RESET << "not a file" <<std::endl;
     return false;
 }
 
