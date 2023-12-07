@@ -287,28 +287,28 @@ bool Request::checkRedirection(int id_route)
 	std::cout << RED << "Redirection to " << route.redirection << RESET << std::endl;
 	if (route.redirection != "")
 	{
-<<<<<<< HEAD
-		for (std::vector<std::pair<std::string, std::string> >::const_iterator it = route.redirections.begin(); it!= route.redirections.end(); ++it)
-		{
-			std::pair<std::string, std::string> redirection = *it;
-			if (redirection.first != "" && redirection.second != "")
-			{
-				// Check if the current path matches the path to redirect from
-				if (checking_path == redirection.first)
-				{
-					std::cout << "[Response.cpp] " << GREEN << "checkRedirection : " << RESET << "Redirecting to " << redirection.second << " from " << redirection.first <<std::endl;
-					this->_path = redirection.second;
-					return true;	
-				}
-			}
-		}
-		checking_path = reducePath(checking_path);
-		if (checking_path == "/")
-			break;
-=======
+// <<<<<<< HEAD
+// 		for (std::vector<std::pair<std::string, std::string> >::const_iterator it = route.redirections.begin(); it!= route.redirections.end(); ++it)
+// 		{
+// 			std::pair<std::string, std::string> redirection = *it;
+// 			if (redirection.first != "" && redirection.second != "")
+// 			{
+// 				// Check if the current path matches the path to redirect from
+// 				if (checking_path == redirection.first)
+// 				{
+// 					std::cout << "[Response.cpp] " << GREEN << "checkRedirection : " << RESET << "Redirecting to " << redirection.second << " from " << redirection.first <<std::endl;
+// 					this->_path = redirection.second;
+// 					return true;	
+// 				}
+// 			}
+// 		}
+// 		checking_path = reducePath(checking_path);
+// 		if (checking_path == "/")
+// 			break;
+// =======
 		this->_path = route.redirection;
 		return true;
->>>>>>> origin/linux
+//>>>>>>> origin/linux
 	}
 
 	std::cout << "[Response.cpp] " << GREEN << "checkRedirection : " << RESET <<  " No Redirection found"<< std::endl;
