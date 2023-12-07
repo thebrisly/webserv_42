@@ -55,7 +55,8 @@ class Client
 		// Response get_response_object() const;
 		// void set_response_object (Response response_object);
 
-		Request get_request_object() const;
+		const Request& get_request_object() const;
+
 		void set_request_object (Request request_object);
 
 };

@@ -22,6 +22,10 @@ Request::Request(const std::string& str, const ServerConfig server_config) : _cu
 {        
 }
 
+Request::Request(const Request& other) {
+    *this = other;
+}
+
 Request::~Request() {}
 
 Request& Request::operator=(const Request& other)

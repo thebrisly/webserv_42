@@ -6,6 +6,8 @@
 #include <iostream>
 #include <fcntl.h>
 #include "ServerConfig.hpp"
+#include <cstring>
+
 
 class ServerInitializer
 {

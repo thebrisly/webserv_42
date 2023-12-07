@@ -1,12 +1,12 @@
 Initial setup of fd_set
-readfds : 4 
+readfds : 3 
 writefds : 
 
-Considering client 4 on loop 28 : 
+Considering client 3 on loop 880342 : 
 ------------------- accept new connection -------------------
-readfds : 4 
+readfds : 3 
 writefds : 
-copy = readfds : 4 7 
+copy = readfds : 3 7 
 writefds : 
 Client : 7
        _socket = 7
@@ -16,4 +16,4 @@ Client : 7
 _size_response = 0
 connected to server : 8888
 
-Considering client 7 on loop 29 : 
+Considering client 7 on loop 883142 : 

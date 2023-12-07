@@ -108,7 +108,7 @@ ServerConfig Client::get_server_config() const
 // 	this->_response_object = response_object;
 // }
 
-Request Client::get_request_object() const
+const Request& Client::get_request_object() const
 {
 	return this->_request_object;
 }
