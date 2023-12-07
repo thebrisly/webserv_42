@@ -25,6 +25,10 @@ Request::Request(const std::string& str, const ServerConfig server_config) : _cu
         this->_status_code = 0;
 }
 
+Request::Request(const Request& other) {
+    *this = other;
+}
+
 Request::~Request() {}
 
 Request& Request::operator=(const Request& other)

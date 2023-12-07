@@ -4,6 +4,8 @@
 #include <iostream>
 #include <map>
 #include <fstream>
+#include <sys/select.h>
+
 
 #define MAX_CLIENT 1024
 

@@ -16,6 +16,7 @@ class Request {
     public :
         // Constructors, Destructors & Overloading operations
         Request();
+        Request(const Request& other);
         Request(const std::string& str, const ServerConfig server_config);
 		~Request();
 		Request& operator=(const Request&);

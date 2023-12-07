@@ -15,7 +15,7 @@ struct RouteConfig
     std::string default_file;
     bool directory_listing;
     std::string root;
-    std::vector<std::pair<std::string, std::string> > redirections;
+    std::string redirection;
 };
 
 #endif

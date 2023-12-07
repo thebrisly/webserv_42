@@ -14,15 +14,18 @@
 void Request::checkRequest()
 {
 	int id_route;
-	//bool is_file = this->isFile();
 
+	bool is_file = this->isFile();
+
+
+	std::cout << "is_file : " << is_file << std::endl;
 	if (!checkHttpVersion())
 	{
 		this->_status_code = 505;
 		this->_status_string = "HTTP Version Not Supported";
 		std::cout << "[Response.cpp] " << MAGENTA << "505 : HTTP Version Not Supported" << RESET << std::endl;
 	}
-	else if (!check_host_port()) 
+	if (!check_host_port()) 
 	{
 		this->_status_code = 503; //trouver le bon code erreur
 		this->_status_string = "Service Unavailable";
@@ -43,11 +46,15 @@ void Request::checkRequest()
 	else if (checkRedirection(id_route))
 	{
 		std::cout << "[Response.cpp] " << MAGENTA << "Redirection ..." << RESET << std::endl;
+
+		this->_status_code = 301; //redirection (error) code
+
 		this->checkRequest();
 		return ;
 	}
 	else
 	{
+		this->_status_code = 200;
 		if (this->isFile() == 1)
 		{
 			if (!this->issetFile(id_route))
@@ -244,11 +251,26 @@ bool Request::checkMethods(int id_route) const
 
 bool Request::checkRedirection(int id_route)
 {
-    //std::cout << "Checking for Redirection" << std::endl;
-    //std::cout << "Current Path: " << this->_path << std::endl;
+
+	(void) id_route;
+    std::cout << "Checking for Redirection" << std::endl;
+    std::cout << "Current Path: " << this->_path << std::endl;
 	std::string usingPath = this->_path;
 
-	RouteConfig route = this->_server_config.getRoutes()[id_route];
+	if (this->_path == "")
+		usingPath = "/";
+	RouteConfig route;// = this->_server_config.getRoutes()[id_route];
+	try
+	{
+		route = this->_server_config.getRoute(usingPath);
+		
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+		return false;
+	}
+	
 
 	//std::cout << RED << "Route " << route.path << RESET << std::endl;
 	// if (isFile())
@@ -261,9 +283,11 @@ bool Request::checkRedirection(int id_route)
     // Check if redirection is specified in the route configuration
 
 	//std::cout <<  RED << "Redirect: " << route.redirect.first << " to: " << route.redirect.second << RESET << std::endl;
-	std::string checking_path = this->_path;
-	while (42)
+
+	std::cout << RED << "Redirection to " << route.redirection << RESET << std::endl;
+	if (route.redirection != "")
 	{
+<<<<<<< HEAD
 		for (std::vector<std::pair<std::string, std::string> >::const_iterator it = route.redirections.begin(); it!= route.redirections.end(); ++it)
 		{
 			std::pair<std::string, std::string> redirection = *it;
@@ -281,6 +305,10 @@ bool Request::checkRedirection(int id_route)
 		checking_path = reducePath(checking_path);
 		if (checking_path == "/")
 			break;
+=======
+		this->_path = route.redirection;
+		return true;
+>>>>>>> origin/linux
 	}
 
 	std::cout << "[Response.cpp] " << GREEN << "checkRedirection : " << RESET <<  " No Redirection found"<< std::endl;
