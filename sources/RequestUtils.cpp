@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 13:27:08 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/05 15:25:56 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/12/07 17:15:22 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,12 +186,20 @@ void Request::parseHostHeader(const std::string& hostHeader, std::string& hostna
 
 std::ostream& operator<<(std::ostream& os, const Request &request)
 {
-	//os << CYAN <<"current request : " << RESET<< request.getCurrentRequest() << std::endl;
 	
+	//os << CYAN <<"current request : " << RESET<< request.getCurrentRequest() << std::endl;
+
+
 
 	os << BLUE <<" -------------------- VARIABLES REQUEST -------------------- " << RESET << std::endl;
 	os << CYAN <<"           path : " << RESET<< request.getPath() << std::endl;
 	os << CYAN <<"         method : " << RESET<< request.getMethod() << std::endl;
+
+	if (request.getMethod() == "POST" || request.getMethod() == "DELETE")
+	{
+		os << CYAN <<"current request : " << RESET<< request.getCurrentRequest() << std::endl;
+	}
+
 	os << CYAN <<"        version : " << RESET<< request.getVersion() << std::endl;
 	os << CYAN <<"           host : " << RESET<< request.getHost() << std::endl;
 	os << CYAN <<"     connection : " << RESET<< request.getConnection() <<std::endl;
