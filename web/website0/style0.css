@@ -55,3 +55,17 @@ nav ul li a:hover {
     border: 5px solid #ddd; /* Add a border around each image */
     border-radius: 5px; /* Optional: to round the corners of the images */
 }
+
+/* Style for the footer */
+footer {
+    background-color: #2a2a2a; /* Dark background for the footer */
+    color: #f2f2f2; /* Light color for the text */
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 30px;
+}
+
+footer p {
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
