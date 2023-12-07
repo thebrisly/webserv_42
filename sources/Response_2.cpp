@@ -23,7 +23,7 @@ int Request::getLocation() const
 		{
 			if (routes[i].path == path_to_test)
 			{
-				std::cout << GREEN << "[Response info] getLocation : OK " << RESET << path_to_test << std::endl;
+				std::cout <<  "[Response_2.cpp]" << GREEN <<" getLocation : OK " << RESET << path_to_test << std::endl;
 				return i;
 			}
 		}
@@ -40,11 +40,11 @@ int Request::getLocation() const
 	{
 		if (routes[i].path == path_to_test)
 		{
-			std::cout << "[Response info] " << GREEN << "getLocation : OK " << RESET << path_to_test <<std::endl;
+			std::cout << "[Response_2.cpp] " << GREEN << "getLocation : OK " << RESET << path_to_test <<std::endl;
 			return i;
 		}
 	}	
 
-	std::cout << "[Response info] " << RED << "getLocation : KO (no route found)" << RESET << std::endl;
+	std::cout << "[Response_2.cpp] " << RED << "getLocation : KO (no route found)" << RESET << std::endl;
 	return -1;
 }

@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 	}
 	else if (argc == 2)
 	{
-		std::cout << argv[1] << std::endl;
+		std::cout << "Configuration file : " << argv[1] << std::endl;
 		configFile = argv[1];
 		if (!fileExist(configFile))
 		{

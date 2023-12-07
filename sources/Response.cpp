@@ -20,29 +20,29 @@ void Request::checkRequest()
 	{
 		this->_status_code = 505;
 		this->_status_string = "HTTP Version Not Supported";
-		std::cout << "[response info] " << MAGENTA << "505 : HTTP Version Not Supported" << RESET << std::endl;
+		std::cout << "[Response.cpp] " << MAGENTA << "505 : HTTP Version Not Supported" << RESET << std::endl;
 	}
 	else if (!check_host_port()) 
 	{
 		this->_status_code = 503; //trouver le bon code erreur
 		this->_status_string = "Service Unavailable";
-		std::cout << "[response info] " << MAGENTA << "503 : Service Unavailable (host - port not resolved)" << RESET << std::endl;
+		std::cout << "[Response.cpp] " << MAGENTA << "503 : Service Unavailable (host - port not resolved)" << RESET << std::endl;
 	}
 	else if ((id_route = this->getLocation()) == -1)
 	{
 		this->_status_code = 400; //page not found error
 		this->_status_string = "Bad Request";
-		std::cout << "[response info] " << MAGENTA << "400 : Bad Request" << RESET << std::endl;
+		std::cout << "[Response.cpp] " << MAGENTA << "400 : Bad Request" << RESET << std::endl;
 	}
 	else if (!checkMethods(id_route)) 
 	{
 		this->_status_code = 403; //wrong authorizations
 		this->_status_string = "Forbidden";
-		std::cout << "[response info] " << MAGENTA << "403 : Bad Request (method not allowed)" << RESET << std::endl;
+		std::cout << "[Response.cpp] " << MAGENTA << "403 : Bad Request (method not allowed)" << RESET << std::endl;
 	}
 	else if (checkRedirection(id_route))
 	{
-		std::cout << "[response info] " << MAGENTA << "Redirection ..." << RESET << std::endl;
+		std::cout << "[Response.cpp] " << MAGENTA << "Redirection ..." << RESET << std::endl;
 		this->checkRequest();
 		return ;
 	}
@@ -54,13 +54,13 @@ void Request::checkRequest()
 			{
 				this->_status_code = 404; //page not found error
 				this->_status_string = "Not Found";
-				std::cout << "[response info] "<< MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
+				std::cout << "[Response.cpp] "<< MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
 			}
 			else
 			{
 				this->_status_code = 200;
 				this->_status_string = "OK";
-				std::cout << "[response info] "<< MAGENTA << "Response OK 200" << RESET << std::endl;
+				std::cout << "[Response.cpp] "<< MAGENTA << "Response OK 200" << RESET << std::endl;
 			}
 		}
 		else
@@ -170,12 +170,12 @@ bool Request::checkHttpVersion() const
 {
 	if (this->_version == "HTTP/1.1\r")
 	{
-		std::cout << "[response info] " << GREEN << "checkHttpVersion : OK" << RESET << std::endl; 
+		std::cout << "[Response.cpp] " << GREEN << "checkHttpVersion : OK" << RESET << std::endl; 
 		return 1;
 	}
 	else
 	{
-		std::cout << "[response info] " << RED << "checkHttpVersion : KO" << RESET << std::endl; 
+		std::cout << "[Response.cpp] " << RED << "checkHttpVersion : KO" << RESET << std::endl; 
 		return 0;
 	}
 }
@@ -184,7 +184,7 @@ bool Request::check_host_port() const
 {
 	if (this->_hostname != this->_server_config.getServerName() && this->_hostname != this->_server_config.getIPAddress())
 	{
-		std::cout << "[response info] " << RED << "check_host_port : KO " << this->_hostname << RESET << std::endl;
+		std::cout << "[Response.cpp] " << RED << "check_host_port : KO " << this->_hostname << RESET << std::endl;
 		return false;
 	}
 
@@ -192,11 +192,11 @@ bool Request::check_host_port() const
 
 	if (ul_port != this->_server_config.getPort())
 	{
-		std::cout << "[response info] " << RED << "check_host_port : KO " << this->_port << RESET << std::endl;
+		std::cout << "[Response.cpp] " << RED << "check_host_port : KO " << this->_port << RESET << std::endl;
 		return false;
 	}
 
-	std::cout << "[response info] " << GREEN << "check_host_port : OK " << this->_port << RESET << std::endl;
+	std::cout << "[Response.cpp] " << GREEN << "check_host_port : OK " << this->_port << RESET << std::endl;
 	return true;
 }
 
@@ -213,12 +213,12 @@ bool Request::issetFile(int id_route) const
 	if (file)
 	{
 		file.close();
-		std::cout << "[response info] " << GREEN << "issetFile : OK " << RESET << root_path_file << std::endl;
+		std::cout << "[Response.cpp] " << GREEN << "issetFile : OK " << RESET << root_path_file << std::endl;
 		return true;
 	}
 	else
 	{
-		std::cout << "[response info] " << RED << "issetFile : KO " << RESET << root_path_file << std::endl;
+		std::cout << "[Response.cpp] " << RED << "issetFile : KO " << RESET << root_path_file << std::endl;
 		return false;
 	}
 }
@@ -233,12 +233,12 @@ bool Request::checkMethods(int id_route) const
 	{
 		if (*it == this->_method)
 		{
-			std::cout << "[response info] " << GREEN << "checkMethods : OK " << RESET << std::endl;
+			std::cout << "[Response.cpp] " << GREEN << "checkMethods : OK " << RESET << std::endl;
 			return true;
 		}
 	}
 
-	std::cout << "[response info] " << RED << "checkMethods : OK " << RESET << std::endl;
+	std::cout << "[Response.cpp] " << RED << "checkMethods : OK " << RESET << std::endl;
 	return false;
 }
 
@@ -272,7 +272,7 @@ bool Request::checkRedirection(int id_route)
 				// Check if the current path matches the path to redirect from
 				if (checking_path == redirection.first)
 				{
-					std::cout << "[response info] " << GREEN << "checkRedirection : " << RESET << "Redirecting to " << redirection.second << " from " << redirection.first <<std::endl;
+					std::cout << "[Response.cpp] " << GREEN << "checkRedirection : " << RESET << "Redirecting to " << redirection.second << " from " << redirection.first <<std::endl;
 					this->_path = redirection.second;
 					return true;	
 				}
@@ -283,7 +283,7 @@ bool Request::checkRedirection(int id_route)
 			break;
 	}
 
-	std::cout << "[response info] " << GREEN << "checkRedirection : " << RESET <<  " No Redirection found"<< std::endl;
+	std::cout << "[Response.cpp] " << GREEN << "checkRedirection : " << RESET <<  " No Redirection found"<< std::endl;
     return false;
 }
 
@@ -296,24 +296,24 @@ bool Request::isFile() const {
 
     // Case 1: No dot in the path, likely a directory
     if (lastDotPos == std::string::npos) {
-		std::cout << "[response info] " << GREEN << "isFile : " << RESET << "not a file" << std::endl;
+		std::cout << "[Response.cpp] " << GREEN << "isFile : " << RESET << "not a file" << std::endl;
         return false;
     }
 
     // Case 2: Dot present, but no slash - could be a file without directories
     if (lastSlashPos == std::string::npos) {
-		std::cout << "[response info] " << GREEN << "isFile : " << RESET << "OK file" <<std::endl;
+		std::cout << "[Response.cpp] " << GREEN << "isFile : " << RESET << "OK file" <<std::endl;
         return true;
     }
 
     // Case 3: Dot after the last slash - likely a file
     if (lastDotPos > lastSlashPos) {
-		std::cout << "[response info] " << GREEN << "isFile : " << RESET << "OK file" <<std::endl;
+		std::cout << "[Response.cpp] " << GREEN << "isFile : " << RESET << "OK file" <<std::endl;
         return true;
     }
 
     // Default case: Likely a directory
-	std::cout << "[response info] " << GREEN << "isFile : " << RESET << "not a file" <<std::endl;
+	std::cout << "[Response.cpp] " << GREEN << "isFile : " << RESET << "not a file" <<std::endl;
     return false;
 }
 
