@@ -94,11 +94,11 @@ std::ostream& operator<<(std::ostream& os, const ServerConfig &config)
         os << std::endl;
         os << CYAN << " route default file : " << RESET << it->default_file << std::endl;
         os << CYAN << "  directory listing : " << RESET << it->directory_listing << std::endl;
-        os << BLUE << "        redirections: " << RESET << std::endl;
-        for (std::vector<std::pair<std::string, std::string> >::const_iterator it2 = it->redirections.begin(); it2!= it->redirections.end(); ++it2)
-        {
-            os << "          - " << it2->first << " to: " << it2->second << std::endl;
-        }
+        os << BLUE << "        redirections: " << RED << it->redirection << RESET << std::endl;
+        // for (std::vector<std::pair<std::string, std::string> >::const_iterator it2 = it->redirections.begin(); it2!= it->redirections.end(); ++it2)
+        // {
+        //     os << "          - " << it2->first << " to: " << it2->second << std::endl;
+        // }
     }
 	return os;
 }

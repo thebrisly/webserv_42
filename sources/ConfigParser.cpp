@@ -59,22 +59,22 @@ void ConfigParser::processErrorPages(const std::string& key, const std::string& 
 void ConfigParser::processLocation(const std::string& key, const std::string& value, RouteConfig& route)
 {
     std::string str = value;
-if (key == "methods") {
-    std::istringstream iss(str);
-    std::string method;
-    while (std::getline(iss, method, ',')) {
-        // Trim leading and trailing spaces from the method
-        method.erase(method.find_last_not_of(" \n\r\t")+1);
-        method.erase(0, method.find_first_not_of(" \n\r\t"));
+    if (key == "methods") {
+        std::istringstream iss(str);
+        std::string method;
+        while (std::getline(iss, method, ',')) {
+            // Trim leading and trailing spaces from the method
+            method.erase(method.find_last_not_of(" \n\r\t")+1);
+            method.erase(0, method.find_first_not_of(" \n\r\t"));
 
-        // Check if the method is valid
-        if (method != "GET" && method != "POST" && method != "DELETE" && method != "PUT") {
-            throw std::runtime_error("Unknown method: " + method);
+            // Check if the method is valid
+            if (method != "GET" && method != "POST" && method != "DELETE" && method != "PUT") {
+                throw std::runtime_error("Unknown method: " + method);
+            }
+            route.methods.push_back(method);
         }
-        route.methods.push_back(method);
     }
-}
- else if (key == "directory_listing") {
+    else if (key == "directory_listing") {
         if (value == "on")
             route.directory_listing = true;
         else if (value == "off")
@@ -87,6 +87,8 @@ if (key == "methods") {
         route.path = value;
     } else if (key == "root"){
         route.root = value;
+    } else if (key == "redirect"){
+        route.redirection = value;
     } else {
         throw std::runtime_error("Unknown key or wrong context: " + key);
     }
@@ -113,22 +115,23 @@ void ConfigParser::processServer(const std::string& key, const std::string& valu
     }
 }
 
-void ConfigParser::processRedirect(const std::string &key, const std::string &value, RouteConfig &route) {
+// void ConfigParser::processRedirect(const std::string &key, const std::string &value, RouteConfig &route) {
 
-    static std::string from, to;
-    if (key == "from") {
-        from = value;
-    } else if (key == "to") {
-        to = value;
-        if (!from.empty()) {
-            route.redirections.push_back(std::make_pair(from, to));
-            from.clear();  // Clear the from and to values after adding to the vector
-            to.clear();
-        }
-    } else {
-        throw std::runtime_error("Unknown key or wrong context: " + key);
-    }
-}
+
+//     static std::string from, to;
+//     if (key == "from") {
+//         from = value;
+//     } else if (key == "to") {
+//         to = value;
+//         if (!from.empty()) {
+//             route.redirections.push_back(std::make_pair(from, to));
+//             from.clear();  // Clear the from and to values after adding to the vector
+//             to.clear();
+//         }
+//     } else {
+//         throw std::runtime_error("Unknown key or wrong context: " + key);
+//     }
+// }
 
 std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename) {
     std::stack<std::string> contexts;
@@ -233,17 +236,18 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
                 currentContext = "error_pages";
                 contexts.push(currentContext);
                 continue ;
-            } else if (key == "redirect") {
-                if (currentContext != "location") {
-                    std::cerr << "Redirect outside of location block at line " << lineNumber << std::endl;
-                    throw std::runtime_error("Location outside of server block.");
+            } 
+            // else if (key == "redirect") {
+            //     if (currentContext != "location") {
+            //         std::cerr << "Redirect outside of location block at line " << lineNumber << std::endl;
+            //         throw std::runtime_error("Location outside of server block.");
 
-                    //continue;
-                }
-                currentContext = "redirect";
-                contexts.push(currentContext);
-                continue ;
-            }
+            //         //continue;
+            //     }
+            //     currentContext = "redirect";
+            //     contexts.push(currentContext);
+            //     continue ;
+            // }
 
             if (currentContext.empty())
                 continue;
@@ -253,9 +257,9 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
                 processLocation(key, value, const_cast<RouteConfig&>(serverConfig.getRoutes().back()));
             } else if (currentContext == "error_pages"){
                 processErrorPages(key, value, serverConfig);
-            } else if (currentContext == "redirect") {
-                processRedirect(key, value, const_cast<RouteConfig&>(serverConfig.getRoutes().back()));
-            }
+            } //else if (currentContext == "redirect") {
+            //     processRedirect(key, value, const_cast<RouteConfig&>(serverConfig.getRoutes().back()));
+            // }
         }
     }
 
