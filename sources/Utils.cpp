@@ -78,3 +78,31 @@ void display_fd_set(std::ofstream & out, const fd_set & readfds, const fd_set & 
 	}
 	out << std::endl;
 }
+
+std::string listDirectoriesAsHTML(const std::string& path)
+{
+    DIR *dir = opendir(path.c_str());
+    if (dir == nullptr) {
+        std::cerr << "Error opening directory: " << path << std::endl;
+        return "<p>Error opening directory.</p>";
+    }
+
+    std::stringstream html;
+    html << "<html><head><title>Directory Listing</title></head><body>";
+    html << "<h1>Directory Listing of " << path << "</h1><ul>";
+
+    struct dirent *entry;
+    while ((entry = readdir(dir)) != nullptr) {
+        if (entry->d_type == DT_DIR) {
+            std::string name = entry->d_name;
+            if (name != "." && name != "..") {
+                html << "<li>" << name << "</li>";
+            }
+        }
+    }
+
+    html << "</ul></body></html>";
+    closedir(dir);
+
+    return html.str();
+}

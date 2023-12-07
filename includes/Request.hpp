@@ -8,6 +8,9 @@
 # include <iostream>
 # include <sstream>
 # include <fstream>
+# include <filesystem>
+# include <dirent.h>
+
 
 #include "ServerConfig.hpp"
 
@@ -109,6 +112,7 @@ class Request {
         std::string                                 _response_body;
         std::string                                 _response_header;
 
+        std::string                                 _directory_listening_html_body;
 
         const ServerConfig                          _server_config;
 

@@ -66,17 +66,18 @@ void Request::checkRequest()
 		}
 		else
 		{
-			/*Your playground Victor*/
-
-
-
+			if (this->_path == "")
+				this->_path = "/";
+			this->_directory_listening_html_body = listDirectoriesAsHTML(this->_path);
+			this->_status_code = 200;
+			this->_status_string = "OK";
+			std::cout << MAGENTA << "Response OK 200 listing directories" << RESET << std::endl;
 		}
 
 
 	}
 
 	
-	std::cout << MAGENTA << "Response OK" << RESET << std::endl;
 	//exit(10);
 
 	// else if (!checkPathType()) {
@@ -139,14 +140,21 @@ void	Request::prepareResponse()
 
 	else if (this->_status_code == 200)
 	{
-
+		std::string fileContentStr;
+		if (_directory_listening_html_body != "")
+		{
+			fileContentStr = _directory_listening_html_body;
+		}
 		std::cout << this->_server_config.getRoot() +  this->_path << std::endl;
 		std::ifstream file(this->_server_config.getRoot() + _path);
 
 		if (file.is_open()) {
 			std::ostringstream fileContent;
-			fileContent << file.rdbuf();
-			std::string fileContentStr = fileContent.str();
+			if (fileContentStr.empty())
+			{
+				fileContent << file.rdbuf();
+				fileContentStr = fileContent.str();
+			}
 
 			if (!fileContentStr.empty()) {
 				response = _version + " 200 OK\r\n";
