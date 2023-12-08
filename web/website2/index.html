@@ -7,13 +7,6 @@
 <body>
     <header>
         <h1>Welcome to Animal World</h1>
-        <nav>
-            <ul>
-                <li><a href="index_animals.html">Home</a></li>
-                <li><a href="about_animals.html">About</a></li>
-                <li><a href="contact_animals.html">Contact</a></li>
-            </ul>
-        </nav>
     </header>
     <main>
         <section class="intro">
@@ -21,15 +14,23 @@
             <p>Explore the diversity of the animal kingdom through our curated collection of images and information.</p>
         </section>
         <section class="featured-animals">
-            <div class="animal">
+            <div class="animal" id="lion">
                 <img src="lion.jpeg" alt="Lion">
                 <h3>The Majestic Lion</h3>
                 <p>The lion is a symbol of strength, courage, and majesty. Known as the "king of the jungle," lions are social animals that live in groups called prides. Male lions are easily recognized by their manes, and they play a key role in protecting the pride and its territory.</p>
+                <button onclick="deletePhoto('lion')">Delete Photo</button>
             </div>
-            <div class="animal">
+            <div class="animal" id="penguin">
                 <img src="penguin.jpeg" alt="Penguin">
                 <h3>Adorable Penguins</h3>
                 <p>Penguins are fascinating birds that are well-adapted to life in the water. They are excellent swimmers and have a streamlined body for efficient underwater movement. Unlike many other birds, penguins are not capable of flight, but their wings have evolved into flippers that help them navigate through the ocean with incredible agility.</p>
+                <button onclick="deletePhoto('penguin')">Delete Photo</button>
+            </div>
+            <div class="animal" id="elephant">
+                <img src="elephant.jpg" alt="Elephant">
+                <h3>The Magnificent Elephant</h3>
+                <p>Elephants are the largest land animals and are known for their intelligence and social behavior. They have distinctive long trunks, large ears, and tusks. Elephants play a crucial role in maintaining the balance of ecosystems and are revered in various cultures.</p>
+                <button onclick="deletePhoto('elephant')">Delete Photo</button>
             </div>
         </section>
     </main>
