@@ -72,133 +72,97 @@ void Request::checkRequest()
 		}
 		else
 		{
-			/*Your playground Victor*/
+			
+			this->_status_code = 200;
+			this->_status_string = "OK";
 		}
 	}
 }
 
+
+
 void	Request::prepareResponse()
 {
-	const std::map<int, std::string>& errorPages = this->_server_config.getErrorPages();
-	std::string 	errorPagePath;
+	this->checkRequest();
 	std::string		response;
 	std::string		body;
+	std::ostringstream fileContent;
+	std::ifstream file;
+	if (this->isFile())
+		file.open(this->_server_config.getRoot() + this->_path);
 
-	this->checkRequest(); //pour set le status_code et le status_string
-	std::cout << "STATUS CODE :" << this->_status_code << std::endl;
+	std::string fileType;
 
-	if (this->_status_code != 200 && this->_status_code != 301) //s'il y a une erreur on envoie une page d'erreur
+	fileType = findMimeType(findFileType(this->_path));
+
+	std::cout << "createResponse : " << this->_path << std::endl;
+	std::cout << "Status code : " << this->_status_code << std::endl;
+	if (_status_code != 200 && _status_code != 301)
 	{
+		std::cout << YELLOW << "FILE NOT FOUND" << RESET << std::endl;
+		std::map<int, std::string> errorPages = this->_server_config.getErrorPages();
 		std::map<int, std::string>::const_iterator it = errorPages.find(this->_status_code);
-        if (it != errorPages.end())
+		if (it == errorPages.end())
 		{
-            errorPagePath = this->_server_config.getRoot() + it->second;
-        }
-        else
-		{
-			std::cout << "ERREUR : page d'erreur non trouvée." << std::endl;
-           errorPagePath = "web/default_error_pages/" + std::to_string(_status_code) + ".html";
-        }
-
-		std::cout << "FICHIER DE REFERENCE : " << errorPagePath << std::endl;
-        std::ifstream file(errorPagePath);
-
-		if (file.is_open())
-		{
-            std::ostringstream fileContent;
-            fileContent << file.rdbuf();
-            body = fileContent.str();
-
-            response = this->_version + " " + std::to_string(this->_status_code) + " " + this->_status_string + "\r\n";
-            response += "Content-Type: text/html\r\n";
-            response += "Connection: keep-alive\r\n";
-            response += "Content-Length: " + std::to_string(body.length()) + "\r\n\r\n";
-            response += body;
-        }
+			std::cout << YELLOW << "2" << RESET << std::endl;
+			body = "<!DOCTYPE>\n<html>\n<header></header><body> " + std::to_string(this->_status_code) + " - Status Code </body> </html>";
+			
+		}
 		else
 		{
-			std::ifstream file_rescue("web/default_error_pages/505.html");
-
-            std::ostringstream fileContent;
-            fileContent << file_rescue.rdbuf();
-            body = fileContent.str();
-
-            response = this->_version + " " + std::to_string(this->_status_code) + " " + this->_status_string + "\r\n";
-            response += "Content-Type: text/html\r\n";
-            response += "Connection: keep-alive\r\n";
-            response += "Content-Length: " + std::to_string(body.length()) + "\r\n\r\n";
-            response += body;
-
-		}
-	}
-
-	else if (this->_status_code == 200)
-	{
-		std::cout << this->_server_config.getRoot() +  this->_path << std::endl;
-		std::ifstream file(this->_server_config.getRoot() + _path);
-
-		if (file.is_open()) {
-			std::ostringstream fileContent;
+			std::cout << it->second << std::endl;
+			file.open(this->_server_config.getRoot() + it->second);
 			fileContent << file.rdbuf();
-			std::string fileContentStr = fileContent.str();
-
-			if (!fileContentStr.empty()) {
-				response = _version + " 200 OK\r\n";
-				response += "Content-Type: " + findMimeType(findFileType(this->_path)) + "\r\n";
-				response += "Connection: keep-alive\r\n";
-				response += "Content-Length: " + std::to_string(fileContentStr.length()) + "\r\n\r\n";
-				response += fileContentStr;
-			} else {
-				response = "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\nConnection: keep-alive\r\n\r\n404 - Not Found";
-			}
-		} else {
-			std::ifstream file_rescue("web/default_error_pages/505.html");
-
-            std::ostringstream fileContent;
-            fileContent << file_rescue.rdbuf();
-            body = fileContent.str();
-
-            response = this->_version + " " + std::to_string(this->_status_code) + " " + this->_status_string + "\r\n";
-            response += "Content-Type: text/html\r\n";
-            response += "Connection: keep-alive\r\n";
-            response += "Content-Length: " + std::to_string(body.length()) + "\r\n\r\n";
-            response += body;
+			body = fileContent.str();
+			std::cout << RED << body << RESET << std::endl;
+			fileType = "text/html";
+			//this->_path = this->_server_config.getRoot() + it->second;
 		}
 	}
-	else if (this->_status_code == 301)
+	else // ca marche status code 200
 	{
-				std::cout << this->_server_config.getRoot() +  this->_path << std::endl;
-		std::ifstream file(this->_server_config.getRoot() + _path);
-
-		if (file.is_open()) {
-			std::ostringstream fileContent;
+		if (file.is_open())
+		{
+			std::cout << GREEN << "FILE FOUND" << RESET << std::endl;
 			fileContent << file.rdbuf();
-			std::string fileContentStr = fileContent.str();
-
-			if (!fileContentStr.empty()) {
-				response = _version + " 301 OK\r\n";
-				response += "Content-Type: " + findMimeType(findFileType(this->_path)) + "\r\n";
-				response += "Connection: keep-alive\r\n";
-				response += "Content-Length: " + std::to_string(fileContentStr.length()) + "\r\n";
-				response += "Location: " + this->_path + "\r\n\r\n";
-				response += fileContentStr;
-			} else {
-				response = "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\nConnection: keep-alive\r\n\r\n404 - Not Found";
-			}
-		} else {
-			std::ifstream file_rescue("web/default_error_pages/505.html");
-
-            std::ostringstream fileContent;
-            fileContent << file_rescue.rdbuf();
-            body = fileContent.str();
-
-            response = this->_version + " " + std::to_string(this->_status_code) + " " + this->_status_string + "\r\n";
-            response += "Content-Type: text/html\r\n";
-            response += "Connection: keep-alive\r\n";
-            response += "Content-Length: " + std::to_string(body.length()) + "\r\n\r\n";
-            response += body;
+			body = fileContent.str();
+		}
+		else //Not a file in a directory
+		{
+			body = "Here we are in a directory";
 		}
 	}
+
+
+		
+
+
+
+
+
+
+
+		// }
+		// catch(const std::exception& e)
+		// {
+		// 	std::cerr << e.what() << '\n';
+		// 	std::cout << YELLOW << "1" << RESET << std::endl;
+		// 	this->_response = "HTTP/1.1 500 Not Found\r\nContent-Type: text/plain\r\nConnection: keep-alive\r\n\r\n500 - No Error pages found";
+		// }
+	
+		// if (!file.is_open())
+		// {
+		// 	std::cout << YELLOW << "2" << RESET << std::endl;
+		// 	body = std::to_string(this->_status_code) + " - Status Code";
+		// }
+
+	response = this->_version + " " + std::to_string(this->_status_code) + " " + this->_status_string + "\r\n";
+	response += "Content-Type: text/html\r\n";
+	response += "Content-Length: " + std::to_string(body.size()) + "\r\n";
+	response += "Connection: keep-alive\r\n";
+	response += "Location: " + this->_path + "\r\n\r\n";
+	response += body;
+
 	this->_response = response;
 }
 
