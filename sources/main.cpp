@@ -1,5 +1,6 @@
 #include "../includes/ConfigParser.hpp"
 #include "../includes/RunServer.hpp"
+#include "../includes/CgiHandler.hpp"
 
 #include <signal.h>
 
@@ -25,6 +26,21 @@ bool fileExist(const std::string fileName)
 
 int main(int argc, char *argv[])
 {
+	{
+		/*Tests CGI FX tkt*/
+		const std::string scriptPath = "web/website0/script.py";
+		std::map<std::string, std::string> mmap_args;
+		mmap_args.insert(std::pair<std::string, std::string>("arg1", "value1"));
+		mmap_args.insert(std::pair<std::string, std::string>("arg2", "value2"));
+		mmap_args.insert(std::pair<std::string, std::string>("arg3", "value3"));
+
+		CgiHandler cgiHandler(scriptPath.c_str(), mmap_args);
+		
+		cgiHandler.executePythonScript();
+
+		std::cout << cgiHandler <<std::endl;
+	}
+
 
 	std::string configFile;
 	if (argc == 1)
