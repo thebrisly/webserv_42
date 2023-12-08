@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   RequestUtils.cpp                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/17 13:27:08 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/08 10:49:25 by vgiordan         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/Request.hpp"
 #include "../includes/Color.hpp"
 #include "../includes/RunServer.hpp"
@@ -37,9 +25,6 @@ std::vector<std::string>		Request::initMethods()
 // Méthode pour parser la requête
 void 	Request::parseRequest(const std::string& request)
 {
-
-
-
 	// Clear existing data
 	clearRequest();
 
@@ -48,12 +33,17 @@ void 	Request::parseRequest(const std::string& request)
 	std::string line;
 	while (std::getline(requestStream, line))
 	{
-		if (line.empty()) { break; } // Check if the line is empty (end of headers)
+		if (line == "\r") //start of body
+		{
+			while (std::getline(requestStream, line))
+				this->_body += line;
+			parseUserData();
+		} // Check if the line is empty (end of headers)
 
 		if (this->_method.empty())
 		{
 			this->_method = readMethod(line);
-			this->_version = readVersion(line);			
+			this->_version = readVersion(line);
 			this->_path = readFirstLine(line);
 			if (this->_path.back() == '/')
 			{
@@ -85,7 +75,6 @@ void 	Request::parseRequest(const std::string& request)
             }
 		}
 	}
-	// TODO: Parse body if needed
 }
 
 std::string Request::readFirstLine(const std::string& line)
@@ -185,12 +174,36 @@ void Request::parseHostHeader(const std::string& hostHeader, std::string& hostna
     }
 }
 
+void Request::parseUserData()
+{
+    // Clear existing user data
+    this->_userData.clear();
+
+    // Create a stringstream from _body
+    std::istringstream bodyStream(this->_body);
+
+    // Tokenize the body using '&' as the delimiter
+    std::string token;
+    while (std::getline(bodyStream, token, '&'))
+    {
+        // Split the token into key and value using '=' as the delimiter
+        size_t equalPos = token.find('=');
+        if (equalPos != std::string::npos)
+        {
+            std::string key = token.substr(0, equalPos);
+            std::string value = token.substr(equalPos + 1);
+
+            // Add or update the key-value pair in the map
+            this->_userData[key] = value;
+        }
+    }
+}
+
+
 std::ostream& operator<<(std::ostream& os, const Request &request)
 {
-	
+
 	//os << CYAN <<"current request : " << RESET<< request.getCurrentRequest() << std::endl;
-
-
 
 	os << BLUE <<" -------------------- VARIABLES REQUEST -------------------- " << RESET << std::endl;
 	os << CYAN <<"           path : " << RESET<< request.getPath() << std::endl;
@@ -207,9 +220,17 @@ std::ostream& operator<<(std::ostream& os, const Request &request)
 	os << CYAN <<"   secfetchdest : " << RESET<< request.getSecFetchDest() << std::endl;
 	os << CYAN <<"           port : " << RESET<< request.getPort() << std::endl;
 	os << CYAN <<"       hostname : " << RESET<< request.getHostname() << std::endl;
+	os << CYAN <<"           body : " << RESET<< request.getBody() << std::endl;
 	os << CYAN <<"        headers : " << RESET << std::endl;
 
 	for (std::map<std::string, std::string>::const_iterator it = request.getHeaders().begin(); it!= request.getHeaders().end(); ++it)
+	{
+		os << "           * " << MAGENTA << it->first << RESET << " : " << it->second << std::endl;
+	}
+
+	// Afficher les éléments avec des clés groupées
+	os << CYAN <<"     user data : " << RESET << std::endl;
+	for (std::map<std::string, std::string>::const_iterator it = request.getUserData().begin(); it!= request.getUserData().end(); ++it)
 	{
 		os << "           * " << MAGENTA << it->first << RESET << " : " << it->second << std::endl;
 	}

@@ -48,6 +48,7 @@ class Request {
         std::string                                 getResponse() const;
         std::string                                 getResponseBody() const;
         std::string                                 getResponseHeader() const;
+        std::string                                 getBody() const;
         ServerConfig                                getServerConfig() const;
 
         int                                         getStatusCode() const;
@@ -55,6 +56,9 @@ class Request {
 
 
         const std::map<std::string, std::string>&   getHeaders() const;
+        const std::map<std::string, std::string>&   getUserData() const;
+
+        void                                        parseUserData();
         void                                        parseHostHeader(const std::string& hostHeader, std::string& hostname, std::string& port) const;
 
         std::string                                 getSecFetchDestHeader() const;
@@ -97,8 +101,10 @@ class Request {
         std::string                                 _secfetchdest;
         std::string                                 _port;
         std::string                                 _hostname;
+        std::string                                 _body;
 
         std::map<std::string, std::string>	        _headers; //dictionnary of keys, values
+        std::map<std::string, std::string>          _userData;
         std::string                                 _default_file;
 
         int                                         _status_code;
