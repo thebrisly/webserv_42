@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:43:38 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/07 12:16:06 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/12/08 12:59:54 by lfabbian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 
 Request::Request() {}
 
-Request::Request(const std::string& str, const ServerConfig server_config) : _current_request(str), _server_config(server_config) 
-{        
+Request::Request(const std::string& str, const ServerConfig server_config) : _current_request(str), _server_config(server_config)
+{
         this->_status_code = 0;
 }
 
@@ -33,7 +33,7 @@ Request::~Request() {}
 
 Request& Request::operator=(const Request& other)
 {
-        
+
         if (this != &other)
 	{
                 this->_current_request = other.getCurrentRequest();
@@ -157,3 +157,12 @@ std::string Request::getResponseHeader() const
         return this->_response_header;
 }
 
+std::string Request::getBody() const
+{
+        return this->_body;
+}
+
+const std::map<std::string, std::string>& Request::getUserData() const
+{
+    return (this->_userData);
+}
