@@ -3,15 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   RequestUtils.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< HEAD
 /*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 13:27:08 by lfabbian          #+#    #+#             */
 /*   Updated: 2023/12/08 13:02:31 by lfabbian         ###   ########.fr       */
+=======
+/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/17 13:27:08 by lfabbian          #+#    #+#             */
+/*   Updated: 2023/12/08 10:49:25 by vgiordan         ###   ########.fr       */
+>>>>>>> b143a04bfc31e562736cf52cab63e79dcb35adbd
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Request.hpp"
 #include "../includes/Color.hpp"
+#include "../includes/RunServer.hpp"
 
 // https://en.wikipedia.org/wiki/HTTP#Request_methods
 // For the webserv project we only need GET, POST and DELETE
@@ -261,4 +269,14 @@ std::ostream& operator<<(std::ostream& os, const Request &request)
 
 
 	return os;
+}
+
+void sendRedirectionResponse(int clientSocket, const std::string& newUrl)
+{
+    std::string response = "HTTP/1.1 301 Moved Permanently\r\n";
+    response += "Location: " + newUrl + "\r\n";
+    response += "Content-Length: 0\r\n";
+    response += "Connection: close\r\n\r\n";
+
+    send(clientSocket, response.c_str(), response.length(), 0);
 }

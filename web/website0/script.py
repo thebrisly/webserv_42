@@ -1,3 +1,5 @@
+import sys
+
 print("<!DOCTYPE html>")
 print("<html lang=\"en\">")
 print("<head>")
@@ -22,7 +24,9 @@ print("    </header>")
 
 print("    <section>")
 print("		<h1>Cette page est issue du script python </h1>")
-        
+print("     <p>")       
+print(sys.argv)       
+print("     </p>")       
 print("    </section>")
 
 
