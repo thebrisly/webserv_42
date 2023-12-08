@@ -1,22 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   RequestUtils.cpp                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
-/*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/17 13:27:08 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/08 13:02:31 by lfabbian         ###   ########.fr       */
-=======
-/*   By: vgiordan <vgiordan@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/17 13:27:08 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/08 10:49:25 by vgiordan         ###   ########.fr       */
->>>>>>> b143a04bfc31e562736cf52cab63e79dcb35adbd
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/Request.hpp"
 #include "../includes/Color.hpp"
 #include "../includes/RunServer.hpp"
