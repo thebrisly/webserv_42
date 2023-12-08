@@ -47,14 +47,14 @@ void Request::checkRequest()
 	{
 		std::cout << "[Response.cpp] " << MAGENTA << "Redirection ..." << RESET << std::endl;
 
+
 		this->_status_code = 301; //redirection (error) code
 
-		this->checkRequest();
+		//this->checkRequest();
 		return ;
 	}
 	else
 	{
-		this->_status_code = 200;
 		if (this->isFile() == 1)
 		{
 			if (!this->issetFile(id_route))
@@ -87,7 +87,7 @@ void	Request::prepareResponse()
 	this->checkRequest(); //pour set le status_code et le status_string
 	std::cout << "STATUS CODE :" << this->_status_code << std::endl;
 
-	if (this->_status_code != 200) //s'il y a une erreur on envoie une page d'erreur
+	if (this->_status_code != 200 && this->_status_code != 301) //s'il y a une erreur on envoie une page d'erreur
 	{
 		std::map<int, std::string>::const_iterator it = errorPages.find(this->_status_code);
         if (it != errorPages.end())
@@ -134,7 +134,6 @@ void	Request::prepareResponse()
 
 	else if (this->_status_code == 200)
 	{
-
 		std::cout << this->_server_config.getRoot() +  this->_path << std::endl;
 		std::ifstream file(this->_server_config.getRoot() + _path);
 
@@ -166,7 +165,40 @@ void	Request::prepareResponse()
             response += body;
 		}
 	}
+	else if (this->_status_code == 301)
+	{
+				std::cout << this->_server_config.getRoot() +  this->_path << std::endl;
+		std::ifstream file(this->_server_config.getRoot() + _path);
 
+		if (file.is_open()) {
+			std::ostringstream fileContent;
+			fileContent << file.rdbuf();
+			std::string fileContentStr = fileContent.str();
+
+			if (!fileContentStr.empty()) {
+				response = _version + " 301 OK\r\n";
+				response += "Content-Type: " + findMimeType(findFileType(this->_path)) + "\r\n";
+				response += "Connection: keep-alive\r\n";
+				response += "Content-Length: " + std::to_string(fileContentStr.length()) + "\r\n";
+				response += "Location: " + this->_path + "\r\n\r\n";
+				response += fileContentStr;
+			} else {
+				response = "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\nConnection: keep-alive\r\n\r\n404 - Not Found";
+			}
+		} else {
+			std::ifstream file_rescue("web/default_error_pages/505.html");
+
+            std::ostringstream fileContent;
+            fileContent << file_rescue.rdbuf();
+            body = fileContent.str();
+
+            response = this->_version + " " + std::to_string(this->_status_code) + " " + this->_status_string + "\r\n";
+            response += "Content-Type: text/html\r\n";
+            response += "Connection: keep-alive\r\n";
+            response += "Content-Length: " + std::to_string(body.length()) + "\r\n\r\n";
+            response += body;
+		}
+	}
 	this->_response = response;
 }
 
