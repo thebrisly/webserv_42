@@ -2,7 +2,7 @@
 
 CgiHandler::~CgiHandler(){}
 
-CgiHandler::CgiHandler(const char* scriptPath) : _scriptPath(scriptPath)
+CgiHandler::CgiHandler(const char* scriptPath, const std::map<std::string, std::string> mmap_args) : _scriptPath(scriptPath), _mmap_args(mmap_args)
 {
 }
 
@@ -16,10 +16,15 @@ std::string CgiHandler::get_py_body_response() const
 	return this->_py_body_response;
 }
 
-// std::string CgiHandler::get_vec_args() const
-// {
-// 	return this->_vec_args;
-// }
+std::map<std::string, std::string> CgiHandler::get_mmap_args() const
+{
+	return this->_mmap_args;
+}
+
+const char* CgiHandler::get_arg(int i) const
+{
+	return this->args[i];
+}
 
 bool CgiHandler::executePythonScript()
 {
@@ -53,7 +58,7 @@ bool CgiHandler::executePythonScript()
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
 
-    	execve("/usr/local/bin/python3", args, NULL);
+    	execve("/usr/bin/python", args, NULL);
 		std::cerr << "CgiHandler.cpp :" << " executePythonScript" << std::endl;
 		perror("execve");		
 		return false;
@@ -72,15 +77,65 @@ bool CgiHandler::executePythonScript()
 	}
 }
 
+bool CgiHandler::transform_map_to_strArray()
+{
+
+	args[0] = "/usr/bin/python";
+
+	if (this->_mmap_args.size() > MAX_ARGS)
+	{
+		std::cerr << RED << "CgiHandler.cpp :" << RESET << " transform_map_to_strArray" << std::endl;
+		perror("Too many arguments");
+		return false;
+	}
+
+	int i = 1;
+	for (std::map<std::string, std::string>::const_iterator it = this->_mmap_args.begin(); it!= this->_mmap_args.end(); ++it)
+	{
+		args[i] = (char*)it->first.c_str();
+		i++;
+		args[i] = (char*)it->second.c_str();
+		i++;
+	}
+
+	args[i] = NULL;
+
+	return true;
+
+
+}
+
  /*
  pipefd[0] => READ
  pipefd[1] => WRITE
  */
 
+std::ostream& operator<<(std::ostream& os, const CgiHandler &cgi_hl)
+{
+	
+	//os << CYAN <<"current request : " << RESET<< request.getCurrentRequest() << std::endl;
 
 
 
+	os << BLUE <<" -------------------- CGI HANDLER -------------------- " << RESET << std::endl;
+	os << MAGENTA << "      _scriptPath : " << RESET << cgi_hl.get_scriptPath() <<std::endl;
+	os << MAGENTA << "_py_body_response : " << RESET << cgi_hl.get_py_body_response() <<std::endl;
 
+	std::map<std::string, std::string> copy = cgi_hl.get_mmap_args();
 
+	for (std::map<std::string, std::string>::iterator it = copy.begin(); it!= copy.end(); ++it)
+	{
+		os << MAGENTA << "      _mmap_args : " << RESET << it->first << " " << it->second <<std::endl;
+	}
 
+	
 
+	// os << MAGENTA << "" << RESET << cgi_hl.get_ <<std::end;
+	// os << MAGENTA << "" << RESET << cgi_hl.get_ <<std::end;
+	// os << MAGENTA << "" << RESET << cgi_hl.get_ <<std::end;
+	// os << MAGENTA << "" << RESET << cgi_hl.get_ <<std::end;
+	// os << MAGENTA << "" << RESET << cgi_hl.get_ <<std::end;
+
+	return os;
+
+}
