@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 	// 	std::cout << cgiHandler <<std::endl;
 	// }
 
-
+	// exit(0);
 	std::string configFile;
 	if (argc == 1)
 	{

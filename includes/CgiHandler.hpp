@@ -16,7 +16,7 @@ class CgiHandler
 		const char* _scriptPath;
 		const std::map<std::string, std::string> _mmap_args;
 		std::string _py_body_response;
-		const char *args[MAX_ARGS];
+		char *args[MAX_ARGS];
 
 		bool transform_map_to_strArray();
 

@@ -1,9 +1,12 @@
 #include "../includes/CgiHandler.hpp"
+#define CGI_EXEC "/usr/bin/python3"
 
 CgiHandler::~CgiHandler(){}
 
 CgiHandler::CgiHandler(const char* scriptPath, const std::map<std::string, std::string> mmap_args) : _scriptPath(scriptPath), _mmap_args(mmap_args)
 {
+	this->transform_map_to_strArray();
+	//std::cout << "[CgiHandler]" << " CgiHandler constructor " << this->args[1] << std::endl;
 }
 
 const char* CgiHandler::get_scriptPath() const
@@ -30,7 +33,7 @@ bool CgiHandler::executePythonScript()
 {
 
 	int pid;
-    char* args[] = {(char*)"python", (char*)this->_scriptPath, (char*)"Hello from Python Script", NULL};
+    //char* args[] = {(char*)"python", (char*)this->_scriptPath, (char*)"Hello from Python Script", NULL};
 	int pipefd[2];
 	char buf;
 
@@ -58,7 +61,7 @@ bool CgiHandler::executePythonScript()
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
 
-    	execve("/usr/bin/python", args, NULL);
+    	execve(CGI_EXEC, this->args, NULL);
 		std::cerr << "CgiHandler.cpp :" << " executePythonScript" << std::endl;
 		perror("execve");		
 		return false;
@@ -79,8 +82,11 @@ bool CgiHandler::executePythonScript()
 
 bool CgiHandler::transform_map_to_strArray()
 {
+	std::string cgi_exec = CGI_EXEC;
+	args[0] = (char *) cgi_exec.c_str();
+	args[1] = (char *) this->_scriptPath;
 
-	args[0] = "/usr/bin/python";
+	std::cout << "arg[0] = " << args[0] << std::endl;
 
 	if (this->_mmap_args.size() > MAX_ARGS)
 	{
@@ -89,11 +95,11 @@ bool CgiHandler::transform_map_to_strArray()
 		return false;
 	}
 
-	int i = 1;
+	int i = 2;
 	for (std::map<std::string, std::string>::const_iterator it = this->_mmap_args.begin(); it!= this->_mmap_args.end(); ++it)
 	{
-		args[i] = (char*)it->first.c_str();
-		i++;
+		// args[i] = (char*)it->first.c_str();
+		// i++;
 		args[i] = (char*)it->second.c_str();
 		i++;
 	}
@@ -101,8 +107,6 @@ bool CgiHandler::transform_map_to_strArray()
 	args[i] = NULL;
 
 	return true;
-
-
 }
 
  /*
@@ -112,10 +116,7 @@ bool CgiHandler::transform_map_to_strArray()
 
 std::ostream& operator<<(std::ostream& os, const CgiHandler &cgi_hl)
 {
-	
 	//os << CYAN <<"current request : " << RESET<< request.getCurrentRequest() << std::endl;
-
-
 
 	os << BLUE <<" -------------------- CGI HANDLER -------------------- " << RESET << std::endl;
 	os << MAGENTA << "      _scriptPath : " << RESET << cgi_hl.get_scriptPath() <<std::endl;
@@ -128,14 +129,5 @@ std::ostream& operator<<(std::ostream& os, const CgiHandler &cgi_hl)
 		os << MAGENTA << "      _mmap_args : " << RESET << it->first << " " << it->second <<std::endl;
 	}
 
-	
-
-	// os << MAGENTA << "" << RESET << cgi_hl.get_ <<std::end;
-	// os << MAGENTA << "" << RESET << cgi_hl.get_ <<std::end;
-	// os << MAGENTA << "" << RESET << cgi_hl.get_ <<std::end;
-	// os << MAGENTA << "" << RESET << cgi_hl.get_ <<std::end;
-	// os << MAGENTA << "" << RESET << cgi_hl.get_ <<std::end;
-
 	return os;
-
 }

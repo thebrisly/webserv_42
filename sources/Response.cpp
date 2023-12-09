@@ -63,6 +63,10 @@ void Request::checkRequest()
 				this->_status_string = "Not Found";
 				std::cout << "[Response.cpp] "<< MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
 			}
+			//else if (findFileType(this->_path) == "py")
+			//{
+				/*CgiHandler...*/
+			//}
 			else
 			{
 				this->_status_code = 200;
@@ -78,8 +82,6 @@ void Request::checkRequest()
 		}
 	}
 }
-
-
 
 void	Request::prepareResponse()
 {
@@ -108,7 +110,6 @@ void	Request::prepareResponse()
 		{
 			std::cout << YELLOW << "2" << RESET << std::endl;
 			body = "<!DOCTYPE>\n<html>\n<header></header><body> " + std::to_string(this->_status_code) + " - Status Code </body> </html>";
-			
 		}
 		else
 		{
