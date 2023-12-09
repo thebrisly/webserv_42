@@ -15,10 +15,10 @@ void Request::checkRequest()
 {
 	int id_route;
 
-	bool is_file = this->isFile();
+	//bool is_file = this->isFile();
 
 
-	std::cout << "is_file : " << is_file << std::endl;
+	//std::cout << "[response.cpp]" GREEN << " checkRequest " << RESET << "is_file : " << is_file << std::endl;
 	if (!checkHttpVersion())
 	{
 		this->_status_code = 505;
@@ -89,13 +89,15 @@ void	Request::prepareResponse()
 	std::ostringstream fileContent;
 	std::ifstream file;
 	if (this->isFile())
+	{
+		std::cout << "[Response.cpp] " << MAGENTA << "prepare response " << RESET << "considered as a file." << std::endl;
 		file.open(this->_server_config.getRoot() + this->_path);
-
+	}
 	std::string fileType;
 
 	fileType = findMimeType(findFileType(this->_path));
 
-	std::cout << "createResponse : " << this->_path << std::endl;
+	std::cout <<"[response.cpp]"<< GREEN << " createResponse : "<< RESET << this->_path << std::endl;
 	std::cout << "Status code : " << this->_status_code << std::endl;
 	if (_status_code != 200 && _status_code != 301)
 	{
@@ -121,6 +123,8 @@ void	Request::prepareResponse()
 	}
 	else // ca marche status code 200
 	{
+		std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << " code is 200 " << std::endl;
+
 		if (file.is_open())
 		{
 			std::cout << GREEN << "FILE FOUND" << RESET << std::endl;
@@ -129,35 +133,16 @@ void	Request::prepareResponse()
 		}
 		else //Not a file in a directory
 		{
+			std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "is a directory." << std::endl;
+			fileType = "text/html";
 			body = "Here we are in a directory";
+			std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "MIME type = " << fileType << std::endl;
+
 		}
 	}
 
-
-		
-
-
-
-
-
-
-
-		// }
-		// catch(const std::exception& e)
-		// {
-		// 	std::cerr << e.what() << '\n';
-		// 	std::cout << YELLOW << "1" << RESET << std::endl;
-		// 	this->_response = "HTTP/1.1 500 Not Found\r\nContent-Type: text/plain\r\nConnection: keep-alive\r\n\r\n500 - No Error pages found";
-		// }
-	
-		// if (!file.is_open())
-		// {
-		// 	std::cout << YELLOW << "2" << RESET << std::endl;
-		// 	body = std::to_string(this->_status_code) + " - Status Code";
-		// }
-
 	response = this->_version + " " + std::to_string(this->_status_code) + " " + this->_status_string + "\r\n";
-	response += "Content-Type: text/html\r\n";
+	response += "Content-Type: "+fileType+"\r\n";
 	response += "Content-Length: " + std::to_string(body.size()) + "\r\n";
 	response += "Connection: keep-alive\r\n";
 	response += "Location: " + this->_path + "\r\n\r\n";
@@ -247,10 +232,9 @@ bool Request::checkMethods(int id_route) const
 
 bool Request::checkRedirection(int id_route)
 {
-
 	(void) id_route;
-    std::cout << "Checking for Redirection" << std::endl;
-    std::cout << "Current Path: " << this->_path << std::endl;
+	std::cout << "[Response.cpp] " << GREEN << "checkRedirection " <<RESET << " Checking for redirection for ["<< this->_path << "]" <<std::endl;
+    //std::cout << "Current Path: " << this->_path << std::endl;
 	std::string usingPath = this->_path;
 
 	if (this->_path == "")
@@ -264,47 +248,18 @@ bool Request::checkRedirection(int id_route)
 	catch(const std::exception& e)
 	{
 		std::cerr << e.what() << '\n';
+		std::cout << "[Response.cpp] " << RED << "checkRedirection " << RESET << " No Redirection found" << std::endl;
 		return false;
 	}
 	
-
-	//std::cout << RED << "Route " << route.path << RESET << std::endl;
-	// if (isFile())
-	// {
-	// 	std::cout << RED << "File" << RESET << std::endl;
-	// 	usingPath = getDirectoryFromFilePath(this->_path);
-	// 	std::cout << "Using Path: " << usingPath << std::endl;
-	// }
-
-    // Check if redirection is specified in the route configuration
-
-	//std::cout <<  RED << "Redirect: " << route.redirect.first << " to: " << route.redirect.second << RESET << std::endl;
-
-	std::cout << RED << "Redirection to " << route.redirection << RESET << std::endl;
+	std::cout << "[Response.cpp] " << GREEN << "checkRedirection " << RESET << RED << "Redirection to " << RESET << route.redirection << std::endl;
 	if (route.redirection != "")
 	{
-// <<<<<<< HEAD
-// 		for (std::vector<std::pair<std::string, std::string> >::const_iterator it = route.redirections.begin(); it!= route.redirections.end(); ++it)
-// 		{
-// 			std::pair<std::string, std::string> redirection = *it;
-// 			if (redirection.first != "" && redirection.second != "")
-// 			{
-// 				// Check if the current path matches the path to redirect from
-// 				if (checking_path == redirection.first)
-// 				{
-// 					std::cout << "[Response.cpp] " << GREEN << "checkRedirection : " << RESET << "Redirecting to " << redirection.second << " from " << redirection.first <<std::endl;
-// 					this->_path = redirection.second;
-// 					return true;	
-// 				}
-// 			}
-// 		}
-// 		checking_path = reducePath(checking_path);
-// 		if (checking_path == "/")
-// 			break;
-// =======
+
 		this->_path = route.redirection;
+		std::cout << "[Response.cpp] " << GREEN << "checkRedirection " << RESET << RED << "Redirection to " << RESET << route.redirection << std::endl;
 		return true;
-//>>>>>>> origin/linux
+
 	}
 
 	std::cout << "[Response.cpp] " << GREEN << "checkRedirection : " << RESET <<  " No Redirection found"<< std::endl;

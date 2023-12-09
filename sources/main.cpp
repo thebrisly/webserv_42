@@ -26,20 +26,20 @@ bool fileExist(const std::string fileName)
 
 int main(int argc, char *argv[])
 {
-	{
-		/*Tests CGI FX tkt*/
-		const std::string scriptPath = "web/website0/script.py";
-		std::map<std::string, std::string> mmap_args;
-		mmap_args.insert(std::pair<std::string, std::string>("arg1", "value1"));
-		mmap_args.insert(std::pair<std::string, std::string>("arg2", "value2"));
-		mmap_args.insert(std::pair<std::string, std::string>("arg3", "value3"));
+	// {
+	// 	/*Tests CGI FX tkt*/
+	// 	const std::string scriptPath = "web/website0/script.py";
+	// 	std::map<std::string, std::string> mmap_args;
+	// 	mmap_args.insert(std::pair<std::string, std::string>("arg1", "value1"));
+	// 	mmap_args.insert(std::pair<std::string, std::string>("arg2", "value2"));
+	// 	mmap_args.insert(std::pair<std::string, std::string>("arg3", "value3"));
 
-		CgiHandler cgiHandler(scriptPath.c_str(), mmap_args);
+	// 	CgiHandler cgiHandler(scriptPath.c_str(), mmap_args);
 		
-		cgiHandler.executePythonScript();
+	// 	cgiHandler.executePythonScript();
 
-		std::cout << cgiHandler <<std::endl;
-	}
+	// 	std::cout << cgiHandler <<std::endl;
+	// }
 
 
 	std::string configFile;
