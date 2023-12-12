@@ -119,11 +119,11 @@ void RunServer::recvs_request (int i)
 
 		//current_request.checkRequest();
 
-		std::cout << "[Request info] "  << std::endl;
-		std::cout <<  current_request << std::endl;
 
 		current_request.prepareResponse();
 
+		std::cout << "[Request info] "  << std::endl;
+		std::cout <<  current_request << std::endl;
 
 
 		this->_map_clients[i].set_response(current_request.getResponse());
