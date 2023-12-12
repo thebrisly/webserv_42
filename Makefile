@@ -4,7 +4,7 @@ NAME = ./server
 
 OBJS := $(SRCS:%.cpp=%.o)
 
-CPPFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CPPFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 

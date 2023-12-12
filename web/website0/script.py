@@ -23,8 +23,9 @@ print("    </header>")
 
 
 print("    <section>")
-print("		<h1>Cette page est issue du script python </h1>")
+print("		<h1>Cette page est issue d'un script python </h1>")
 print("     <p>")       
+print("     <p>Voici les arguments passés au script : ")
 print(sys.argv)       
 print("     </p>")       
 print("    </section>")

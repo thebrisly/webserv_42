@@ -20,11 +20,13 @@ class CgiHandler
 
 		bool transform_map_to_strArray();
 
+        const std::string _method;
+
 		CgiHandler();
 
 	public :
 		~CgiHandler();
-		CgiHandler(const char* scriptPath, const std::map<std::string, std::string> mmap_args);
+		CgiHandler(const char* scriptPath, const std::map<std::string, std::string> mmap_args, const std::string method);
 		CgiHandler &operator=(CgiHandler &src);
 
 		const char* get_arg(int i) const;

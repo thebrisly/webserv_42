@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfabbian <lfabbian@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:43:38 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/08 12:59:54 by lfabbian         ###   ########.fr       */
+/*   Updated: 2023/12/12 11:21:43 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ Request::Request() {}
 Request::Request(const std::string& str, const ServerConfig server_config) : _current_request(str), _server_config(server_config)
 {
         this->_status_code = 0;
+        this->_is_cgi = false;
 }
 
 Request::Request(const Request& other) {
@@ -165,4 +166,9 @@ std::string Request::getBody() const
 const std::map<std::string, std::string>& Request::getUserData() const
 {
     return (this->_userData);
+}
+
+bool Request::getIsCgi() const
+{
+        return this->_is_cgi;
 }

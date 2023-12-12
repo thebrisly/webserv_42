@@ -1,6 +1,7 @@
 #include "../includes/Request.hpp"
 #include "../includes/Utils.hpp"
 #include "../includes/Color.hpp"
+#include "../includes/CgiHandler.hpp"
 #include <unistd.h>
 
 
@@ -46,8 +47,6 @@ void Request::checkRequest()
 	else if (checkRedirection(id_route))
 	{
 		std::cout << "[Response.cpp] " << MAGENTA << "Redirection ..." << RESET << std::endl;
-
-
 		this->_status_code = 301; //redirection (error) code
 
 		//this->checkRequest();
@@ -63,10 +62,27 @@ void Request::checkRequest()
 				this->_status_string = "Not Found";
 				std::cout << "[Response.cpp] "<< MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
 			}
-			//else if (findFileType(this->_path) == "py")
-			//{
+			// else if (findFileType(this->_path) == "py")
+			// {
+			// 	this->_status_code = 200;
+			// 	this->_status_string = "OK";
+			// 	this->_is_cgi = true;
+			// 	std::cout << "[Response.cpp] "<< MAGENTA << "checkRequest " << RESET << "CGI asked" << std::endl;
+
+				// const std::string scriptPath = "web/website0/script.py";
+				// std::map<std::string, std::string> mmap_args;
+				// mmap_args.insert(std::pair<std::string, std::string>("arg1", "value1"));
+				// mmap_args.insert(std::pair<std::string, std::string>("arg2", "value2"));
+				// mmap_args.insert(std::pair<std::string, std::string>("arg3", "value3"));
+
+				// CgiHandler cgiHandler(scriptPath.c_str(), mmap_args);
+				
+				// cgiHandler.executePythonScript();
+
+				// std::cout << cgiHandler <<std::endl;
+
 				/*CgiHandler...*/
-			//}
+			// }
 			else
 			{
 				this->_status_code = 200;
@@ -129,8 +145,39 @@ void	Request::prepareResponse()
 		if (file.is_open())
 		{
 			std::cout << GREEN << "FILE FOUND" << RESET << std::endl;
-			fileContent << file.rdbuf();
-			body = fileContent.str();
+			if (findFileType(this->_path) == "py")
+			{
+				file.close();
+				std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "is a python file." << std::endl;
+				fileType = "text/html";
+
+				const std::string scriptPath = this->_server_config.getRoot() + this->_path;
+				std::map<std::string, std::string> mmap_args;
+				mmap_args.insert(std::pair<std::string, std::string>("arg1", "value1"));
+				mmap_args.insert(std::pair<std::string, std::string>("arg1", "value2"));
+
+
+				//mmap_args.insert(std::pair<std::string, std::string>("arg2", "value2"));
+				//mmap_args.insert(std::pair<std::string, std::string>("arg3", "value3"));
+
+				CgiHandler cgiHandler(scriptPath.c_str(), this->_userData, this->_method);
+				
+				cgiHandler.executePythonScript();
+
+				// std::cout << cgiHandler <<std::endl;
+
+				body = cgiHandler.get_py_body_response() ;
+				//std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "MIME type = " << fileType << std::endl;
+			}
+			else
+			{
+				fileContent << file.rdbuf();
+				body = fileContent.str();
+				file.close();
+			}
+
+
+
 		}
 		else //Not a file in a directory
 		{

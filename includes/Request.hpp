@@ -53,6 +53,7 @@ class Request {
 
         int                                         getStatusCode() const;
         std::string                                 getStatusString() const;
+        bool                                        getIsCgi() const;
 
 
         const std::map<std::string, std::string>&   getHeaders() const;
@@ -117,7 +118,7 @@ class Request {
 
 
         ServerConfig                                _server_config;
-
+        bool                                        _is_cgi;
 
 
 

@@ -3,7 +3,8 @@
 
 CgiHandler::~CgiHandler(){}
 
-CgiHandler::CgiHandler(const char* scriptPath, const std::map<std::string, std::string> mmap_args) : _scriptPath(scriptPath), _mmap_args(mmap_args)
+
+CgiHandler::CgiHandler(const char* scriptPath, const std::map<std::string, std::string> mmap_args, const std::string method) : _scriptPath(scriptPath), _mmap_args(mmap_args), _method(method)
 {
 	this->transform_map_to_strArray();
 	//std::cout << "[CgiHandler]" << " CgiHandler constructor " << this->args[1] << std::endl;
@@ -86,7 +87,11 @@ bool CgiHandler::transform_map_to_strArray()
 	args[0] = (char *) cgi_exec.c_str();
 	args[1] = (char *) this->_scriptPath;
 
+
+
 	std::cout << "arg[0] = " << args[0] << std::endl;
+
+	// exit(0);
 
 	if (this->_mmap_args.size() > MAX_ARGS)
 	{
