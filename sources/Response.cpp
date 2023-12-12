@@ -3,6 +3,7 @@
 #include "../includes/Color.hpp"
 #include "../includes/CgiHandler.hpp"
 #include <unistd.h>
+#include <dirent.h>
 
 
 // No constructor as the response is just a variable of the object "Request"
@@ -181,11 +182,56 @@ void	Request::prepareResponse()
 		}
 		else //Not a file in a directory
 		{
+			bool directory_listing;
 			std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "is a directory." << std::endl;
+			try
+			{
+				directory_listing = this->_server_config.getRoute(this->_server_config.getRoot() + this->_path).directory_listing;
+			}
+			catch(const std::exception& e)
+			{
+				std::cerr << e.what() << '\n';
+			}
 			fileType = "text/html";
-			body = "Here we are in a directory";
-			std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "MIME type = " << fileType << std::endl;
+			if (directory_listing == false)
+			{
+				std::ifstream file(this->_server_config.getRoot() + this->_server_config.getDefaultFile());
+				std::ostringstream fileContent;
+				if (file.is_open())
+				{
+					fileContent << file.rdbuf();
+					body = fileContent.str();
+					//fileType = findMimeType(this->_server_config.getDefaultFile());
+				}
+				else
+				{
+					std::cerr << "ERROR : Cannot read default file : " << this->_server_config.getRoot() + this->_server_config.getDefaultFile() << std::endl;
+				}
+			}
+			else
+			{
+				DIR *dir;
+				struct dirent *ent;
+				std::string dirPath = this->_server_config.getRoot() + this->_path;
+				dir = opendir(dirPath.c_str());
+				fileType = "text/html";
+				if (dir != NULL)
+				{
+					//fileType = "text/html";
+					body = "<html><head><title>Directory Listing</title></head><body>";
+					body += "<h1>Directory Listing of " + dirPath + "</h1>";
+					body += "<ul>";
 
+					while ((ent = readdir(dir)) != NULL)
+					{
+						body += "<li><a href='" + std::string(ent->d_name) + "'>" + std::string(ent->d_name) + "</a></li>";
+					}
+
+					body += "</ul></body></html>";
+					closedir(dir);
+					std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "MIME type = " << fileType << std::endl;
+				}
+			}			
 		}
 	}
 

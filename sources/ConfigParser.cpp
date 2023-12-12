@@ -12,25 +12,7 @@ void print_stack(std::stack<std::string> stack)
     std::cout << std::endl;
 }
 
-// void ConfigParser::processLine(const std::string& key, const std::string& value, ServerConfig& config)
-// {
 
-// 	// else if (!currentContext.empty() && currentContext == "error_page") {
-//     //     if (key.empty() || !std::all_of(key.begin(), key.end(), ::isdigit)) {
-//     //         currentContext.clear();
-//     //         return;
-//     //     }
-//     //     std::cout << "KEY " << key << " is a valid error code" << std::endl;
-
-//     //     try {
-//     //         int errorCode = std::stoi(key);
-//     //         config.setErrorPage(errorCode, value);
-//     //     } catch (const std::invalid_argument& e) {
-//     //         // Handle or log error
-//     //         std::cerr << "Invalid error code in configuration: " << key << std::endl;
-//     //     }
-//     // }
-// }
 
 void ConfigParser::checkForDuplicateServers()
 {
@@ -81,8 +63,6 @@ void ConfigParser::processLocation(const std::string& key, const std::string& va
             route.directory_listing = false;
         else
             std::cout << "Unknown value for listing: " << key << std::endl;
-    } else if (key == "default_file") {
-        route.default_file = value;
     } else if (key == "path") {
         route.path = value;
     } else if (key == "root"){
@@ -109,29 +89,14 @@ void ConfigParser::processServer(const std::string& key, const std::string& valu
         config.setMaxBodySize(std::stoi(value));
     } else if (key == "root") {
         config.setRoot(value);
+    } else if (key == "default_file") {
+        config.setDefaultFile(value);
     } else {
         //std::cout << key << "Unkown key or wrong context" << std::endl;
         throw std::runtime_error("Unknown key or wrong context: " + key);
     }
 }
 
-// void ConfigParser::processRedirect(const std::string &key, const std::string &value, RouteConfig &route) {
-
-
-//     static std::string from, to;
-//     if (key == "from") {
-//         from = value;
-//     } else if (key == "to") {
-//         to = value;
-//         if (!from.empty()) {
-//             route.redirections.push_back(std::make_pair(from, to));
-//             from.clear();  // Clear the from and to values after adding to the vector
-//             to.clear();
-//         }
-//     } else {
-//         throw std::runtime_error("Unknown key or wrong context: " + key);
-//     }
-// }
 
 std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename) {
     std::stack<std::string> contexts;
@@ -237,17 +202,7 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
                 contexts.push(currentContext);
                 continue ;
             } 
-            // else if (key == "redirect") {
-            //     if (currentContext != "location") {
-            //         std::cerr << "Redirect outside of location block at line " << lineNumber << std::endl;
-            //         throw std::runtime_error("Location outside of server block.");
 
-            //         //continue;
-            //     }
-            //     currentContext = "redirect";
-            //     contexts.push(currentContext);
-            //     continue ;
-            // }
 
             if (currentContext.empty())
                 continue;
@@ -257,46 +212,18 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
                 processLocation(key, value, const_cast<RouteConfig&>(serverConfig.getRoutes().back()));
             } else if (currentContext == "error_pages"){
                 processErrorPages(key, value, serverConfig);
-            } //else if (currentContext == "redirect") {
-            //     processRedirect(key, value, const_cast<RouteConfig&>(serverConfig.getRoutes().back()));
-            // }
+            } 
         }
     }
 
+
+    std::cout << "Default File " << serverConfig.getDefaultFile() << std::endl;
     configs.push_back(serverConfig);
-
+    std::cout << "Default File " << configs.front().getDefaultFile() << std::endl;
     checkForDuplicateServers();
-
+    std::cout << "Default File " << configs.back().getDefaultFile() << std::endl;
     return configs;
 }
-//                 if (newServerBlockStarted) {
-//                     configs.push_back(serverConfig);
-//                     serverConfig = ServerConfig(); // Reset the serverConfig for the new block
-//                 }
-//                 inServerBlock = true;
-//                 newServerBlockStarted = true;
-//             } else {
-//                 if (!inServerBlock) {
-//                     std::cerr << "Found configuration outside of server block at line " << lineNumber << std::endl;
-//                     continue; // or handle the error
-//                 }
-//                 processLine(key, value, serverConfig, currentContext);
-//             }
-//         } else {
-//             std::cerr << "Malformed line at " << lineNumber << ": " << line << std::endl;
-//             continue; // or handle the error
-//         }
-//     }
-
-//     // Check if the last server block is processed
-//     if (newServerBlockStarted) {
-//         configs.push_back(serverConfig);
-//     }
-
-//     file.close();
-//     return configs;
-// }
-
 
 std::ostream& operator<<(std::ostream& os, const std::vector<ServerConfig> &configs)
 {

@@ -43,8 +43,7 @@ int Request::getLocation() const
 			std::cout << "[Response_2.cpp] " << GREEN << "getLocation : OK " << RESET << path_to_test <<std::endl;
 			return i;
 		}
-	}	
-
+	}
 	std::cout << "[Response_2.cpp] " << RED << "getLocation : KO (no route found)" << RESET << std::endl;
 	return -1;
 }
