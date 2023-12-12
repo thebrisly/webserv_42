@@ -137,10 +137,6 @@ void RunServer::send_response (int i)
 	unsigned long max_body_size = this->_map_clients[i].get_server_config().getMaxBodySize();
 	std::string response = this->_map_clients[i].get_response();
 
-	if (response.length() > max_body_size)
-	{
-		response = response.substr(0, max_body_size);
-	}
 
 	if (send(i , response.c_str(), response.length() , 0 ) != static_cast<long>(response.length()))
 	{
