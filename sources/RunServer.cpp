@@ -108,13 +108,14 @@ void RunServer::recvs_request (int i)
 
 		this->_map_clients[i].set_session_time(clock());
 
-
+		std::cout << RED << "TEST" << RESET << std::endl;
 		Request current_request(this->_map_clients[i].get_request(), this->_map_clients[i].get_server_config());
+		std::cout << RED << "TEST2" << RESET << std::endl;
 		current_request.parseRequest(current_request.getCurrentRequest());
+		std::cout << RED << "TEST3" << RESET << std::endl;
 		this->_map_clients[i].set_request_object(current_request);
 
 
-		current_request.parseRequest(current_request.getCurrentRequest());
 
 
 		//current_request.checkRequest();
@@ -134,7 +135,7 @@ void RunServer::recvs_request (int i)
 
 void RunServer::send_response (int i)
 {
-	// unsigned long max_body_size = this->_map_clients[i].get_server_config().getMaxBodySize();
+
 	std::string response = this->_map_clients[i].get_response();
 
 

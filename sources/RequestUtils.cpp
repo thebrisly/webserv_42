@@ -40,29 +40,24 @@ void 	Request::parseRequest(const std::string& request)
 
 	std::istringstream requestStream(request);
 	std::string line;
-	int debug = 0;
+
+	int i = 0;
+
+
 	while (std::getline(requestStream, line))
 	{
+		std::cout << MAGENTA << i << line <<  RESET << std::endl;
+		i++;
 		if (line == "\r") //start of body
 		{
-			if (debug == 0)
-			{
-				debug = 1;
-			}
-			else
-			{
-				std::cout << RED << "NON MAIS CA VA PAS LA TETE !!!" << RESET << std::endl;
-				exit(0);
-			}
-			// std::cout << std::endl;
-			// std::cout << std::endl;
-			// std::cout << std::endl;
-			// std::cout << std::endl;
+
+
 			while (std::getline(requestStream, line))
 			{
 				std::cout << "line : " << line << std::endl;
 
 				this->_body += line;
+
 			}
 			// std::cout << std::endl;
 			// std::cout << std::endl;
@@ -75,6 +70,7 @@ void 	Request::parseRequest(const std::string& request)
 
 		if (this->_method.empty())
 		{
+
 			this->_method = readMethod(line);
 			this->_version = readVersion(line);
 			this->_path = readFirstLine(line);
@@ -85,16 +81,16 @@ void 	Request::parseRequest(const std::string& request)
 		}
 		else
 		{
+
 			size_t colonPos = line.find(':');
 			if (colonPos != std::string::npos)
             {
-                std::string key = line.substr(0, colonPos);
+				std::string key = line.substr(0, colonPos);
                 std::string value = line.substr(colonPos + 2); // Skip ': '
-                this->_headers[key] = value;
 
+                this->_headers[key] = value;
 				if (key == "Host")
                 {
-					//std::cout << "ici 1\n";
                     parseHostHeader(value, this->_hostname, this->_port);
                 }
                 else if (key == "Connection")

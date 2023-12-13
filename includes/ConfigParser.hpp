@@ -22,6 +22,7 @@ class ConfigParser
 		void processRedirect(const std::string& key, const std::string& value, RouteConfig& route);
 
 		void checkForDuplicateServers();
+		void CheckForMinimumConfig(ServerConfig &server_config);
 		std::vector<ServerConfig> configs;
 };
 
