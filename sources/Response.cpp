@@ -21,30 +21,30 @@ void Request::checkRequest()
 	//bool is_file = this->isFile();
 
 
-	//std::cout << "[response.cpp]" GREEN << " checkRequest " << RESET << "is_file : " << is_file << std::endl;
+	//// std::cout << "[response.cpp]" GREEN << " checkRequest " << RESET << "is_file : " << is_file << std::endl;
 	if (!checkHttpVersion())
 	{
 		this->_status_code = 505;
 		this->_status_string = "HTTP Version Not Supported";
-		std::cout << "[Response.cpp] " << MAGENTA << "505 : HTTP Version Not Supported" << RESET << std::endl;
+		// std::cout << "[Response.cpp] " << MAGENTA << "505 : HTTP Version Not Supported" << RESET << std::endl;
 	}
 	if (!check_host_port()) 
 	{
 		this->_status_code = 503; //trouver le bon code erreur
 		this->_status_string = "Service Unavailable";
-		std::cout << "[Response.cpp] " << MAGENTA << "503 : Service Unavailable (host - port not resolved)" << RESET << std::endl;
+		// std::cout << "[Response.cpp] " << MAGENTA << "503 : Service Unavailable (host - port not resolved)" << RESET << std::endl;
 	}
 	else if ((id_route = this->getLocation()) == -1)
 	{
 		this->_status_code = 400; //page not found error
 		this->_status_string = "Bad Request";
-		std::cout << "[Response.cpp] " << MAGENTA << "400 : Bad Request" << RESET << std::endl;
+		// std::cout << "[Response.cpp] " << MAGENTA << "400 : Bad Request" << RESET << std::endl;
 	}
 	else if (!checkMethods(id_route)) 
 	{
 		this->_status_code = 405; //Method Not Allowed
 		this->_status_string = "Forbidden";
-		std::cout << "[Response.cpp] " << MAGENTA << "405 : Bad Request (method not allowed)" << RESET << std::endl;
+		// std::cout << "[Response.cpp] " << MAGENTA << "405 : Bad Request (method not allowed)" << RESET << std::endl;
 	}
 	else if (checkRedirection(id_route))
 	{
@@ -62,14 +62,14 @@ void Request::checkRequest()
 			{
 				this->_status_code = 404; //page not found error
 				this->_status_string = "Not Found";
-				std::cout << "[Response.cpp] "<< MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
+				// std::cout << "[Response.cpp] "<< MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
 			}
 			// else if (findFileType(this->_path) == "py")
 			// {
 			// 	this->_status_code = 200;
 			// 	this->_status_string = "OK";
 			// 	this->_is_cgi = true;
-			// 	std::cout << "[Response.cpp] "<< MAGENTA << "checkRequest " << RESET << "CGI asked" << std::endl;
+			// 	// std::cout << "[Response.cpp] "<< MAGENTA << "checkRequest " << RESET << "CGI asked" << std::endl;
 
 				// const std::string scriptPath = "web/website0/script.py";
 				// std::map<std::string, std::string> mmap_args;
@@ -81,7 +81,7 @@ void Request::checkRequest()
 				
 				// cgiHandler.executePythonScript();
 
-				// std::cout << cgiHandler <<std::endl;
+				// // std::cout << cgiHandler <<std::endl;
 
 				/*CgiHandler...*/
 			// }
@@ -89,13 +89,13 @@ void Request::checkRequest()
 			{
 				this->_status_code = 200;
 				this->_status_string = "OK";
-				std::cout << "[Response.cpp] "<< MAGENTA << "Response OK 200" << RESET << std::endl;
+				// std::cout << "[Response.cpp] "<< MAGENTA << "Response OK 200" << RESET << std::endl;
 			}
 		}
 		else
 		{
-			std::cout << RED << "WE ARE HERE" << RESET << std::endl;
-			std::cout << this->_path << std::endl;
+			// std::cout << RED << "WE ARE HERE" << RESET << std::endl;
+			// std::cout << this->_path << std::endl;
 			if (doesPathExist(this->_server_config.getRoot() + this->_path) == false)
 			{
 				this->_status_code = 404;
@@ -120,26 +120,26 @@ void	Request::prepareResponse()
 	std::ifstream file;
 	if (this->isFile())
 	{
-		std::cout << "[Response.cpp] " << MAGENTA << "prepare response " << RESET << "considered as a file." << std::endl;
+		// std::cout << "[Response.cpp] " << MAGENTA << "prepare response " << RESET << "considered as a file." << std::endl;
 		file.open(this->_server_config.getRoot() + this->_path);
 	}
 	std::string fileType;
 
 	fileType = findMimeType(findFileType(this->_path));
 
-	std::cout <<"[response.cpp]"<< GREEN << " createResponse : "<< RESET << this->_path << std::endl;
-	std::cout << "Status code : " << this->_status_code << std::endl;
+	// std::cout <<"[response.cpp]"<< GREEN << " createResponse : "<< RESET << this->_path << std::endl;
+	// std::cout << "Status code : " << this->_status_code << std::endl;
 	if (_status_code == 200 || _status_code == 301)
 	{
-		std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << " code is 200 " << std::endl;
+		// std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << " code is 200 " << std::endl;
 
 		if (file.is_open())
 		{
-			std::cout << GREEN << "FILE FOUND" << RESET << std::endl;
+			// std::cout << GREEN << "FILE FOUND" << RESET << std::endl;
 			if (findFileType(this->_path) == "py")
 			{
 				file.close();
-				std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "is a python file." << std::endl;
+				// std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "is a python file." << std::endl;
 				fileType = "text/html";
 
 				const std::string scriptPath = this->_server_config.getRoot() + this->_path;
@@ -154,10 +154,10 @@ void	Request::prepareResponse()
 				
 				cgiHandler.executePythonScript();
 
-				// std::cout << cgiHandler <<std::endl;
+				// // std::cout << cgiHandler <<std::endl;
 
 				body = cgiHandler.get_py_body_response() ;
-				//std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "MIME type = " << fileType << std::endl;
+				//// std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "MIME type = " << fileType << std::endl;
 			}
 			else
 			{
@@ -170,7 +170,7 @@ void	Request::prepareResponse()
 		else //Not a file in a directory
 		{
 			bool directory_listing;
-			std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "is a directory." << std::endl;
+			// std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "is a directory." << std::endl;
 			try
 			{
 				directory_listing = this->_server_config.getRoute(this->_path).directory_listing;
@@ -197,7 +197,7 @@ void	Request::prepareResponse()
 			}
 			else
 			{
-				std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "go for the listing" << std::endl;
+				// std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "go for the listing" << std::endl;
 				DIR *dir;
 				struct dirent *ent;
 				std::string dirPath = this->_server_config.getRoot() + this->_path;
@@ -220,7 +220,7 @@ void	Request::prepareResponse()
 
 					body += "</ul></body></html>";
 					closedir(dir);
-					std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "MIME type = " << fileType << std::endl;
+					// std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "MIME type = " << fileType << std::endl;
 				}
 			}			
 		}
@@ -228,13 +228,13 @@ void	Request::prepareResponse()
 	else
 	{	
 		file.close();
-		std::cout << YELLOW << "FILE NOT FOUND" << RESET << std::endl;
+		// std::cout << YELLOW << "FILE NOT FOUND" << RESET << std::endl;
 		std::map<int, std::string> errorPages = this->_server_config.getErrorPages();
 		std::map<int, std::string>::const_iterator it = errorPages.find(this->_status_code);
 		if (it == errorPages.end())
 		{
 			fileType = "text/html";
-			std::cout << YELLOW << "2" << RESET << std::endl;
+			// std::cout << YELLOW << "2" << RESET << std::endl;
 			std::ifstream default_error_file("web/default_error_pages/" + std::to_string(this->_status_code)+ ".html");
 			std::ostringstream default_error_file_content;
 			default_error_file_content << default_error_file.rdbuf();
@@ -244,13 +244,13 @@ void	Request::prepareResponse()
 		{
 			std::ifstream errorfile;
 			std::ostringstream errorFileContent;
-			std::cout << this->_server_config.getRoot() + it->second << std::endl;
+			// std::cout << this->_server_config.getRoot() + it->second << std::endl;
 			body = "";
-			std::cout << it->second << std::endl;
+			// std::cout << it->second << std::endl;
 			errorfile.open(this->_server_config.getRoot() + it->second);
 			errorFileContent << errorfile.rdbuf();
 			body = errorFileContent.str();
-			std::cout << RED << body << RESET << std::endl;
+			// std::cout << RED << body << RESET << std::endl;
 			fileType = "text/html";
 		}
 	}
@@ -272,12 +272,12 @@ bool Request::checkHttpVersion() const
 {
 	if (this->_version == "HTTP/1.1\r")
 	{
-		std::cout << "[Response.cpp] " << GREEN << "checkHttpVersion : OK" << RESET << std::endl; 
+		// std::cout << "[Response.cpp] " << GREEN << "checkHttpVersion : OK" << RESET << std::endl; 
 		return 1;
 	}
 	else
 	{
-		std::cout << "[Response.cpp] " << RED << "checkHttpVersion : KO" << RESET << std::endl; 
+		// std::cout << "[Response.cpp] " << RED << "checkHttpVersion : KO" << RESET << std::endl; 
 		return 0;
 	}
 }
@@ -286,7 +286,7 @@ bool Request::check_host_port() const
 {
 	if (this->_hostname != this->_server_config.getServerName() && this->_hostname != this->_server_config.getIPAddress())
 	{
-		std::cout << "[Response.cpp] " << RED << "check_host_port : KO " << this->_hostname << RESET << std::endl;
+		// std::cout << "[Response.cpp] " << RED << "check_host_port : KO " << this->_hostname << RESET << std::endl;
 
 		return false;
 	}
@@ -295,11 +295,11 @@ bool Request::check_host_port() const
 
 	if (ul_port != this->_server_config.getPort())
 	{
-		std::cout << "[Response.cpp] " << RED << "check_host_port : KO " << this->_port << RESET << std::endl;
+		// std::cout << "[Response.cpp] " << RED << "check_host_port : KO " << this->_port << RESET << std::endl;
 		return false;
 	}
 
-	std::cout << "[Response.cpp] " << GREEN << "check_host_port : OK " << this->_port << RESET << std::endl;
+	// std::cout << "[Response.cpp] " << GREEN << "check_host_port : OK " << this->_port << RESET << std::endl;
 	return true;
 }
 
@@ -316,12 +316,12 @@ bool Request::issetFile(int id_route) const
 	if (file)
 	{
 		file.close();
-		std::cout << "[Response.cpp] " << GREEN << "issetFile : OK " << RESET << root_path_file << std::endl;
+		// std::cout << "[Response.cpp] " << GREEN << "issetFile : OK " << RESET << root_path_file << std::endl;
 		return true;
 	}
 	else
 	{
-		std::cout << "[Response.cpp] " << RED << "issetFile : KO " << RESET << root_path_file << std::endl;
+		// std::cout << "[Response.cpp] " << RED << "issetFile : KO " << RESET << root_path_file << std::endl;
 		return false;
 	}
 }
@@ -336,20 +336,20 @@ bool Request::checkMethods(int id_route) const
 	{
 		if (*it == this->_method)
 		{
-			std::cout << "[Response.cpp] " << GREEN << "checkMethods : OK " << RESET << std::endl;
+			// std::cout << "[Response.cpp] " << GREEN << "checkMethods : OK " << RESET << std::endl;
 			return true;
 		}
 	}
 
-	std::cout << "[Response.cpp] " << RED << "checkMethods : OK " << RESET << std::endl;
+	// std::cout << "[Response.cpp] " << RED << "checkMethods : OK " << RESET << std::endl;
 	return false;
 }
 
 bool Request::checkRedirection(int id_route)
 {
 	(void) id_route;
-	std::cout << "[Response.cpp] " << GREEN << "checkRedirection " <<RESET << " Checking for redirection for ["<< this->_path << "]" <<std::endl;
-    //std::cout << "Current Path: " << this->_path << std::endl;
+	// std::cout << "[Response.cpp] " << GREEN << "checkRedirection " <<RESET << " Checking for redirection for ["<< this->_path << "]" <<std::endl;
+    //// std::cout << "Current Path: " << this->_path << std::endl;
 	std::string usingPath = this->_path;
 
 	if (this->_path == "")
@@ -357,27 +357,27 @@ bool Request::checkRedirection(int id_route)
 	RouteConfig route;// = this->_server_config.getRoutes()[id_route];
 	try
 	{
-		route = this->_server_config.getRoute(usingPath);
+		route = this->_server_config.getRoutes()[id_route];
 		
 	}
 	catch(const std::exception& e)
 	{
 		std::cerr << e.what() << '\n';
-		std::cout << "[Response.cpp] " << RED << "checkRedirection " << RESET << " No Redirection found" << std::endl;
+		// std::cout << "[Response.cpp] " << RED << "checkRedirection " << RESET << " No Redirection found" << std::endl;
 		return false;
 	}
 	
-	std::cout << "[Response.cpp] " << GREEN << "checkRedirection " << RESET << RED << "Redirection to " << RESET << route.redirection << std::endl;
+	// std::cout << "[Response.cpp] " << GREEN << "checkRedirection " << RESET << RED << "Redirection to " << RESET << route.redirection << std::endl;
 	if (route.redirection != "")
 	{
 
 		this->_path = route.redirection;
-		std::cout << "[Response.cpp] " << GREEN << "checkRedirection " << RESET << RED << "Redirection to " << RESET << route.redirection << std::endl;
+		// std::cout << "[Response.cpp] " << GREEN << "checkRedirection " << RESET << RED << "Redirection to " << RESET << route.redirection << std::endl;
 		return true;
 
 	}
 
-	std::cout << "[Response.cpp] " << GREEN << "checkRedirection : " << RESET <<  " No Redirection found"<< std::endl;
+	// std::cout << "[Response.cpp] " << GREEN << "checkRedirection : " << RESET <<  " No Redirection found"<< std::endl;
     return false;
 }
 
@@ -390,24 +390,24 @@ bool Request::isFile() const {
 
     // Case 1: No dot in the path, likely a directory
     if (lastDotPos == std::string::npos) {
-		std::cout << "[Response.cpp] " << GREEN << "isFile : " << RESET << "not a file" << std::endl;
+		// std::cout << "[Response.cpp] " << GREEN << "isFile : " << RESET << "not a file" << std::endl;
         return false;
     }
 
     // Case 2: Dot present, but no slash - could be a file without directories
     if (lastSlashPos == std::string::npos) {
-		std::cout << "[Response.cpp] " << GREEN << "isFile : " << RESET << "OK file" <<std::endl;
+		// std::cout << "[Response.cpp] " << GREEN << "isFile : " << RESET << "OK file" <<std::endl;
         return true;
     }
 
     // Case 3: Dot after the last slash - likely a file
     if (lastDotPos > lastSlashPos) {
-		std::cout << "[Response.cpp] " << GREEN << "isFile : " << RESET << "OK file" <<std::endl;
+		// std::cout << "[Response.cpp] " << GREEN << "isFile : " << RESET << "OK file" <<std::endl;
         return true;
     }
 
     // Default case: Likely a directory
-	std::cout << "[Response.cpp] " << GREEN << "isFile : " << RESET << "not a file" <<std::endl;
+	// std::cout << "[Response.cpp] " << GREEN << "isFile : " << RESET << "not a file" <<std::endl;
     return false;
 }
 

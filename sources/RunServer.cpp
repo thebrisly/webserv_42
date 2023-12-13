@@ -81,7 +81,7 @@ void RunServer::recvs_request (int i)
 	{
 		//getpeername(i , (struct sockaddr*)(&(server_init.get_ref_server_addr())) , (socklen_t*)&server_init.get_ref_addrlen());
 
-		//std::cout << CLOCKS_PER_SEC <<std::endl;
+		//// std::cout << CLOCKS_PER_SEC <<std::endl;
 
 		std::cout << "Since creation : " << clock() - this->_map_clients[i].get_session_time() << std::endl;
 
@@ -107,11 +107,8 @@ void RunServer::recvs_request (int i)
 
 		this->_map_clients[i].set_session_time(clock());
 
-		std::cout << RED << "TEST" << RESET << std::endl;
 		Request current_request(this->_map_clients[i].get_request(), this->_map_clients[i].get_server_config());
-		std::cout << RED << "TEST2" << RESET << std::endl;
 		current_request.parseRequest(current_request.getCurrentRequest());
-		std::cout << RED << "TEST3" << RESET << std::endl;
 		this->_map_clients[i].set_request_object(current_request);
 
 
@@ -119,11 +116,11 @@ void RunServer::recvs_request (int i)
 
 		//current_request.checkRequest();
 
-		std::cout << "[Request info] "  << std::endl;
-		std::cout <<  current_request << std::endl;
 
 		current_request.prepareResponse();
 
+		std::cout << "[Request info] "  << std::endl;
+		std::cout <<  current_request << std::endl;
 
 
 		this->_map_clients[i].set_response(current_request.getResponse());
@@ -226,7 +223,7 @@ void RunServer::process (int loop_count)
 
 	for (i = 0; i < max_sd + 1; i++)
 	{
-		//std::cout << "Considering client " << i << " : " <<std::endl;
+		//// std::cout << "Considering client " << i << " : " <<std::endl;
 		if (FD_ISSET(i, &this->_readfds) && this->_servers_manager.is_server_active(i))
 		{
 			this->_out << "Considering client " << i << " on loop " << loop_count << " : " <<std::endl;

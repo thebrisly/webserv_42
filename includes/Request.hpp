@@ -28,9 +28,17 @@ class Request {
 
         // parsing the request
         void                                        parseRequest(const std::string& request);
+        void                                        parseHeader(std::string& header);
+        void                                        parseBody(std::string& body);
         std::string                                 readFirstLine(const std::string& line);
         std::string                                 readVersion(const std::string& line);
         std::string                                 readMethod(const std::string& line);
+        void                                        parseMultipartData();
+
+
+
+        std::string extractBoundary() const;
+        void processMultipartPart(const std::string& part);
 
 
         // getters and setters

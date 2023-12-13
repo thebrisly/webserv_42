@@ -3,13 +3,13 @@
 
 void print_stack(std::stack<std::string> stack)
 {
-    std::cout << "Stack: ";
+    // std::cout << "Stack: ";
     while (!stack.empty())
     {
-        std::cout << stack.top() << " ";
+        // std::cout << stack.top() << " ";
         stack.pop();
     }
-    std::cout << std::endl;
+    // std::cout << std::endl;
 }
 
 
@@ -83,8 +83,8 @@ void ConfigParser::processLocation(const std::string& key, const std::string& va
             route.directory_listing = true;
         else if (value == "off")
             route.directory_listing = false;
-        else
-            std::cout << "Unknown value for listing: " << key << std::endl;
+        // else
+            // std::cout << "Unknown value for listing: " << key << std::endl;
     } else if (key == "path") {
         route.path = value;
     } else if (key == "root"){
@@ -114,7 +114,7 @@ void ConfigParser::processServer(const std::string& key, const std::string& valu
     } else if (key == "default_file") {
         config.setDefaultFile(value);
     } else {
-        //std::cout << key << "Unkown key or wrong context" << std::endl;
+        //// std::cout << key << "Unkown key or wrong context" << std::endl;
         throw std::runtime_error("Unknown key or wrong context: " + key);
     }
 }
@@ -122,7 +122,7 @@ void ConfigParser::processServer(const std::string& key, const std::string& valu
 
 std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename) {
     std::stack<std::string> contexts;
-    std::cout << "Parsing config file: " << filename << std::endl;
+    // std::cout << "Parsing config file: " << filename << std::endl;
     ServerConfig serverConfig;
     std::ifstream file(filename.c_str());
     std::string line, currentContext;
@@ -168,10 +168,10 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
                     contexts.pop();
             }
 
-            // std::cout << "***************************************" << std::endl;
+            // // std::cout << "***************************************" << std::endl;
             // print_stack(contexts);
-            // std::cout << key + ":" + value << " Contexte size " <<  static_cast<int>(contexts.size()) << " Indentation " << currentIndentation <<  std::endl;
-            // std::cout << "****************************************\n" << std::endl;
+            // // std::cout << key + ":" + value << " Contexte size " <<  static_cast<int>(contexts.size()) << " Indentation " << currentIndentation <<  std::endl;
+            // // std::cout << "****************************************\n" << std::endl;
 
             if (!contexts.empty())
                 currentContext = contexts.top();
@@ -246,7 +246,7 @@ std::ostream& operator<<(std::ostream& os, const std::vector<ServerConfig> &conf
 {
     for (std::vector<ServerConfig>::const_iterator it = configs.begin(); it!= configs.end(); ++it)
     {
-        std::cout << *it << std::endl;
+        // std::cout << *it << std::endl;
     }
     return os;
 }

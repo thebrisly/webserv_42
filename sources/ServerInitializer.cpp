@@ -25,7 +25,7 @@ ServerInitializer::ServerInitializer(const ServerConfig config, int size_waiting
 		exit(EXIT_FAILURE);
 	}
 
-	//std::cout << "Le port = " << this->_config.getPort() << std::endl;
+	//// std::cout << "Le port = " << this->_config.getPort() << std::endl;
 
 	this->_server_addr.sin_port = htons(this->_config.getPort());
 

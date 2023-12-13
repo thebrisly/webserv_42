@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 		
 	// 	cgiHandler.executePythonScript();
 
-	// 	std::cout << cgiHandler <<std::endl;
+	// 	// std::cout << cgiHandler <<std::endl;
 	// }
 
 	// exit(0);
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 	}
 	else if (argc == 2)
 	{
-		std::cout << "Configuration file : " << argv[1] << std::endl;
+		// std::cout << "Configuration file : " << argv[1] << std::endl;
 		configFile = argv[1];
 		if (!fileExist(configFile))
 		{
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 	    ConfigParser parser;
     	configs = parser.parseConfigs(configFile);
 
-		std::cout << "Configs : " << configs << std::endl;
+		// std::cout << "Configs : " << configs << std::endl;
 
 		ServersManager servers_manager(configs);
 
@@ -87,8 +87,8 @@ int main(int argc, char *argv[])
 	}
 	catch(std::exception& e)
 	{
-		std::cout << RED << "ERROR " << RESET << e.what() << std::endl;
-		std::cout << "Exiting..." << std::endl;	
+		// std::cout << RED << "ERROR " << RESET << e.what() << std::endl;
+		// std::cout << "Exiting..." << std::endl;	
 		return EXIT_FAILURE;
 	}
 	return 0;

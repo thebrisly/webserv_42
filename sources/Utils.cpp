@@ -91,3 +91,28 @@ void display_fd_set(std::ofstream & out, const fd_set & readfds, const fd_set & 
 	}
 	out << std::endl;
 }
+
+void saveBinaryFile(const std::string& filename, const std::vector<uint8_t>& data)
+{
+    std::ofstream file(filename, std::ios::binary);
+    if (file.is_open()) {
+        file.write(reinterpret_cast<const char*>(data.data()), data.size());
+        file.close();
+    } else {
+        // Handle error
+    }
+}
+
+bool saveUploadedFile(const std::string& filename, const std::string& data) {
+	// std::cout << "SAVING FILE " << std::endl;
+	const std::string UPLOAD_DIRECTORY = "uploads/";
+	std::string fullPath = UPLOAD_DIRECTORY + filename;
+	std::ofstream file(fullPath, std::ios::binary); // Use binary mode for all file types
+	if (!file) {
+		std::cerr << "Error opening file for writing: " << fullPath << std::endl;
+		return false;
+	}
+	// std::cout << "Saving file: " << fullPath << std::endl;
+	file.write(data.c_str(), data.size());
+	return file.good();
+}

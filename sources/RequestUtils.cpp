@@ -1,6 +1,7 @@
 #include "../includes/Request.hpp"
 #include "../includes/Color.hpp"
 #include "../includes/RunServer.hpp"
+#include "../includes/Utils.hpp"
 
 // https://en.wikipedia.org/wiki/HTTP#Request_methods
 // For the webserv project we only need GET, POST and DELETE
@@ -20,22 +21,231 @@ std::vector<std::string>		Request::initMethods()
 	return methods;
 }
 
+void Request::processMultipartPart(const std::string& part) {
+	// std::cout << "Process Part: " << part << std::endl;
+    std::istringstream partStream(part);
+    std::string line;
+    std::string headers;
+    std::string data;
+    bool inHeaders = true;
+
+    while (std::getline(partStream, line)) {
+        if (inHeaders) {
+            if (line.empty() || line == "\r") {
+                inHeaders = false;  // Empty line: end of headers, start of data
+            } else {
+                headers += line + "\n";
+            }
+        } else {
+            if (!data.empty()) {
+                data += "\n";
+            }
+            data += line;
+        }
+    }
+
+
+	saveUploadedFile("name.txt", part);
+    // Now you have headers and data separated
+    // Extract information like filename from headers
+    // Decide if it's a file or other form data
+    // If it's a file, call saveUploadedFile(filename, data)
+}
+
+
+std::string Request::extractBoundary() const
+{
+    std::string contentType = _headers.at("Content-Type");
+    std::size_t pos = contentType.find("boundary=");
+    if (pos != std::string::npos) {
+        return "--" + contentType.substr(pos + 9);  // 9 is the length of "boundary="
+    }
+    return "";
+}
+
+
+
+void Request::parseMultipartData() {
+	//// std::cout << "Parse Multi" << std::endl;
+	//// std::cout << GREEN << _body << RESET << std::endl;
+    std::string boundary = extractBoundary();
+	processMultipartPart(_body);
+    if (boundary.empty()) {
+        std::cerr << "Boundary not found in Content-Type header" << std::endl;
+        return;
+    }
+
+    std::istringstream stream(_body);
+    std::string line;
+    std::string partData;
+    bool inPart = false;
+
+    while (std::getline(stream, line)) {
+        // Remove carriage return at the end of the line if present
+        if (!line.empty() && line.back() == '\r') {
+            line.pop_back();
+        }
+
+        if (line == boundary) {
+
+			processMultipartPart(partData);
+			partData.clear();
+     
+        } else if (line == boundary + "--") {
+  
+            processMultipartPart(partData);
+            break; // End of multipart data
+        } else if (inPart) {
+            if (!partData.empty()) {
+                partData += "\n";
+            }
+            partData += line;
+        }
+    }
+}
+
+
+
 // Request parsing
 // Méthode pour parser la requête
-void 	Request::parseRequest(const std::string& request)
+void	Request::parseHeader(std::string& header)
+{
+	std::istringstream requestHeaderStream(header);
+	std::string line;
+
+	while (std::getline(requestHeaderStream, line))
+	{
+		if (this->_method.empty())
+		{
+
+			this->_method = readMethod(line);
+			this->_version = readVersion(line);
+			this->_path = readFirstLine(line);
+			if (this->_path.back() == '/')
+			{
+				this->_path = this->_path.substr(0, this->_path.size() - 1);
+			}
+		}
+		else
+		{
+
+			size_t colonPos = line.find(':');
+			if (colonPos != std::string::npos)
+            {
+				std::string key = line.substr(0, colonPos);
+                std::string value = line.substr(colonPos + 2); // Skip ': '
+
+                this->_headers[key] = value;
+				if (key == "Host")
+                {
+                    parseHostHeader(value, this->_hostname, this->_port);
+                }
+                else if (key == "Connection")
+                {
+                    this->_connection = getConnectionHeader();
+                }
+                else if (key == "Sec-Fetch-Dest")
+                {
+                    this->_secfetchdest = getSecFetchDestHeader();
+                }
+            }
+		}
+	}
+}
+
+
+
+
+void	Request::parseBody(std::string& body)
+{
+	
+	std::istringstream requestBodyStream(body);
+	std::string line;
+
+
+
+	while (std::getline(requestBodyStream, line))
+	{
+		// std::cout << "line : " << line << std::endl;
+
+		this->_body += line;
+
+	}
+
+	
+
+
+
+	std::map<std::string, std::string>::iterator it = this->_headers.find("Content-Type");
+	if (it != _headers.end())
+	{
+		if (it->second.find("application") != std::string::npos)
+		{
+			parseUserData();
+		}
+		else if (it->second.find("multipart/form-data") != std::string::npos)
+		{
+			
+			parseMultipartData();
+		}
+		else
+		{
+			std::cerr << YELLOW << "WARNING" << RESET << "Parsebody : Content-Type not supported" << std::endl;
+		}
+	}
+	else
+	{
+		std::cerr << RED << "ERROR " << RESET << "Parsebody : no key for Content-Type" << std::endl;
+	}
+}
+
+
+void	Request::parseRequest(const std::string& request)
+{
+	// Clear existing data
+	clearRequest();
+
+	// std::cout << "REQUEST:" << request << std::endl;
+
+	// std::cout << YELLOW << "Parsing request..." << RESET << std::endl;
+	// std::cout << request << std::endl;
+
+	std::string current_header;
+	std::string current_body;
+	if (request.find("\r\n\r\n") != std::string::npos)
+	{
+		current_header = request.substr(0, request.find("\r\n\r\n"));
+		current_body = request.substr(request.find("\r\n\r\n") + 4);
+		
+		// std::cout << "CURRENT BODY\n" << current_body << std::endl;
+	}
+	else
+	{
+		std::cerr << RED << "Error : Request does not contain the end of header" << RESET << std::endl;
+	}
+
+	parseHeader(current_header);
+	parseBody(current_body);
+
+
+}
+
+
+
+
+/*void 	Request::parseRequest(const std::string& request)
 {
 	// Clear existing data
 	clearRequest();
 	
 	std::string current_header;
 	bool isset_body = false;
-
 	if (request.find("\r\n\r\n") != std::string::npos)
 	{
 		isset_body = true;
 		current_header = request.substr(0, request.find("\r\n\r\n"));
 	}
-
+	current_body = request.substr(request.find("\r\n\r\n") + 4);
 
 
 	std::istringstream requestStream(request);
@@ -46,7 +256,7 @@ void 	Request::parseRequest(const std::string& request)
 
 	while (std::getline(requestStream, line))
 	{
-		std::cout << MAGENTA << i << line <<  RESET << std::endl;
+		// std::cout << MAGENTA << i << line <<  RESET << std::endl;
 		i++;
 		if (line == "\r") //start of body
 		{
@@ -54,15 +264,15 @@ void 	Request::parseRequest(const std::string& request)
 
 			while (std::getline(requestStream, line))
 			{
-				std::cout << "line : " << line << std::endl;
+				// std::cout << "line : " << line << std::endl;
 
 				this->_body += line;
 
 			}
-			// std::cout << std::endl;
-			// std::cout << std::endl;
-			// std::cout << std::endl;
-			// std::cout << std::endl;
+			// // std::cout << std::endl;
+			// // std::cout << std::endl;
+			// // std::cout << std::endl;
+			// // std::cout << std::endl;
 
 			parseUserData();
 			//return;
@@ -104,7 +314,7 @@ void 	Request::parseRequest(const std::string& request)
             }
 		}
 	}
-}
+}*/
 
 std::string Request::readFirstLine(const std::string& line)
 {

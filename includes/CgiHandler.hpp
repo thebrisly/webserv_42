@@ -68,7 +68,7 @@ int main() {
 
     // Use the args array
     for (size_t i = 0; i < strings.size(); ++i) {
-        std::cout << args[i] << std::endl;
+        // std::cout << args[i] << std::endl;
     }
 
     // Deallocate memory to prevent memory leaks
