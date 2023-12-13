@@ -166,7 +166,7 @@ void	Request::prepareResponse()
 			}
 			catch(const std::exception& e)
 			{
-				std::cerr << e.what() << '\n';
+				std::cerr << "[Response.cpp]" << RED << " prepare response " << RESET << "e.what = " << e.what() << '\n';
 			}
 			fileType = "text/html";
 			if (directory_listing == false)
@@ -186,6 +186,7 @@ void	Request::prepareResponse()
 			}
 			else
 			{
+				std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "go for the listing" << std::endl;
 				DIR *dir;
 				struct dirent *ent;
 				std::string dirPath = this->_server_config.getRoot() + this->_path;
@@ -239,9 +240,6 @@ void	Request::prepareResponse()
 			fileType = "text/html";
 		}
 	}
-
-
-	
 
 	response = "HTTP/1.1 " + std::to_string(this->_status_code) + " " + this->_status_string + "\r\n";
 	response += "Content-Type: "+fileType+"\r\n";

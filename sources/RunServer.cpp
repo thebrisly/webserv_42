@@ -135,6 +135,7 @@ void RunServer::recvs_request (int i)
 
 void RunServer::send_response (int i)
 {
+
 	std::string response = this->_map_clients[i].get_response();
 
 
