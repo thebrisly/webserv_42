@@ -26,7 +26,6 @@ RunServer::RunServer(ServersManager & servers_manager, std::string log_filename)
 	display_fd_set(this->_out, this->_cpy_readfds, this->_cpy_writefds);
 	this->_out << std::endl;
 
-
 	this->_timeout.tv_sec = 0;
 	this->_timeout.tv_usec = 100000;
 }
@@ -120,11 +119,11 @@ void RunServer::recvs_request (int i)
 
 		//current_request.checkRequest();
 
+		std::cout << "[Request info] "  << std::endl;
+		std::cout <<  current_request << std::endl;
 
 		current_request.prepareResponse();
 
-		std::cout << "[Request info] "  << std::endl;
-		std::cout <<  current_request << std::endl;
 
 
 		this->_map_clients[i].set_response(current_request.getResponse());
