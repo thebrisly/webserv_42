@@ -31,17 +31,23 @@ void 	Request::parseRequest(const std::string& request)
 	// Split the request into lines
 	std::istringstream requestStream(request);
 	std::string line;
+	int i = 0;
 	while (std::getline(requestStream, line))
 	{
-		if (line == "\r") //start of body
+		std::cout << MAGENTA << i << line <<  RESET << std::endl;
+		i++;
+		if (line.empty()) //start of body
 		{
+			
 			while (std::getline(requestStream, line))
 				this->_body += line;
+			//std::cout << YELLOW << "Body: " << this->_body << RESET << std::endl;
 			parseUserData();
 		} // Check if the line is empty (end of headers)
 
 		if (this->_method.empty())
 		{
+
 			this->_method = readMethod(line);
 			this->_version = readVersion(line);
 			this->_path = readFirstLine(line);
@@ -52,16 +58,16 @@ void 	Request::parseRequest(const std::string& request)
 		}
 		else
 		{
+
 			size_t colonPos = line.find(':');
 			if (colonPos != std::string::npos)
             {
-                std::string key = line.substr(0, colonPos);
+				std::string key = line.substr(0, colonPos);
                 std::string value = line.substr(colonPos + 2); // Skip ': '
-                this->_headers[key] = value;
 
+                this->_headers[key] = value;
 				if (key == "Host")
                 {
-					//std::cout << "ici 1\n";
                     parseHostHeader(value, this->_hostname, this->_port);
                 }
                 else if (key == "Connection")

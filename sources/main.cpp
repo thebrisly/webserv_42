@@ -1,7 +1,7 @@
 #include "../includes/ConfigParser.hpp"
 #include "../includes/RunServer.hpp"
 #include "../includes/CgiHandler.hpp"
-
+#include "../includes/Color.hpp"
 #include <signal.h>
 
 void sigpipeHandle (int sig)
@@ -61,7 +61,6 @@ int main(int argc, char *argv[])
 	else
 	{
 		std::cerr << RED << "Error : " << RESET << "Invalid number of arguments" << std::endl;
-
 	}
 
 	try
@@ -88,7 +87,8 @@ int main(int argc, char *argv[])
 	}
 	catch(std::exception& e)
 	{
-		std::cout << "Exception : " << e.what() << std::endl;
+		std::cout << RED << "ERROR " << RESET << e.what() << std::endl;
+		std::cout << "Exiting..." << std::endl;	
 		return EXIT_FAILURE;
 	}
 	return 0;

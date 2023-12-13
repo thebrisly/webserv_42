@@ -37,9 +37,7 @@ void ServerConfig::setPort(unsigned long p) { port = p; }
 void ServerConfig::setIPAddress(const std::string& ip) { ip_address = ip; }
 void ServerConfig::setMaxBodySize(unsigned long size) { max_body_size = size; }
 void ServerConfig::setServerName(const std::string& name) { server_name = name; }
-void ServerConfig::setDefaultFile(const std::string& path) { 
-    this->default_file = path;
-    std::cout << YELLOW << "Default file set to: " << getDefaultFile() << RESET << std::endl;}
+void ServerConfig::setDefaultFile(const std::string& path) { default_file = path; }
 void ServerConfig::setErrorPage(int errorCode, const std::string& pagePath) { error_pages[errorCode] = pagePath; }
 void ServerConfig::setRoot(const std::string& r) { root = r; }
 void ServerConfig::addRoute(const RouteConfig& route) { routes.push_back(route); }
@@ -100,10 +98,6 @@ std::ostream& operator<<(std::ostream& os, const ServerConfig &config)
         os << std::endl;
         os << CYAN << "  directory listing : " << RESET << it->directory_listing << std::endl;
         os << BLUE << "        redirections: " << RED << it->redirection << RESET << std::endl;
-        // for (std::vector<std::pair<std::string, std::string> >::const_iterator it2 = it->redirections.begin(); it2!= it->redirections.end(); ++it2)
-        // {
-        //     os << "          - " << it2->first << " to: " << it2->second << std::endl;
-        // }
     }
 	return os;
 }

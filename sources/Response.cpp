@@ -186,7 +186,7 @@ void	Request::prepareResponse()
 			std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "is a directory." << std::endl;
 			try
 			{
-				directory_listing = this->_server_config.getRoute(this->_server_config.getRoot() + this->_path).directory_listing;
+				directory_listing = this->_server_config.getRoute(this->_path).directory_listing;
 			}
 			catch(const std::exception& e)
 			{

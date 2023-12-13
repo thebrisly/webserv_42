@@ -28,6 +28,29 @@ void ConfigParser::checkForDuplicateServers()
     }
 }
 
+void ConfigParser::CheckForMinimumConfig(ServerConfig &server_config)
+{
+    bool hasIP = !server_config.getIPAddress().empty();
+    bool hasPort = server_config.getPort();
+    bool hasRoot = !server_config.getRoot().empty();
+    bool hasDefaultFile = !server_config.getDefaultFile().empty();
+    bool hasHostName = !server_config.getServerName().empty();
+    bool hasMaxBodySize = server_config.getMaxBodySize();
+
+    if (!hasIP)
+        throw std::runtime_error("Server configuration is missing IP address");
+    if (!hasPort)
+        throw std::runtime_error("Server configuration is missing port");
+    if (!hasRoot)
+        throw std::runtime_error("Server configuration is missing root");
+    if (!hasDefaultFile)
+        throw std::runtime_error("Server configuration is missing default file");
+    if (!hasHostName)
+        throw std::runtime_error("Server configuration is missing server name");
+    if (!hasMaxBodySize)
+        throw std::runtime_error("Server configuration is missing max body size");
+}
+
 void ConfigParser::processErrorPages(const std::string& key, const std::string& value, ServerConfig& config)
 {
     try {
@@ -45,7 +68,6 @@ void ConfigParser::processLocation(const std::string& key, const std::string& va
         std::istringstream iss(str);
         std::string method;
         while (std::getline(iss, method, ',')) {
-            // Trim leading and trailing spaces from the method
             method.erase(method.find_last_not_of(" \n\r\t")+1);
             method.erase(0, method.find_first_not_of(" \n\r\t"));
 
@@ -203,7 +225,6 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
                 continue ;
             } 
 
-
             if (currentContext.empty())
                 continue;
             if (currentContext == "server"){
@@ -215,13 +236,9 @@ std::vector<ServerConfig> ConfigParser::parseConfigs(const std::string& filename
             } 
         }
     }
-
-
-    std::cout << "Default File " << serverConfig.getDefaultFile() << std::endl;
+    CheckForMinimumConfig(serverConfig);
     configs.push_back(serverConfig);
-    std::cout << "Default File " << configs.front().getDefaultFile() << std::endl;
     checkForDuplicateServers();
-    std::cout << "Default File " << configs.back().getDefaultFile() << std::endl;
     return configs;
 }
 
