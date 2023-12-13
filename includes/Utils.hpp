@@ -19,6 +19,7 @@ void sendRedirectionResponse(int clientSocket, const std::string& newUrl);
 
 void display_clients(std::ofstream & out, std::map<int, Client> & map_clients);
 void display_fd_set(std::ofstream & out, const fd_set & readfds, const fd_set & writefds);
+bool doesPathExist(const std::string& path);
 
 
 #endif

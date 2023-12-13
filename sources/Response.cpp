@@ -6,6 +6,7 @@
 #include <dirent.h>
 
 
+
 // No constructor as the response is just a variable of the object "Request"
 
 // VERIFICATIONS BEFORE SENDING THE RESPONSE :
@@ -41,9 +42,9 @@ void Request::checkRequest()
 	}
 	else if (!checkMethods(id_route)) 
 	{
-		this->_status_code = 403; //wrong authorizations
+		this->_status_code = 405; //Method Not Allowed
 		this->_status_string = "Forbidden";
-		std::cout << "[Response.cpp] " << MAGENTA << "403 : Bad Request (method not allowed)" << RESET << std::endl;
+		std::cout << "[Response.cpp] " << MAGENTA << "405 : Bad Request (method not allowed)" << RESET << std::endl;
 	}
 	else if (checkRedirection(id_route))
 	{
@@ -93,9 +94,19 @@ void Request::checkRequest()
 		}
 		else
 		{
-			
-			this->_status_code = 200;
-			this->_status_string = "OK";
+			std::cout << RED << "WE ARE HERE" << RESET << std::endl;
+			std::cout << this->_path << std::endl;
+			if (doesPathExist(this->_server_config.getRoot() + this->_path) == false)
+			{
+				this->_status_code = 404;
+				this->_status_string = "Not Found";
+			}
+			else
+			{
+				this->_status_code = 200;
+				this->_status_string = "OK";
+			}
+
 		}
 	}
 }
@@ -224,7 +235,10 @@ void	Request::prepareResponse()
 		{
 			fileType = "text/html";
 			std::cout << YELLOW << "2" << RESET << std::endl;
-			body = "<!DOCTYPE>\n<html>\n<header></header><body> " + std::to_string(this->_status_code) + " - Status Code </body> </html>";
+			std::ifstream default_error_file("web/default_error_pages/" + std::to_string(this->_status_code)+ ".html");
+			std::ostringstream default_error_file_content;
+			default_error_file_content << default_error_file.rdbuf();
+			body = default_error_file_content.str();
 		}
 		else
 		{
