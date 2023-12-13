@@ -20,29 +20,52 @@ std::vector<std::string>		Request::initMethods()
 	return methods;
 }
 
-
 // Request parsing
 // Méthode pour parser la requête
 void 	Request::parseRequest(const std::string& request)
 {
 	// Clear existing data
 	clearRequest();
+	
+	std::string current_header;
+	bool isset_body = false;
 
-	// Split the request into lines
+	if (request.find("\r\n\r\n") != std::string::npos)
+	{
+		isset_body = true;
+		current_header = request.substr(0, request.find("\r\n\r\n"));
+	}
+
+
+
 	std::istringstream requestStream(request);
 	std::string line;
+
 	int i = 0;
+
+
 	while (std::getline(requestStream, line))
 	{
 		std::cout << MAGENTA << i << line <<  RESET << std::endl;
 		i++;
-		if (line.empty()) //start of body
+		if (line == "\r") //start of body
 		{
-			
+
+
 			while (std::getline(requestStream, line))
+			{
+				std::cout << "line : " << line << std::endl;
+
 				this->_body += line;
-			//std::cout << YELLOW << "Body: " << this->_body << RESET << std::endl;
+
+			}
+			// std::cout << std::endl;
+			// std::cout << std::endl;
+			// std::cout << std::endl;
+			// std::cout << std::endl;
+
 			parseUserData();
+			//return;
 		} // Check if the line is empty (end of headers)
 
 		if (this->_method.empty())
@@ -215,10 +238,10 @@ std::ostream& operator<<(std::ostream& os, const Request &request)
 	os << CYAN <<"           path : " << RESET<< request.getPath() << std::endl;
 	os << CYAN <<"         method : " << RESET<< request.getMethod() << std::endl;
 
-	if (request.getMethod() == "POST" || request.getMethod() == "DELETE")
-	{
-		os << CYAN <<"current request : " << RESET<< request.getCurrentRequest() << std::endl;
-	}
+	// if (request.getMethod() == "POST" || request.getMethod() == "DELETE")
+	// {
+	// 	os << CYAN <<"current request : " << RESET<< request.getCurrentRequest() << std::endl;
+	// }
 
 	os << CYAN <<"        version : " << RESET<< request.getVersion() << std::endl;
 	os << CYAN <<"           host : " << RESET<< request.getHost() << std::endl;
@@ -226,13 +249,18 @@ std::ostream& operator<<(std::ostream& os, const Request &request)
 	os << CYAN <<"   secfetchdest : " << RESET<< request.getSecFetchDest() << std::endl;
 	os << CYAN <<"           port : " << RESET<< request.getPort() << std::endl;
 	os << CYAN <<"       hostname : " << RESET<< request.getHostname() << std::endl;
-	os << CYAN <<"           body : " << RESET<< request.getBody() << std::endl;
+
+	os << CYAN <<"    (body size) : " << RESET<< request.getBody().size() << std::endl;
+	os << CYAN <<"           body : " << RESET<< std::endl;
+	os << request.getBody() << std::endl;
 	os << CYAN <<"        headers : " << RESET << std::endl;
+
 
 	for (std::map<std::string, std::string>::const_iterator it = request.getHeaders().begin(); it!= request.getHeaders().end(); ++it)
 	{
 		os << "           * " << MAGENTA << it->first << RESET << " : " << it->second << std::endl;
 	}
+
 
 	// Afficher les éléments avec des clés groupées
 	os << CYAN <<"     user data : " << RESET << std::endl;

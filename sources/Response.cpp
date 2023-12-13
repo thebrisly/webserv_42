@@ -118,28 +118,7 @@ void	Request::prepareResponse()
 
 	std::cout <<"[response.cpp]"<< GREEN << " createResponse : "<< RESET << this->_path << std::endl;
 	std::cout << "Status code : " << this->_status_code << std::endl;
-	if (_status_code != 200 && _status_code != 301)
-	{
-		std::cout << YELLOW << "FILE NOT FOUND" << RESET << std::endl;
-		std::map<int, std::string> errorPages = this->_server_config.getErrorPages();
-		std::map<int, std::string>::const_iterator it = errorPages.find(this->_status_code);
-		if (it == errorPages.end())
-		{
-			std::cout << YELLOW << "2" << RESET << std::endl;
-			body = "<!DOCTYPE>\n<html>\n<header></header><body> " + std::to_string(this->_status_code) + " - Status Code </body> </html>";
-		}
-		else
-		{
-			std::cout << it->second << std::endl;
-			file.open(this->_server_config.getRoot() + it->second);
-			fileContent << file.rdbuf();
-			body = fileContent.str();
-			std::cout << RED << body << RESET << std::endl;
-			fileType = "text/html";
-			//this->_path = this->_server_config.getRoot() + it->second;
-		}
-	}
-	else // ca marche status code 200
+	if (_status_code == 200 || _status_code == 301)
 	{
 		std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << " code is 200 " << std::endl;
 
@@ -234,8 +213,38 @@ void	Request::prepareResponse()
 			}			
 		}
 	}
+	else
+	{	
+		file.close();
+		std::cout << YELLOW << "FILE NOT FOUND" << RESET << std::endl;
+		std::map<int, std::string> errorPages = this->_server_config.getErrorPages();
+		std::map<int, std::string>::const_iterator it = errorPages.find(this->_status_code);
+		if (it == errorPages.end())
+		{
+			fileType = "text/html";
+			std::cout << YELLOW << "2" << RESET << std::endl;
+			body = "<!DOCTYPE>\n<html>\n<header></header><body> " + std::to_string(this->_status_code) + " - Status Code </body> </html>";
+		}
+		else
+		{
+			std::ifstream errorfile;
+			std::ostringstream errorFileContent;
+			std::cout << this->_server_config.getRoot() + it->second << std::endl;
+			body = "";
+			std::cout << it->second << std::endl;
+			errorfile.open(this->_server_config.getRoot() + it->second);
+			errorFileContent << errorfile.rdbuf();
+			body = errorFileContent.str();
+			std::cout << RED << body << RESET << std::endl;
+			fileType = "text/html";
+			//this->_path = this->_server_config.getRoot() + it->second;
+		}
+	}
 
-	response = this->_version + " " + std::to_string(this->_status_code) + " " + this->_status_string + "\r\n";
+
+	
+
+	response = "HTTP/1.1 " + std::to_string(this->_status_code) + " " + this->_status_string + "\r\n";
 	response += "Content-Type: "+fileType+"\r\n";
 	response += "Content-Length: " + std::to_string(body.size()) + "\r\n";
 	response += "Connection: keep-alive\r\n";
@@ -267,6 +276,7 @@ bool Request::check_host_port() const
 	if (this->_hostname != this->_server_config.getServerName() && this->_hostname != this->_server_config.getIPAddress())
 	{
 		std::cout << "[Response.cpp] " << RED << "check_host_port : KO " << this->_hostname << RESET << std::endl;
+
 		return false;
 	}
 
