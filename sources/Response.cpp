@@ -136,7 +136,6 @@ void	Request::prepareResponse()
 				mmap_args.insert(std::pair<std::string, std::string>("arg1", "value1"));
 				mmap_args.insert(std::pair<std::string, std::string>("arg1", "value2"));
 
-
 				//mmap_args.insert(std::pair<std::string, std::string>("arg2", "value2"));
 				//mmap_args.insert(std::pair<std::string, std::string>("arg3", "value3"));
 
@@ -155,8 +154,6 @@ void	Request::prepareResponse()
 				body = fileContent.str();
 				file.close();
 			}
-
-
 
 		}
 		else //Not a file in a directory
@@ -203,7 +200,10 @@ void	Request::prepareResponse()
 
 					while ((ent = readdir(dir)) != NULL)
 					{
-						body += "<li><a href='" + std::string(ent->d_name) + "'>" + std::string(ent->d_name) + "</a></li>";
+						std::string filePath = dirPath + "/" + std::string(ent->d_name);
+						std::string hrefPath = filePath.substr(this->_server_config.getRoot().length());
+						body += "<li><a href='" + hrefPath + "'>" + std::string(ent->d_name) + "</a></li>";
+						//body += "<li><a href='" + std::string(ent->d_name) + "'>" + std::string(ent->d_name) + "</a></li>";
 					}
 
 					body += "</ul></body></html>";
@@ -237,7 +237,6 @@ void	Request::prepareResponse()
 			body = errorFileContent.str();
 			std::cout << RED << body << RESET << std::endl;
 			fileType = "text/html";
-			//this->_path = this->_server_config.getRoot() + it->second;
 		}
 	}
 
