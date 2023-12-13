@@ -1,5 +1,18 @@
 #include "../includes/Utils.hpp"
 
+#include <sys/stat.h>
+
+bool doesPathExist(const std::string& path)
+{
+    struct stat info;
+
+    if (stat(path.c_str(), &info) != 0) {
+        // Error accessing the file (path does not exist or no permission)
+        return false;
+    }
+	return true;
+}
+
 std::string findFileType(std::string fileName)
 {
 	unsigned long pos = 0;

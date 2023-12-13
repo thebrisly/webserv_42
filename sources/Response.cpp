@@ -6,6 +6,7 @@
 #include <dirent.h>
 
 
+
 // No constructor as the response is just a variable of the object "Request"
 
 // VERIFICATIONS BEFORE SENDING THE RESPONSE :
@@ -41,9 +42,9 @@ void Request::checkRequest()
 	}
 	else if (!checkMethods(id_route)) 
 	{
-		this->_status_code = 403; //wrong authorizations
+		this->_status_code = 405; //Method Not Allowed
 		this->_status_string = "Forbidden";
-		std::cout << "[Response.cpp] " << MAGENTA << "403 : Bad Request (method not allowed)" << RESET << std::endl;
+		std::cout << "[Response.cpp] " << MAGENTA << "405 : Bad Request (method not allowed)" << RESET << std::endl;
 	}
 	else if (checkRedirection(id_route))
 	{
@@ -93,9 +94,19 @@ void Request::checkRequest()
 		}
 		else
 		{
-			
-			this->_status_code = 200;
-			this->_status_string = "OK";
+			std::cout << RED << "WE ARE HERE" << RESET << std::endl;
+			std::cout << this->_path << std::endl;
+			if (doesPathExist(this->_server_config.getRoot() + this->_path) == false)
+			{
+				this->_status_code = 404;
+				this->_status_string = "Not Found";
+			}
+			else
+			{
+				this->_status_code = 200;
+				this->_status_string = "OK";
+			}
+
 		}
 	}
 }
@@ -136,7 +147,6 @@ void	Request::prepareResponse()
 				mmap_args.insert(std::pair<std::string, std::string>("arg1", "value1"));
 				mmap_args.insert(std::pair<std::string, std::string>("arg1", "value2"));
 
-
 				//mmap_args.insert(std::pair<std::string, std::string>("arg2", "value2"));
 				//mmap_args.insert(std::pair<std::string, std::string>("arg3", "value3"));
 
@@ -155,8 +165,6 @@ void	Request::prepareResponse()
 				body = fileContent.str();
 				file.close();
 			}
-
-
 
 		}
 		else //Not a file in a directory
@@ -204,7 +212,10 @@ void	Request::prepareResponse()
 
 					while ((ent = readdir(dir)) != NULL)
 					{
-						body += "<li><a href='" + std::string(ent->d_name) + "'>" + std::string(ent->d_name) + "</a></li>";
+						std::string filePath = dirPath + "/" + std::string(ent->d_name);
+						std::string hrefPath = filePath.substr(this->_server_config.getRoot().length());
+						body += "<li><a href='" + hrefPath + "'>" + std::string(ent->d_name) + "</a></li>";
+						//body += "<li><a href='" + std::string(ent->d_name) + "'>" + std::string(ent->d_name) + "</a></li>";
 					}
 
 					body += "</ul></body></html>";
@@ -224,7 +235,10 @@ void	Request::prepareResponse()
 		{
 			fileType = "text/html";
 			std::cout << YELLOW << "2" << RESET << std::endl;
-			body = "<!DOCTYPE>\n<html>\n<header></header><body> " + std::to_string(this->_status_code) + " - Status Code </body> </html>";
+			std::ifstream default_error_file("web/default_error_pages/" + std::to_string(this->_status_code)+ ".html");
+			std::ostringstream default_error_file_content;
+			default_error_file_content << default_error_file.rdbuf();
+			body = default_error_file_content.str();
 		}
 		else
 		{
@@ -238,7 +252,6 @@ void	Request::prepareResponse()
 			body = errorFileContent.str();
 			std::cout << RED << body << RESET << std::endl;
 			fileType = "text/html";
-			//this->_path = this->_server_config.getRoot() + it->second;
 		}
 	}
 
