@@ -134,7 +134,7 @@ void RunServer::recvs_request (int i)
 
 void RunServer::send_response (int i)
 {
-	unsigned long max_body_size = this->_map_clients[i].get_server_config().getMaxBodySize();
+	// unsigned long max_body_size = this->_map_clients[i].get_server_config().getMaxBodySize();
 	std::string response = this->_map_clients[i].get_response();
 
 
