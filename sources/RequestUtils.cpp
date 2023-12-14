@@ -69,7 +69,6 @@ void Request::parseMultipartData() {
 	//// std::cout << "Parse Multi" << std::endl;
 	//// std::cout << GREEN << _body << RESET << std::endl;
     std::string boundary = extractBoundary();
-	processMultipartPart(_body);
     if (boundary.empty()) {
         std::cerr << "Boundary not found in Content-Type header" << std::endl;
         return;
@@ -77,31 +76,28 @@ void Request::parseMultipartData() {
 
     std::istringstream stream(_body);
     std::string line;
-    std::string partData;
-    bool inPart = false;
 
-    while (std::getline(stream, line)) {
-        // Remove carriage return at the end of the line if present
-        if (!line.empty() && line.back() == '\r') {
-            line.pop_back();
-        }
+	std::string headerpart;
+	std::string bodypart;
 
-        if (line == boundary) {
 
-			processMultipartPart(partData);
-			partData.clear();
-     
-        } else if (line == boundary + "--") {
-  
-            processMultipartPart(partData);
-            break; // End of multipart data
-        } else if (inPart) {
-            if (!partData.empty()) {
-                partData += "\n";
-            }
-            partData += line;
-        }
-    }
+	while (std::getline(stream, line) && line != "\r")
+	{
+		headerpart += line.substr(0, line.find("\r\n")) + "\n";
+		std::cout << "line : " << line << "EOF MA "<< std::endl;
+	}
+
+
+	std::cout << "HEADERS PART \n\n" << headerpart << "\n" << std::endl;
+
+	while (std::getline(stream, line))
+	{
+		bodypart += line.substr(0, line.find("\r\n")) + "\n";
+	}
+
+	std::cout << "BODY PARTS \n" << bodypart << std::endl;
+
+
 }
 
 
@@ -164,17 +160,7 @@ void	Request::parseBody(std::string& body)
 
 
 
-	while (std::getline(requestBodyStream, line))
-	{
-		// std::cout << "line : " << line << std::endl;
-
-		this->_body += line;
-
-	}
-
-	
-
-
+	_body = body;
 
 	std::map<std::string, std::string>::iterator it = this->_headers.find("Content-Type");
 	if (it != _headers.end())
