@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 	    ConfigParser parser;
     	configs = parser.parseConfigs(configFile);
 
-		// std::cout << "Configs : " << configs << std::endl;
+		std::cout << "Configs : " << configs << std::endl;
 
 		ServersManager servers_manager(configs);
 

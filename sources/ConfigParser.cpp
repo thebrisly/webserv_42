@@ -246,7 +246,7 @@ std::ostream& operator<<(std::ostream& os, const std::vector<ServerConfig> &conf
 {
     for (std::vector<ServerConfig>::const_iterator it = configs.begin(); it!= configs.end(); ++it)
     {
-        // std::cout << *it << std::endl;
+        std::cout << *it << std::endl;
     }
     return os;
 }

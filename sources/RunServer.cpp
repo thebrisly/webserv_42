@@ -81,9 +81,7 @@ void RunServer::recvs_request (int i)
 	{
 		//getpeername(i , (struct sockaddr*)(&(server_init.get_ref_server_addr())) , (socklen_t*)&server_init.get_ref_addrlen());
 
-		//// std::cout << CLOCKS_PER_SEC <<std::endl;
-
-		std::cout << "Since creation : " << clock() - this->_map_clients[i].get_session_time() << std::endl;
+		// std::cout << "Since creation : " << clock() - this->_map_clients[i].get_session_time() << std::endl;
 
 
 		if (close(i) < 0)
@@ -119,8 +117,8 @@ void RunServer::recvs_request (int i)
 
 		current_request.prepareResponse();
 
-		std::cout << "[Request info] "  << std::endl;
-		std::cout <<  current_request << std::endl;
+		//std::cout << "[Request info] "  << std::endl;
+		//std::cout <<  current_request << std::endl;
 
 
 		this->_map_clients[i].set_response(current_request.getResponse());
@@ -228,29 +226,29 @@ void RunServer::process (int loop_count)
 		{
 			this->_out << "Considering client " << i << " on loop " << loop_count << " : " <<std::endl;
 			this->accept_new_connection(i);
-			this->_out<< "------------------- accept new connection -------------------" << std::endl;
+			// this->_out<< "------------------- accept new connection -------------------" << std::endl;
 			display_fd_set(this->_out, this->_readfds, this->_writefds);
-			this->_out<< "copy = ";
+			// this->_out<< "copy = ";
 			display_fd_set(this->_out, this->_cpy_readfds, this->_cpy_writefds);
 			display_clients(this->_out, this->_map_clients);
 		}
 		else if (FD_ISSET(i, &this->_readfds))
 		{
-			this->_out << "Considering client " << i << " on loop " << loop_count << " : " <<std::endl;
+			// this->_out << "Considering client " << i << " on loop " << loop_count << " : " <<std::endl;
 			this->recvs_request (i);
-			this->_out<< "------------------- recvs request -------------------" << std::endl;
+			// this->_out<< "------------------- recvs request -------------------" << std::endl;
 			display_fd_set(this->_out, this->_readfds, this->_writefds);
-			this->_out<< "copy = ";
+			// this->_out<< "copy = ";
 			display_fd_set(this->_out, this->_cpy_readfds, this->_cpy_writefds);
 			display_clients(this->_out, this->_map_clients);
 		}
 		else if (FD_ISSET(i, &this->_writefds))
 		{
-			this->_out << "Considering client " << i << " on loop " << loop_count << " : " <<std::endl;
+			// this->_out << "Considering client " << i << " on loop " << loop_count << " : " <<std::endl;
 			this->send_response(i);
-			this->_out<< "------------------- send response -------------------" << std::endl;
+			// this->_out<< "------------------- send response -------------------" << std::endl;
 			display_fd_set(this->_out, this->_readfds, this->_writefds);
-			this->_out<< "copy = ";
+			// this->_out<< "copy = ";
 			display_fd_set(this->_out, this->_cpy_readfds, this->_cpy_writefds);
 			display_clients(this->_out, this->_map_clients);
 		}

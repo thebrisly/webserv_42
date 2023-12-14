@@ -66,15 +66,20 @@ std::string Request::extractBoundary() const
 
 
 void Request::parseMultipartData() {
-	//// std::cout << "Parse Multi" << std::endl;
-	//// std::cout << GREEN << _body << RESET << std::endl;
+
+	std::cout << "\n[parseMultipartData] " << MAGENTA << "start" << RESET << std::endl;
+
+
+
     std::string boundary = extractBoundary();
+
     if (boundary.empty()) {
+
         std::cerr << "Boundary not found in Content-Type header" << std::endl;
         return;
     }
 
-    std::istringstream stream(_body);
+    std::istringstream stream(this->_body);
     std::string line;
 
 	std::string headerpart;
@@ -84,7 +89,6 @@ void Request::parseMultipartData() {
 	while (std::getline(stream, line) && line != "\r")
 	{
 		headerpart += line.substr(0, line.find("\r\n")) + "\n";
-		std::cout << "line : " << line << "EOF MA "<< std::endl;
 	}
 
 
@@ -98,6 +102,7 @@ void Request::parseMultipartData() {
 	std::cout << "BODY PARTS \n" << bodypart << std::endl;
 
 
+
 }
 
 
@@ -106,6 +111,10 @@ void Request::parseMultipartData() {
 // Méthode pour parser la requête
 void	Request::parseHeader(std::string& header)
 {
+	std::cout << "[ParseHeader] " << MAGENTA << "start" << RESET << std::endl;
+
+	std::cout << "[ParseHeader] " << BLUE << "header to parse : " << RESET << std::endl << "{" << header <<"} (header_size = "<< header.length() << ")" <<std::endl;
+
 	std::istringstream requestHeaderStream(header);
 	std::string line;
 
@@ -147,25 +156,39 @@ void	Request::parseHeader(std::string& header)
             }
 		}
 	}
+	std::cout << "[ParseHeader] " << MAGENTA << "end" << RESET << std::endl;
+
 }
 
 
 
 
 void	Request::parseBody(std::string& body)
-{
-	
-	std::istringstream requestBodyStream(body);
-	std::string line;
+{	
 
+<<<<<<< HEAD
+	_body = body;
+=======
+	std::cout << "[ParseBody] " << MAGENTA << "start" << RESET << std::endl;
+	std::cout << "[ParseBody] " << BLUE << "body to parse : " << RESET << std::endl << "{" << body <<"} (body_size = "<< body.length() << ")" <<std::endl;
 
+	// std::istringstream requestBodyStream(body);
+	// std::string line;
 
 	_body = body;
+	// while (std::getline(requestBodyStream, line))
+	// {
+	// 	// std::cout << "line : " << line << std::endl;
+
+	// 	this->_body += line;
+
+	// }
+>>>>>>> a54c71d8a32f67700015bcbe2b3ffb337926dd0a
 
 	std::map<std::string, std::string>::iterator it = this->_headers.find("Content-Type");
 	if (it != _headers.end())
 	{
-		if (it->second.find("application") != std::string::npos)
+		if (it->second.find("application/x-www-form-urlencoded") != std::string::npos)
 		{
 			parseUserData();
 		}
@@ -183,18 +206,19 @@ void	Request::parseBody(std::string& body)
 	{
 		std::cerr << RED << "ERROR " << RESET << "Parsebody : no key for Content-Type" << std::endl;
 	}
+
+	std::cout << "[ParseBody] " << MAGENTA << "end" << RESET << std::endl;
 }
 
 
 void	Request::parseRequest(const std::string& request)
 {
+
+	std::cout << "parseRequest "<< MAGENTA << "Start" << RESET << std::endl;
 	// Clear existing data
 	clearRequest();
 
-	// std::cout << "REQUEST:" << request << std::endl;
 
-	// std::cout << YELLOW << "Parsing request..." << RESET << std::endl;
-	// std::cout << request << std::endl;
 
 	std::string current_header;
 	std::string current_body;
@@ -211,7 +235,13 @@ void	Request::parseRequest(const std::string& request)
 	}
 
 	parseHeader(current_header);
-	parseBody(current_body);
+
+
+	if (!current_body.empty())
+	{
+		parseBody(current_body);
+	}
+	std::cout << "parseRequest "<< MAGENTA << "End" << RESET << std::endl;
 
 
 }
