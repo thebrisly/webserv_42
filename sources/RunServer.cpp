@@ -57,12 +57,12 @@ void RunServer::accept_new_connection(int i)
 
 void RunServer::recvs_request (int i)
 {
-	char buffer[4097];
+	char buffer[512000];
 	int size_read;
 	//ServerInitializer & server_init = this->_servers_manager.get_server_by_sock(i);
 
-	memset (buffer, 0, 4096);
-	size_read = recv(i, buffer, 4096, 0);
+	memset (buffer, 0, 512000);
+	size_read = recv(i, buffer, 512000, 0);
 
 	if (size_read == -1)
 	{

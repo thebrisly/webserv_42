@@ -45,7 +45,7 @@ void Request::processMultipartPart(const std::string& part) {
     }
 
 
-	saveUploadedFile("name.txt", part);
+	//saveUploadedFile("name.txt", part);
     // Now you have headers and data separated
     // Extract information like filename from headers
     // Decide if it's a file or other form data
@@ -88,6 +88,8 @@ void Request::parseMultipartData() {
 
 	while (std::getline(stream, line) && line != "\r")
 	{
+		if (line == boundary)
+			continue;
 		headerpart += line.substr(0, line.find("\r\n")) + "\n";
 	}
 
@@ -96,11 +98,28 @@ void Request::parseMultipartData() {
 
 	while (std::getline(stream, line))
 	{
+		if (line == boundary)
+			break;
 		bodypart += line.substr(0, line.find("\r\n")) + "\n";
 	}
 
 	std::cout << "BODY PARTS \n" << bodypart << std::endl;
 
+
+	unsigned long ent = headerpart.find("filename=");
+	if (ent!= std::string::npos)
+	{
+		int end = headerpart.find('"', ent + 10);
+		_filename = headerpart.substr(ent + 10, end - ent - 10);
+		std::cout << "ENT " << ent << " END " << end << " FILENAME " << _filename << std::endl;
+		std::cout << "filename = [" << _filename << "]" << std::endl;
+	}
+	else
+	{
+		_filename = "default";
+	}
+
+	uploadFile(_filename, bodypart);
 
 
 }

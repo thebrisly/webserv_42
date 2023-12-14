@@ -128,6 +128,8 @@ class Request {
         ServerConfig                                _server_config;
         bool                                        _is_cgi;
 
+        std::string                                 _filename;
+
 
 
 };
