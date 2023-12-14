@@ -166,24 +166,8 @@ void	Request::parseHeader(std::string& header)
 void	Request::parseBody(std::string& body)
 {	
 
-<<<<<<< HEAD
 	_body = body;
-=======
-	std::cout << "[ParseBody] " << MAGENTA << "start" << RESET << std::endl;
-	std::cout << "[ParseBody] " << BLUE << "body to parse : " << RESET << std::endl << "{" << body <<"} (body_size = "<< body.length() << ")" <<std::endl;
 
-	// std::istringstream requestBodyStream(body);
-	// std::string line;
-
-	_body = body;
-	// while (std::getline(requestBodyStream, line))
-	// {
-	// 	// std::cout << "line : " << line << std::endl;
-
-	// 	this->_body += line;
-
-	// }
->>>>>>> a54c71d8a32f67700015bcbe2b3ffb337926dd0a
 
 	std::map<std::string, std::string>::iterator it = this->_headers.find("Content-Type");
 	if (it != _headers.end())
