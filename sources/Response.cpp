@@ -19,7 +19,11 @@ void Request::checkRequest()
 	int id_route;
 
 	//bool is_file = this->isFile();
+	
 
+	// std::cout << this->_current_request.length() << std::endl;
+	// std::cout <<this->_server_config.getMaxBodySize() << std::endl;
+	// sleep(20);
 
 	//// std::cout << "[response.cpp]" GREEN << " checkRequest " << RESET << "is_file : " << is_file << std::endl;
 	if (!checkHttpVersion())
@@ -33,6 +37,13 @@ void Request::checkRequest()
 		this->_status_code = 503; //trouver le bon code erreur
 		this->_status_string = "Service Unavailable";
 		// std::cout << "[Response.cpp] " << MAGENTA << "503 : Service Unavailable (host - port not resolved)" << RESET << std::endl;
+	}
+	else if (this->_current_request.length() > this->_server_config.getMaxBodySize())
+	{
+		this->_status_code = 413; //Request Entity Too Large
+		this->_status_string = "Request Entity Too Large";
+		std::cout << "[Response.cpp] " << MAGENTA << "413 : Request Entity Too Large" << RESET << std::endl;
+		sleep(10);
 	}
 	else if ((id_route = this->getLocation()) == -1)
 	{

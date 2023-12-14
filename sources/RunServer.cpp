@@ -3,7 +3,7 @@
 #include "../includes/Utils.hpp"
 
 
-#define BUFFER_SIZE 512000
+#define BUFFER_SIZE 5120000
 /* RunServer is an object that runs the servers */
 
 RunServer::RunServer(ServersManager & servers_manager, std::string log_filename) : _servers_manager(servers_manager), _out(log_filename, std::ofstream::out), _time_start(time(NULL))
