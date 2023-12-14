@@ -111,30 +111,15 @@ void Request::parseMultipartData() {
 	{
 		int end = headerpart.find('"', ent + 10);
 		_filename = headerpart.substr(ent + 10, end - ent - 10);
-		std::cout << "ENT " << ent << " END " << end << " FILENAME " << _filename << std::endl;
-		std::cout << "filename = [" << _filename << "]" << std::endl;
+		//std::cout << "ENT " << ent << " END " << end << " FILENAME " << _filename << std::endl;
+		//std::cout << "filename = [" << _filename << "]" << std::endl;
 	}
 	else
 	{
 		_filename = "default";
 	}
 
-
-	std::cout << "BODY PARTS \n" << bodypart << std::endl;
-
-    std::ofstream outFile(_filename, std::ios::out | std::ios::binary);
-    if (outFile.is_open()) {
-        outFile.write(bodypart.data(), bodypart.size());
-        outFile.close();
-    }
-	else
-	{
-		std::cout << RED << "NOPE " << std::endl;
-	}
-
-
-
-
+	uploadFile(_filename, bodypart);
 }
 
 
@@ -143,9 +128,9 @@ void Request::parseMultipartData() {
 // Méthode pour parser la requête
 void	Request::parseHeader(std::string& header)
 {
-	std::cout << "[ParseHeader] " << MAGENTA << "start" << RESET << std::endl;
+	//std::cout << "[ParseHeader] " << MAGENTA << "start" << RESET << std::endl;
 
-	std::cout << "[ParseHeader] " << BLUE << "header to parse : " << RESET << std::endl << "{" << header <<"} (header_size = "<< header.length() << ")" <<std::endl;
+	//std::cout << "[ParseHeader] " << BLUE << "header to parse : " << RESET << std::endl << "{" << header <<"} (header_size = "<< header.length() << ")" <<std::endl;
 
 	std::istringstream requestHeaderStream(header);
 	std::string line;
@@ -188,7 +173,7 @@ void	Request::parseHeader(std::string& header)
             }
 		}
 	}
-	std::cout << "[ParseHeader] " << MAGENTA << "end" << RESET << std::endl;
+	//std::cout << "[ParseHeader] " << MAGENTA << "end" << RESET << std::endl;
 
 }
 
@@ -223,18 +208,18 @@ void	Request::parseBody(std::string& body)
 		std::cerr << RED << "ERROR " << RESET << "Parsebody : no key for Content-Type" << std::endl;
 	}
 
-	std::cout << "[ParseBody] " << MAGENTA << "end" << RESET << std::endl;
+	//std::cout << "[ParseBody] " << MAGENTA << "end" << RESET << std::endl;
 }
 
 
 void	Request::parseRequest(const std::string& request)
 {
 
-	std::cout << "parseRequest "<< MAGENTA << "Start" << RESET << std::endl;
+	//std::cout << "parseRequest "<< MAGENTA << "Start" << RESET << std::endl;
 	// Clear existing data
 	clearRequest();
 
-	std::cout << "REQUEST \n"  << BLUE << request << RESET <<  std::endl;
+	//std::cout << "REQUEST \n"  << BLUE << request << RESET <<  std::endl;
 
 	std::string current_header;
 	std::string current_body;
@@ -257,96 +242,10 @@ void	Request::parseRequest(const std::string& request)
 	{
 		parseBody(current_body);
 	}
-	std::cout << "parseRequest "<< MAGENTA << "End" << RESET << std::endl;
+	//std::cout << "parseRequest "<< MAGENTA << "End" << RESET << std::endl;
 
 
 }
-
-
-
-
-/*void 	Request::parseRequest(const std::string& request)
-{
-	// Clear existing data
-	clearRequest();
-	
-	std::string current_header;
-	bool isset_body = false;
-	if (request.find("\r\n\r\n") != std::string::npos)
-	{
-		isset_body = true;
-		current_header = request.substr(0, request.find("\r\n\r\n"));
-	}
-	current_body = request.substr(request.find("\r\n\r\n") + 4);
-
-
-	std::istringstream requestStream(request);
-	std::string line;
-
-	int i = 0;
-
-
-	while (std::getline(requestStream, line))
-	{
-		// std::cout << MAGENTA << i << line <<  RESET << std::endl;
-		i++;
-		if (line == "\r") //start of body
-		{
-
-
-			while (std::getline(requestStream, line))
-			{
-				// std::cout << "line : " << line << std::endl;
-
-				this->_body += line;
-
-			}
-			// // std::cout << std::endl;
-			// // std::cout << std::endl;
-			// // std::cout << std::endl;
-			// // std::cout << std::endl;
-
-			parseUserData();
-			//return;
-		} // Check if the line is empty (end of headers)
-
-		if (this->_method.empty())
-		{
-
-			this->_method = readMethod(line);
-			this->_version = readVersion(line);
-			this->_path = readFirstLine(line);
-			if (this->_path.back() == '/')
-			{
-				this->_path = this->_path.substr(0, this->_path.size() - 1);
-			}
-		}
-		else
-		{
-
-			size_t colonPos = line.find(':');
-			if (colonPos != std::string::npos)
-            {
-				std::string key = line.substr(0, colonPos);
-                std::string value = line.substr(colonPos + 2); // Skip ': '
-
-                this->_headers[key] = value;
-				if (key == "Host")
-                {
-                    parseHostHeader(value, this->_hostname, this->_port);
-                }
-                else if (key == "Connection")
-                {
-                    this->_connection = getConnectionHeader();
-                }
-                else if (key == "Sec-Fetch-Dest")
-                {
-                    this->_secfetchdest = getSecFetchDestHeader();
-                }
-            }
-		}
-	}
-}*/
 
 std::string Request::readFirstLine(const std::string& line)
 {

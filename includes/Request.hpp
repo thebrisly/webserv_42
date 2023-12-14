@@ -74,6 +74,9 @@ class Request {
         std::string                                 getHostHeader() const;
         std::string                                 getConnectionHeader() const;
 
+        std::string                                 getFilename() const;
+
+
         void                                        checkRequest();
         bool                                        checkHttpVersion() const;
         bool                                        check_host_port() const;

@@ -92,22 +92,9 @@ void display_fd_set(std::ofstream & out, const fd_set & readfds, const fd_set & 
 	out << std::endl;
 }
 
-// void saveBinaryFile(const std::string& filename, const std::vector<uint8_t>& data)
-// {
-// 	const std::string UPLOAD_DIRECTORY = "uploads/";
-// 	std::string fullPath = UPLOAD_DIRECTORY + filename;
-// 	std::ofstream file(fullPath, std::ios::binary);
-// 	if (!file) {
-// 		std::cerr << "Error opening file for writing: " << fullPath << std::endl;
-// 		return false;
-// 	}
-// 	file.write(data.c_str(), data.size());
-// 	return file.good();
-// }
-
 bool uploadFile(const std::string& filename, const std::string& data)
 {
-	const std::string UPLOAD_DIRECTORY = "uploads/";
+	const std::string UPLOAD_DIRECTORY = "web/website0/uploads/";
 	std::string fullPath = UPLOAD_DIRECTORY + filename;
 	std::ofstream file(fullPath, std::ios::binary);
 	if (!file) {

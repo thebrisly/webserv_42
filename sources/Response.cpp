@@ -4,7 +4,7 @@
 #include "../includes/CgiHandler.hpp"
 #include <unistd.h>
 #include <dirent.h>
-
+#include <cstdio>
 
 
 // No constructor as the response is just a variable of the object "Request"
@@ -13,53 +13,60 @@
 
 // Créer une fonction qui renvoie la response si toutes (5) les verifications suivantes sont correctes :
 
+bool deleteFile(const std::string filename) 
+{
+    if (std::remove(filename.c_str()) == 0) 
+    {
+        std::cout << "File '" << filename << "' deleted successfully." << std::endl;
+        return true;
+    } 
+    else 
+    {
+        std::cerr << "Error deleting file '" << filename << "'." << std::endl;
+        return false;
+    }
+}
+
 
 void Request::checkRequest()
 {
 	int id_route;
-
-	//bool is_file = this->isFile();
-	
-
-	// std::cout << this->_current_request.length() << std::endl;
-	// std::cout <<this->_server_config.getMaxBodySize() << std::endl;
-	// sleep(20);
 
 	//// std::cout << "[response.cpp]" GREEN << " checkRequest " << RESET << "is_file : " << is_file << std::endl;
 	if (!checkHttpVersion())
 	{
 		this->_status_code = 505;
 		this->_status_string = "HTTP Version Not Supported";
-		// std::cout << "[Response.cpp] " << MAGENTA << "505 : HTTP Version Not Supported" << RESET << std::endl;
+		std::cout << "[Response.cpp] checkRequest " << MAGENTA << "505 : HTTP Version Not Supported" << RESET << std::endl;
 	}
 	if (!check_host_port()) 
 	{
 		this->_status_code = 503; //trouver le bon code erreur
 		this->_status_string = "Service Unavailable";
-		// std::cout << "[Response.cpp] " << MAGENTA << "503 : Service Unavailable (host - port not resolved)" << RESET << std::endl;
+		std::cout << "[Response.cpp] checkRequest " << MAGENTA << "503 : Service Unavailable (host - port not resolved)" << RESET << std::endl;
 	}
 	else if (this->_current_request.length() > this->_server_config.getMaxBodySize())
 	{
 		this->_status_code = 413; //Request Entity Too Large
 		this->_status_string = "Request Entity Too Large";
-		std::cout << "[Response.cpp] " << MAGENTA << "413 : Request Entity Too Large" << RESET << std::endl;
-		sleep(10);
+		std::cout << "[Response.cpp] checkRequest " << MAGENTA << "413 : Request Entity Too Large" << RESET << std::endl;
+
 	}
 	else if ((id_route = this->getLocation()) == -1)
 	{
 		this->_status_code = 400; //page not found error
 		this->_status_string = "Bad Request";
-		// std::cout << "[Response.cpp] " << MAGENTA << "400 : Bad Request" << RESET << std::endl;
+		std::cout << "[Response.cpp] checkRequest " << MAGENTA << "400 : Bad Request" << RESET << std::endl;
 	}
 	else if (!checkMethods(id_route)) 
 	{
 		this->_status_code = 405; //Method Not Allowed
 		this->_status_string = "Forbidden";
-		// std::cout << "[Response.cpp] " << MAGENTA << "405 : Bad Request (method not allowed)" << RESET << std::endl;
+		std::cout << "[Response.cpp] checkRequest " << MAGENTA << "405 : Bad Request (method not allowed)" << RESET << std::endl;
 	}
 	else if (checkRedirection(id_route))
 	{
-		std::cout << "[Response.cpp] " << MAGENTA << "Redirection ..." << RESET << std::endl;
+		std::cout << "[Response.cpp] checkRequest " << MAGENTA << "301 : Redirection" << RESET << std::endl;
 		this->_status_code = 301; //redirection (error) code
 
 		//this->checkRequest();
@@ -73,49 +80,29 @@ void Request::checkRequest()
 			{
 				this->_status_code = 404; //page not found error
 				this->_status_string = "Not Found";
-				// std::cout << "[Response.cpp] "<< MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
+				std::cout << "[Response.cpp] checkRequest "<< MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
 			}
-			// else if (findFileType(this->_path) == "py")
-			// {
-			// 	this->_status_code = 200;
-			// 	this->_status_string = "OK";
-			// 	this->_is_cgi = true;
-			// 	// std::cout << "[Response.cpp] "<< MAGENTA << "checkRequest " << RESET << "CGI asked" << std::endl;
-
-				// const std::string scriptPath = "web/website0/script.py";
-				// std::map<std::string, std::string> mmap_args;
-				// mmap_args.insert(std::pair<std::string, std::string>("arg1", "value1"));
-				// mmap_args.insert(std::pair<std::string, std::string>("arg2", "value2"));
-				// mmap_args.insert(std::pair<std::string, std::string>("arg3", "value3"));
-
-				// CgiHandler cgiHandler(scriptPath.c_str(), mmap_args);
-				
-				// cgiHandler.executePythonScript();
-
-				// // std::cout << cgiHandler <<std::endl;
-
-				/*CgiHandler...*/
-			// }
 			else
 			{
 				this->_status_code = 200;
 				this->_status_string = "OK";
-				// std::cout << "[Response.cpp] "<< MAGENTA << "Response OK 200" << RESET << std::endl;
+				std::cout << "[Response.cpp] checkRequest "<< MAGENTA << "Response OK 200" << RESET << std::endl;
 			}
 		}
 		else
 		{
-			// std::cout << RED << "WE ARE HERE" << RESET << std::endl;
-			// std::cout << this->_path << std::endl;
 			if (doesPathExist(this->_server_config.getRoot() + this->_path) == false)
 			{
 				this->_status_code = 404;
 				this->_status_string = "Not Found";
+				std::cout << "[Response.cpp] checkRequest "<< MAGENTA << "Response error 404 : directory not found." << RESET << std::endl;
 			}
 			else
 			{
 				this->_status_code = 200;
 				this->_status_string = "OK";
+				std::cout << "[Response.cpp] checkRequest "<< MAGENTA << "(directory) Response OK 200" << RESET << std::endl;
+
 			}
 
 		}
@@ -125,55 +112,66 @@ void Request::checkRequest()
 void	Request::prepareResponse()
 {
 	this->checkRequest();
+
+	std::cout << "[Response.cpp] prepareResponse " << MAGENTA << "Response method : " << this->_method << RESET << std::endl;
+
+
 	std::string		response;
 	std::string		body;
 	std::ostringstream fileContent;
 	std::ifstream file;
+
 	if (this->isFile())
 	{
-		// std::cout << "[Response.cpp] " << MAGENTA << "prepare response " << RESET << "considered as a file." << std::endl;
 		file.open(this->_server_config.getRoot() + this->_path);
 	}
-	std::string fileType;
 
+	std::string fileType;
 	fileType = findMimeType(findFileType(this->_path));
 
-	// std::cout <<"[response.cpp]"<< GREEN << " createResponse : "<< RESET << this->_path << std::endl;
-	// std::cout << "Status code : " << this->_status_code << std::endl;
 	if (_status_code == 200 || _status_code == 301)
 	{
-		// std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << " code is 200 " << std::endl;
-
 		if (file.is_open())
 		{
-			// std::cout << GREEN << "FILE FOUND" << RESET << std::endl;
-			if (findFileType(this->_path) == "py")
+			if (findFileType(this->_path) == "py" && this->_method == "POST")
 			{
 				file.close();
-				// std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "is a python file." << std::endl;
+				fileType = "text/html";
+				const std::string scriptPath = this->_server_config.getRoot() + this->_path;
+				CgiHandler cgiHandler(scriptPath.c_str(), this->_userData, this->_method);
+				cgiHandler.executePythonScript();
+				body = cgiHandler.get_py_body_response() ;
+			}
+			else if (this->_method == "DELETE")
+			{
+				file.close();
 				fileType = "text/html";
 
-				const std::string scriptPath = this->_server_config.getRoot() + this->_path;
-				std::map<std::string, std::string> mmap_args;
-				mmap_args.insert(std::pair<std::string, std::string>("arg1", "value1"));
-				mmap_args.insert(std::pair<std::string, std::string>("arg1", "value2"));
+				const std::string fullPath = this->_server_config.getRoot() + this->_path;
 
-				//mmap_args.insert(std::pair<std::string, std::string>("arg2", "value2"));
-				//mmap_args.insert(std::pair<std::string, std::string>("arg3", "value3"));
+				if (deleteFile(fullPath) == true)
+				{
+					file.open(this->_server_config.getRoot() + "/deleteOK.html");
+					fileContent << file.rdbuf();
+					body = fileContent.str();
+					//std::cout << "[Response.cpp] " << MAGENTA << "DELETE prepare response body = " << RESET << body << std::endl;
+					file.close();
+				}
+				else
+				{
+					file.open(this->_server_config.getRoot() + "/deleteKO.html");
+					fileContent << file.rdbuf();
+					body = fileContent.str();
+					//std::cout << "[Response.cpp] " << MAGENTA << "DELETE prepare response body = " << RESET << body << std::endl;
+					file.close();
+				}
 
-				CgiHandler cgiHandler(scriptPath.c_str(), this->_userData, this->_method);
-				
-				cgiHandler.executePythonScript();
-
-				// // std::cout << cgiHandler <<std::endl;
-
-				body = cgiHandler.get_py_body_response() ;
-				//// std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "MIME type = " << fileType << std::endl;
 			}
 			else
 			{
 				fileContent << file.rdbuf();
 				body = fileContent.str();
+				//std::cout << "[Response.cpp] " << MAGENTA << "prepare response body = " << RESET << body << std::endl;
 				file.close();
 			}
 
@@ -181,7 +179,6 @@ void	Request::prepareResponse()
 		else //Not a file in a directory
 		{
 			bool directory_listing;
-			// std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "is a directory." << std::endl;
 			try
 			{
 				directory_listing = this->_server_config.getRoute(this->_path).directory_listing;
@@ -199,7 +196,6 @@ void	Request::prepareResponse()
 				{
 					fileContent << file.rdbuf();
 					body = fileContent.str();
-					//fileType = findMimeType(this->_server_config.getDefaultFile());
 				}
 				else
 				{
@@ -208,7 +204,6 @@ void	Request::prepareResponse()
 			}
 			else
 			{
-				// std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "go for the listing" << std::endl;
 				DIR *dir;
 				struct dirent *ent;
 				std::string dirPath = this->_server_config.getRoot() + this->_path;
@@ -327,12 +322,12 @@ bool Request::issetFile(int id_route) const
 	if (file)
 	{
 		file.close();
-		// std::cout << "[Response.cpp] " << GREEN << "issetFile : OK " << RESET << root_path_file << std::endl;
+		std::cout << "[Response.cpp] " << GREEN << "issetFile : OK " << RESET << root_path_file << std::endl;
 		return true;
 	}
 	else
 	{
-		// std::cout << "[Response.cpp] " << RED << "issetFile : KO " << RESET << root_path_file << std::endl;
+		std::cout << "[Response.cpp] " << RED << "issetFile : KO " << RESET << root_path_file << std::endl;
 		return false;
 	}
 }
@@ -421,35 +416,3 @@ bool Request::isFile() const {
 	// std::cout << "[Response.cpp] " << GREEN << "isFile : " << RESET << "not a file" <<std::endl;
     return false;
 }
-
-
-
-
-/*
-#include <string>
-
-vector<string> getWords(string s){
-    vector<string> res;
-    int pos = 0;
-    while(pos < s.size()){
-        pos = s.find("%20");
-        res.push_back(s.substr(0,pos));
-        s.erase(0,pos+3); // 3 is the length of the delimiter, "%20"
-    }
-    return res;
-}
-
-*/
-/*
-std::string getDirectoryFromFilePath(const std::string& filePath) {
-    size_t lastSlashPos = filePath.find_last_of('/');
-
-    // If the last slash is at the start or no slash is found, return the root ("/")
-    if (lastSlashPos == 0 || lastSlashPos == std::string::npos) {
-        return "/";
-    }
-
-    // Extract and return the directory part of the path
-    return filePath.substr(0, lastSlashPos);
-}
-*/

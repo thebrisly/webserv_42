@@ -56,7 +56,7 @@ bool CgiHandler::executePythonScript()
 	}
 	if (pid == 0) 
 	{
-		std::cerr << "CgiHandler.cpp :" << GREEN << " executePythonScript " << RESET <<  "Child process" << std::endl;
+		//std::cerr << "CgiHandler.cpp :" << GREEN << " executePythonScript " << RESET <<  "Child process" << std::endl;
 
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
@@ -75,7 +75,7 @@ bool CgiHandler::executePythonScript()
 		{
 			this->_py_body_response += buf;
 		}
-		std::cerr << GREEN << "CgiHandler.cpp :" << RESET << this->_py_body_response << std::endl;
+		//std::cerr << GREEN << "CgiHandler.cpp :" << RESET << this->_py_body_response << std::endl;
 		close(pipefd[0]);
 		return true;
 	}

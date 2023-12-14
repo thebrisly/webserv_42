@@ -4,21 +4,12 @@
 
 int Request::getLocation() const
 {
-
 	std::string path_to_test = this->_path;
-
-	// if (this->isFile() == 1)
-	// {
-	// 	path_to_test = path_to_test.substr(0, path_to_test.find_last_of('/') + 1);
-	// }
-	
 	std::vector<RouteConfig> routes = this->_server_config.getRoutes();
 
 	unsigned long i;
-
 	while (path_to_test != "/")
 	{
-
 		for (i = 0; i < routes.size(); i++)
 		{
 			if (routes[i].path == path_to_test)

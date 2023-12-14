@@ -6,7 +6,7 @@
 /*   By: fcoindre <fcoindre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 07:43:38 by lfabbian          #+#    #+#             */
-/*   Updated: 2023/12/12 11:21:43 by fcoindre         ###   ########.fr       */
+/*   Updated: 2023/12/14 16:22:09 by fcoindre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ Request& Request::operator=(const Request& other)
                 this->_response_body = other.getResponseBody();
                 this->_response_header = other.getResponseHeader();
                 this->_server_config = other.getServerConfig();
+                this->_filename = other.getFilename();
 
                 //this->_body = other.getBody
 	}
@@ -69,6 +70,12 @@ std::string Request::getCurrentRequest() const
 {
         return (this->_current_request);
 }
+
+std::string Request::getFilename() const
+{
+        return (this->_filename);
+}
+
 
 std::string Request::getVersion() const
 {
