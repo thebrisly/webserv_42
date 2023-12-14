@@ -142,6 +142,26 @@ void	Request::prepareResponse()
 				cgiHandler.executePythonScript();
 				body = cgiHandler.get_py_body_response() ;
 			}
+			else if (this->_content_to_upload.length() > 0 && this->_method == "POST")
+			{
+				//std::cout << "[Response.cpp] " << MAGENTA << "prepare response FILE UPLOADED !!! " << RESET << this->_filename << std::endl;
+
+				if (uploadFile(this->_filename, this->_content_to_upload) == false)
+				{
+					file.close();
+					file.open(this->_server_config.getRoot() + "/uploadKO.html");
+					fileContent << file.rdbuf();
+					body = fileContent.str();
+					file.close();
+				}
+				else
+				{
+					fileContent << file.rdbuf();
+					body = fileContent.str();
+					//std::cout << "[Response.cpp] " << MAGENTA << "prepare response body = " << RESET << body << std::endl;
+					file.close();
+				}
+			}
 			else if (this->_method == "DELETE")
 			{
 				file.close();

@@ -67,9 +67,7 @@ std::string Request::extractBoundary() const
 
 void Request::parseMultipartData() {
 
-	std::cout << "\n[parseMultipartData] " << MAGENTA << "start" << RESET << std::endl;
-
-
+	//std::cout << "\n[parseMultipartData] " << MAGENTA << "start" << RESET << std::endl;
 
     std::string boundary = extractBoundary();
 
@@ -84,7 +82,7 @@ void Request::parseMultipartData() {
 
 	std::string headerpart;
 	std::string bodypart;
-	std::cout << RED << _body << RESET << std::endl;
+	//std::cout << RED << _body << RESET << std::endl;
 
 	while (std::getline(stream, line) && line != "\r")
 	{
@@ -110,16 +108,18 @@ void Request::parseMultipartData() {
 	if (ent!= std::string::npos)
 	{
 		int end = headerpart.find('"', ent + 10);
-		_filename = headerpart.substr(ent + 10, end - ent - 10);
+		this->_filename = headerpart.substr(ent + 10, end - ent - 10);
 		//std::cout << "ENT " << ent << " END " << end << " FILENAME " << _filename << std::endl;
 		//std::cout << "filename = [" << _filename << "]" << std::endl;
 	}
 	else
 	{
-		_filename = "default";
+		this->_filename = "default";
 	}
 
-	uploadFile(_filename, bodypart);
+	this->_content_to_upload = bodypart;
+
+	//uploadFile(this->_filename, this->_content_to_upload);
 }
 
 

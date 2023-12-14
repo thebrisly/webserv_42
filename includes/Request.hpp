@@ -75,7 +75,7 @@ class Request {
         std::string                                 getConnectionHeader() const;
 
         std::string                                 getFilename() const;
-
+        std::string                                 getContentToUpload() const;
 
         void                                        checkRequest();
         bool                                        checkHttpVersion() const;
@@ -132,8 +132,7 @@ class Request {
         bool                                        _is_cgi;
 
         std::string                                 _filename;
-
-
+        std::string                                 _content_to_upload;
 
 };
 
