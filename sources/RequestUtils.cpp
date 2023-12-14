@@ -84,7 +84,7 @@ void Request::parseMultipartData() {
 
 	std::string headerpart;
 	std::string bodypart;
-
+	std::cout << RED << _body << RESET << std::endl;
 
 	while (std::getline(stream, line) && line != "\r")
 	{
@@ -103,7 +103,7 @@ void Request::parseMultipartData() {
 		bodypart += line.substr(0, line.find("\r\n")) + "\n";
 	}
 
-	std::cout << "BODY PARTS \n" << bodypart << std::endl;
+	std::cout << "BODY PARTS: First 100 chars \n" << bodypart.substr(0, 100) << std::endl;
 
 
 	unsigned long ent = headerpart.find("filename=");
@@ -119,7 +119,20 @@ void Request::parseMultipartData() {
 		_filename = "default";
 	}
 
-	uploadFile(_filename, bodypart);
+
+	std::cout << "BODY PARTS \n" << bodypart << std::endl;
+
+    std::ofstream outFile(_filename, std::ios::out | std::ios::binary);
+    if (outFile.is_open()) {
+        outFile.write(bodypart.data(), bodypart.size());
+        outFile.close();
+    }
+	else
+	{
+		std::cout << RED << "NOPE " << std::endl;
+	}
+
+
 
 
 }
@@ -221,7 +234,7 @@ void	Request::parseRequest(const std::string& request)
 	// Clear existing data
 	clearRequest();
 
-
+	std::cout << "REQUEST \n"  << BLUE << request << RESET <<  std::endl;
 
 	std::string current_header;
 	std::string current_body;

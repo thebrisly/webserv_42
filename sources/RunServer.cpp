@@ -2,6 +2,8 @@
 #include "../includes/Request.hpp"
 #include "../includes/Utils.hpp"
 
+
+#define BUFFER_SIZE 512000
 /* RunServer is an object that runs the servers */
 
 RunServer::RunServer(ServersManager & servers_manager, std::string log_filename) : _servers_manager(servers_manager), _out(log_filename, std::ofstream::out), _time_start(time(NULL))
@@ -57,12 +59,12 @@ void RunServer::accept_new_connection(int i)
 
 void RunServer::recvs_request (int i)
 {
-	char buffer[512000];
+	char buffer[BUFFER_SIZE];
 	int size_read;
 	//ServerInitializer & server_init = this->_servers_manager.get_server_by_sock(i);
 
-	memset (buffer, 0, 512000);
-	size_read = recv(i, buffer, 512000, 0);
+	memset (buffer, 0, BUFFER_SIZE);
+	size_read = recv(i, buffer, BUFFER_SIZE, 0);
 
 	if (size_read == -1)
 	{
@@ -99,7 +101,7 @@ void RunServer::recvs_request (int i)
 		std::cout << GREEN << "[" << time(0) - this->_time_start << "] " << "Received request of " << size_read << " characters from client " << i << RESET << std::endl;
 		FD_CLR(i, &this->_cpy_readfds);
 		FD_SET(i, &this->_cpy_writefds);
-		this->_map_clients[i].set_request(buffer);
+		this->_map_clients[i].set_request(std::string(buffer, size_read));
 		this->_map_clients[i].set_size_request(size_read);
 		this->_map_clients[i].set_socket_mod(WRITE_M);
 
