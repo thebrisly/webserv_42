@@ -2,10 +2,7 @@
 #include "../includes/Request.hpp"
 #include "../includes/Utils.hpp"
 
-
 #define BUFFER_SIZE 8192000
-                    //653636
-/* RunServer is an object that runs the servers */
 
 RunServer::RunServer(ServersManager & servers_manager, std::string log_filename) : _servers_manager(servers_manager), _out(log_filename, std::ofstream::out), _time_start(time(NULL))
 {
@@ -133,7 +130,6 @@ void RunServer::recvs_request (int i)
 
 		if (parsing_result == true)
 		{
-			this->_map_clients[i].set_request_object(current_request);
 
 			//current_request.checkRequest();
 
@@ -142,30 +138,23 @@ void RunServer::recvs_request (int i)
 			//std::cout << "[Request info] "  << std::endl;
 			//std::cout <<  current_request << std::endl;
 
+			this->_map_clients[i].set_request_object(current_request);
 			this->_map_clients[i].set_response(current_request.getResponse());
 			this->_map_clients[i].set_size_response(current_request.getResponse().length());
 		}
 		else
 		{
-			std::string response_rescue;
+			std::cout << MAGENTA << "[WARNING] " << RESET << "Bad Request (parsing info)" << std::endl;
 
+			const std::string response_rescue = prepareRescueResponse();
 
-			response_rescue = "HTTP/1.1 505 test for real\r\n";
-			response_rescue += "Content-Type: text/html\r\n";
-			response_rescue += "Content-Length: 3\r\n";
-			response_rescue += "Connection: keep-alive\r\n";
-			response_rescue += "Location: index.html\r\n\r\n";
-			response_rescue += "ouf";
 			this->_map_clients[i].set_response(response_rescue);
 			this->_map_clients[i].set_size_response(response_rescue.length());
 		}
 	}
 
-
-		// std::cerr << RED << "ICI 2" << RESET << std::endl;
-	//std::cerr << RED << "ICI 3" << RESET << std::endl;
-
 }
+
 
 void RunServer::send_response (int i)
 {
@@ -194,15 +183,12 @@ void RunServer::send_response (int i)
 		this->_map_clients.erase(i);
 
 		std::cout << YELLOW << "[" << time(0) - this->_time_start << "] " << "Client " << i << " disconected." << RESET <<std::endl;
-		//exit(0);
 	}
 	else
 	{
 		FD_CLR(i, &this->_cpy_writefds);
 		FD_SET(i, &this->_cpy_readfds);
 		this->_map_clients[i].set_socket_mod(READ_M);
-		std::cout << "Connection status [" << this->_map_clients[i].get_request_object().getConnection()<< "]" <<std::endl;
-		//exit(0);
 	}
 
 }
@@ -248,7 +234,7 @@ void RunServer::process (int loop_count)
 	if (max_key != max_sd)
 	{
 		std::cout << RED << "ERROR : " << " max_key = " << max_key << " max_sd = " << max_sd << RESET <<std::endl;
-		exit(0);
+		//exit(0);
 	}
 
 

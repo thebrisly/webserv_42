@@ -45,7 +45,7 @@ void Request::checkRequest()
 		this->_status_string = "Service Unavailable";
 		std::cout << "[Response.cpp] checkRequest " << MAGENTA << "503 : Service Unavailable (host - port not resolved)" << RESET << std::endl;
 	}
-	else if (this->_current_request.length() > this->_server_config.getMaxBodySize())
+	else if (this->_body.length() > this->_server_config.getMaxBodySize())
 	{
 		this->_status_code = 413; //Request Entity Too Large
 		this->_status_string = "Request Entity Too Large";

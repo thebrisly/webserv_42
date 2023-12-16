@@ -177,11 +177,8 @@ void	Request::parseHeader(std::string& header)
 
 }
 
-void	Request::parseBody(std::string& body)
+void	Request::parseBody()
 {	
-
-	this->_body = body;
-
 
 	std::map<std::string, std::string>::iterator it = this->_headers.find("Content-Type");
 	if (it != _headers.end())
@@ -221,11 +218,11 @@ bool	Request::parseRequest(const std::string& request)
 	//std::cout << "REQUEST \n"  << BLUE << request << RESET <<  std::endl;
 
 	std::string current_header;
-	std::string current_body;
+
 	if (request.find("HTTP/1.1") != std::string::npos && request.find("\r\n\r\n") != std::string::npos)
 	{
 		current_header = request.substr(0, request.find("\r\n\r\n"));
-		current_body = request.substr(request.find("\r\n\r\n") + 4);
+		this->_body = request.substr(request.find("\r\n\r\n") + 4);
 		
 		// std::cout << "CURRENT BODY\n" << current_body << std::endl;
 	}
@@ -238,9 +235,9 @@ bool	Request::parseRequest(const std::string& request)
 	parseHeader(current_header);
 
 
-	if (!current_body.empty())
+	if (!this->_body.empty())
 	{
-		parseBody(current_body);
+		parseBody();
 	}
 	return true;
 

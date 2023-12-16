@@ -29,7 +29,7 @@ class Request {
         // parsing the request
         bool                                        parseRequest(const std::string& request);
         void                                        parseHeader(std::string& header);
-        void                                        parseBody(std::string& body);
+        void                                        parseBody();
         std::string                                 readFirstLine(const std::string& line);
         std::string                                 readVersion(const std::string& line);
         std::string                                 readMethod(const std::string& line);

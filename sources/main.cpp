@@ -2,6 +2,7 @@
 #include "../includes/RunServer.hpp"
 #include "../includes/CgiHandler.hpp"
 #include "../includes/Color.hpp"
+#include "../includes/Utils.hpp"
 
 
 void sigpipeHandle (int sig)
@@ -26,8 +27,6 @@ bool fileExist(const std::string fileName)
 
 int main(int argc, char *argv[])
 {
-
-	std::cout << CLOCKS_PER_SEC << std::endl;
 
 	std::string configFile;
 	if (argc == 1)

@@ -22,5 +22,8 @@ void display_fd_set(std::ofstream & out, const fd_set & readfds, const fd_set & 
 bool doesPathExist(const std::string& path);
 void saveBinaryFile(const std::string& filename, const std::vector<uint8_t>& data);
 bool uploadFile(const std::string& filename, const std::string& data);
+std::string loadPage(const std::string& path);
+const std::string prepareRescueResponse();
+
 
 #endif

@@ -104,3 +104,41 @@ bool uploadFile(const std::string& filename, const std::string& data)
 	file.write(data.c_str(), data.size());
 	return file.good();
 }
+
+
+std::string loadPage(const std::string& path)
+{
+	std::string result;
+	std::ifstream file;
+	std::ostringstream fileContent;
+
+	file.open(path);
+
+	if (file.is_open())
+	{
+		fileContent << file.rdbuf();
+		result = fileContent.str();
+		file.close();
+	}
+	else
+	{
+		result = "Error 500 - Internal Server error";
+	}
+	return result;
+}
+
+const std::string prepareRescueResponse ()
+{
+	std::string response_rescue_h;
+	std::string response_rescue_b;
+
+	response_rescue_b = loadPage("web/default_error_pages/500.html");
+
+	response_rescue_h = "HTTP/1.1 500 OK\r\n";
+	response_rescue_h += "Content-Type: text/html\r\n";
+	response_rescue_h += "Content-Length: " + std::to_string(response_rescue_b.length()) + "\r\n";
+	response_rescue_h += "Connection: keep-alive\r\n";
+	response_rescue_h += "\r\n";
+
+	return response_rescue_h + response_rescue_b;
+}
