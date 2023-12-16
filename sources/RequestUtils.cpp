@@ -177,18 +177,17 @@ void	Request::parseHeader(std::string& header)
 
 }
 
-
-
-
 void	Request::parseBody(std::string& body)
 {	
 
-	_body = body;
+	this->_body = body;
 
 
 	std::map<std::string, std::string>::iterator it = this->_headers.find("Content-Type");
 	if (it != _headers.end())
 	{
+
+		//std::cout << "[RequestUtils.cpp] "<< RED << "parseBody " << RESET << it->second << std::endl; 
 		if (it->second.find("application/x-www-form-urlencoded") != std::string::npos)
 		{
 			parseUserData();
@@ -212,7 +211,7 @@ void	Request::parseBody(std::string& body)
 }
 
 
-void	Request::parseRequest(const std::string& request)
+bool	Request::parseRequest(const std::string& request)
 {
 
 	//std::cout << "parseRequest "<< MAGENTA << "Start" << RESET << std::endl;
@@ -223,7 +222,7 @@ void	Request::parseRequest(const std::string& request)
 
 	std::string current_header;
 	std::string current_body;
-	if (request.find("\r\n\r\n") != std::string::npos)
+	if (request.find("HTTP/1.1") != std::string::npos && request.find("\r\n\r\n") != std::string::npos)
 	{
 		current_header = request.substr(0, request.find("\r\n\r\n"));
 		current_body = request.substr(request.find("\r\n\r\n") + 4);
@@ -233,6 +232,7 @@ void	Request::parseRequest(const std::string& request)
 	else
 	{
 		std::cerr << RED << "Error : Request does not contain the end of header" << RESET << std::endl;
+		return false;
 	}
 
 	parseHeader(current_header);
@@ -242,8 +242,7 @@ void	Request::parseRequest(const std::string& request)
 	{
 		parseBody(current_body);
 	}
-	//std::cout << "parseRequest "<< MAGENTA << "End" << RESET << std::endl;
-
+	return true;
 
 }
 

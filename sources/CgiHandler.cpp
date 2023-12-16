@@ -1,5 +1,6 @@
 #include "../includes/CgiHandler.hpp"
 #define CGI_EXEC "/usr/bin/python3"
+#define MAX_TIME_CHILD 3
 
 CgiHandler::~CgiHandler(){}
 
@@ -63,14 +64,44 @@ bool CgiHandler::executePythonScript()
 		close(pipefd[1]);
 
     	execve(CGI_EXEC, this->args, NULL);
-		std::cerr << "CgiHandler.cpp :" << " executePythonScript" << std::endl;
+		std::cerr << MAGENTA << "[WARNING CHILD]" << RESET << " Impossible to" << " executePythonScript" << std::endl;
 		perror("execve");		
 		return false;
 	}
 	else 
 	{
 		close(pipefd[1]);
-		waitpid(pid, NULL, 0);
+
+		pid_t result;
+
+		bool child_checker = true;
+
+		time_t start_process_child = time(NULL);
+
+		while (child_checker == true)
+		{
+			result = waitpid(pid, NULL, WNOHANG);
+
+			if (result == 0)
+			{
+				if ((time(NULL) - start_process_child) > MAX_TIME_CHILD)
+				{
+					kill(pid, SIGKILL);
+					child_checker = false;
+				}
+			}
+			else if (result == -1)
+			{
+				std::cerr << MAGENTA << "[WARNING PARENT]" << RESET << " Impossible to" << " executePythonScript" << std::endl;
+				child_checker = false;
+				return false;
+			}
+			else
+			{
+				child_checker = false;
+			}
+		}
+
 		while(read(pipefd[0], &buf, 1) > 0)
 		{
 			this->_py_body_response += buf;

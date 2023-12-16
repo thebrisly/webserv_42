@@ -6,6 +6,8 @@
 #include <unistd.h>
 //#include <vector>
 #include <map>
+#include <signal.h>
+
 
 #define MAX_ARGS 100
 

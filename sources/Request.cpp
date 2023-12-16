@@ -56,6 +56,7 @@ Request& Request::operator=(const Request& other)
                 this->_server_config = other.getServerConfig();
                 this->_filename = other.getFilename();
                 this->_content_to_upload = other.getContentToUpload();
+                
 
                 //this->_body = other.getBody
 	}

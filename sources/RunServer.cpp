@@ -3,7 +3,8 @@
 #include "../includes/Utils.hpp"
 
 
-#define BUFFER_SIZE 5120000
+#define BUFFER_SIZE 8192000
+                    //653636
 /* RunServer is an object that runs the servers */
 
 RunServer::RunServer(ServersManager & servers_manager, std::string log_filename) : _servers_manager(servers_manager), _out(log_filename, std::ofstream::out), _time_start(time(NULL))
@@ -59,12 +60,17 @@ void RunServer::accept_new_connection(int i)
 
 void RunServer::recvs_request (int i)
 {
+	//close(0);
 	char buffer[BUFFER_SIZE];
+
+
 	int size_read;
 	//ServerInitializer & server_init = this->_servers_manager.get_server_by_sock(i);
 
 	memset (buffer, 0, BUFFER_SIZE);
 	size_read = recv(i, buffer, BUFFER_SIZE, 0);
+
+	// std::cout << "[RunServer] " << RED << "Recvs request " << RESET << "size_read = " << size_read << std::endl;
 
 	if (size_read == -1)
 	{
@@ -101,32 +107,64 @@ void RunServer::recvs_request (int i)
 		std::cout << GREEN << "[" << time(0) - this->_time_start << "] " << "Received request of " << size_read << " characters from client " << i << RESET << std::endl;
 		FD_CLR(i, &this->_cpy_readfds);
 		FD_SET(i, &this->_cpy_writefds);
+
+		// set string request to client
 		this->_map_clients[i].set_request(std::string(buffer, size_read));
 		this->_map_clients[i].set_size_request(size_read);
-		this->_map_clients[i].set_socket_mod(WRITE_M);
 
+		this->_map_clients[i].set_socket_mod(WRITE_M);
 		this->_map_clients[i].set_session_time(clock());
 
+
+		// creation request object
+
 		Request current_request(this->_map_clients[i].get_request(), this->_map_clients[i].get_server_config());
-		current_request.parseRequest(current_request.getCurrentRequest());
-		this->_map_clients[i].set_request_object(current_request);
+		
+
+
+		bool parsing_result = current_request.parseRequest(current_request.getCurrentRequest());
 
 
 
+		// parsing request
+		//std::cout << "[RunServer] "<< RED << "recvs_request " << RESET << "Result parsing : " << parsing_result << std::endl;
 
-		//current_request.checkRequest();
+		// request object added to the client
+
+		if (parsing_result == true)
+		{
+			this->_map_clients[i].set_request_object(current_request);
+
+			//current_request.checkRequest();
+
+			current_request.prepareResponse();
+
+			//std::cout << "[Request info] "  << std::endl;
+			//std::cout <<  current_request << std::endl;
+
+			this->_map_clients[i].set_response(current_request.getResponse());
+			this->_map_clients[i].set_size_response(current_request.getResponse().length());
+		}
+		else
+		{
+			std::string response_rescue;
 
 
-		current_request.prepareResponse();
-
-		//std::cout << "[Request info] "  << std::endl;
-		//std::cout <<  current_request << std::endl;
-
-
-		this->_map_clients[i].set_response(current_request.getResponse());
-		this->_map_clients[i].set_size_response(current_request.getResponse().length());
-
+			response_rescue = "HTTP/1.1 505 test for real\r\n";
+			response_rescue += "Content-Type: text/html\r\n";
+			response_rescue += "Content-Length: 3\r\n";
+			response_rescue += "Connection: keep-alive\r\n";
+			response_rescue += "Location: index.html\r\n\r\n";
+			response_rescue += "ouf";
+			this->_map_clients[i].set_response(response_rescue);
+			this->_map_clients[i].set_size_response(response_rescue.length());
+		}
 	}
+
+
+		// std::cerr << RED << "ICI 2" << RESET << std::endl;
+	//std::cerr << RED << "ICI 3" << RESET << std::endl;
+
 }
 
 void RunServer::send_response (int i)
@@ -237,6 +275,7 @@ void RunServer::process (int loop_count)
 		else if (FD_ISSET(i, &this->_readfds))
 		{
 			// this->_out << "Considering client " << i << " on loop " << loop_count << " : " <<std::endl;
+			//std::cout << "DEBUG" << std::endl;
 			this->recvs_request (i);
 			// this->_out<< "------------------- recvs request -------------------" << std::endl;
 			display_fd_set(this->_out, this->_readfds, this->_writefds);

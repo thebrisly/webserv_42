@@ -102,7 +102,6 @@ void Request::checkRequest()
 				this->_status_code = 200;
 				this->_status_string = "OK";
 				std::cout << "[Response.cpp] checkRequest "<< MAGENTA << "(directory) Response OK 200" << RESET << std::endl;
-
 			}
 
 		}
@@ -117,7 +116,7 @@ void	Request::prepareResponse()
 
 
 	std::string		response;
-	std::string		body;
+
 	std::ostringstream fileContent;
 	std::ifstream file;
 
@@ -133,15 +132,41 @@ void	Request::prepareResponse()
 	{
 		if (file.is_open())
 		{
-			if (findFileType(this->_path) == "py" && this->_method == "POST")
+			if (findFileType(this->_path) == "py" /*&& this->_method == "POST"*/)
 			{
 				file.close();
 				fileType = "text/html";
 				const std::string scriptPath = this->_server_config.getRoot() + this->_path;
 				CgiHandler cgiHandler(scriptPath.c_str(), this->_userData, this->_method);
-				cgiHandler.executePythonScript();
-				body = cgiHandler.get_py_body_response() ;
+				if (cgiHandler.executePythonScript() == true)
+				{
+					this->_response_body = cgiHandler.get_py_body_response();
+				}
+				else
+				{
+					this->_status_code = 500;
+					this->_status_string = "Internal Server Error";
+					this->getErrorResponse();
+				}
 			}
+			// else if (findFileType(this->_path) == "py" && this->_method == "GET")
+			// {
+			// 	std::cout << RED <<  "Manage CGI" << RESET << std::endl;
+			// 	file.close();
+			// 	fileType = "text/html";
+			// 	const std::string scriptPath = this->_server_config.getRoot() + this->_path;
+			// 	CgiHandler cgiHandler(scriptPath.c_str(), this->_userData, this->_method);
+			// 	if (cgiHandler.executePythonScript() == true)
+			// 	{
+			// 		this->_response_body = cgiHandler.get_py_body_response() ;
+			// 	}
+			// 	else
+			// 	{
+			// 		this->_status_code = 500;
+			// 		this->_status_string = "Internal Server Error";
+			// 		this->getErrorResponse();
+			// 	}
+			// }
 			else if (this->_content_to_upload.length() > 0 && this->_method == "POST")
 			{
 				//std::cout << "[Response.cpp] " << MAGENTA << "prepare response FILE UPLOADED !!! " << RESET << this->_filename << std::endl;
@@ -151,13 +176,13 @@ void	Request::prepareResponse()
 					file.close();
 					file.open(this->_server_config.getRoot() + "/uploadKO.html");
 					fileContent << file.rdbuf();
-					body = fileContent.str();
+					this->_response_body = fileContent.str();
 					file.close();
 				}
 				else
 				{
 					fileContent << file.rdbuf();
-					body = fileContent.str();
+					this->_response_body = fileContent.str();
 					//std::cout << "[Response.cpp] " << MAGENTA << "prepare response body = " << RESET << body << std::endl;
 					file.close();
 				}
@@ -173,7 +198,7 @@ void	Request::prepareResponse()
 				{
 					file.open(this->_server_config.getRoot() + "/deleteOK.html");
 					fileContent << file.rdbuf();
-					body = fileContent.str();
+					this->_response_body = fileContent.str();
 					//std::cout << "[Response.cpp] " << MAGENTA << "DELETE prepare response body = " << RESET << body << std::endl;
 					file.close();
 				}
@@ -181,7 +206,7 @@ void	Request::prepareResponse()
 				{
 					file.open(this->_server_config.getRoot() + "/deleteKO.html");
 					fileContent << file.rdbuf();
-					body = fileContent.str();
+					this->_response_body = fileContent.str();
 					//std::cout << "[Response.cpp] " << MAGENTA << "DELETE prepare response body = " << RESET << body << std::endl;
 					file.close();
 				}
@@ -190,7 +215,7 @@ void	Request::prepareResponse()
 			else
 			{
 				fileContent << file.rdbuf();
-				body = fileContent.str();
+				this->_response_body = fileContent.str();
 				//std::cout << "[Response.cpp] " << MAGENTA << "prepare response body = " << RESET << body << std::endl;
 				file.close();
 			}
@@ -215,7 +240,7 @@ void	Request::prepareResponse()
 				if (file.is_open())
 				{
 					fileContent << file.rdbuf();
-					body = fileContent.str();
+					this->_response_body = fileContent.str();
 				}
 				else
 				{
@@ -232,19 +257,19 @@ void	Request::prepareResponse()
 				if (dir != NULL)
 				{
 					//fileType = "text/html";
-					body = "<html><head><title>Directory Listing</title></head><body>";
-					body += "<h1>Directory Listing of " + dirPath + "</h1>";
-					body += "<ul>";
+					this->_response_body = "<html><head><title>Directory Listing</title></head><body>";
+					this->_response_body += "<h1>Directory Listing of " + dirPath + "</h1>";
+					this->_response_body += "<ul>";
 
 					while ((ent = readdir(dir)) != NULL)
 					{
 						std::string filePath = dirPath + "/" + std::string(ent->d_name);
 						std::string hrefPath = filePath.substr(this->_server_config.getRoot().length());
-						body += "<li><a href='" + hrefPath + "'>" + std::string(ent->d_name) + "</a></li>";
+						this->_response_body += "<li><a href='" + hrefPath + "'>" + std::string(ent->d_name) + "</a></li>";
 						//body += "<li><a href='" + std::string(ent->d_name) + "'>" + std::string(ent->d_name) + "</a></li>";
 					}
 
-					body += "</ul></body></html>";
+					this->_response_body += "</ul></body></html>";
 					closedir(dir);
 					// std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "MIME type = " << fileType << std::endl;
 				}
@@ -254,41 +279,48 @@ void	Request::prepareResponse()
 	else
 	{	
 		file.close();
+		fileType = "text/html";
+		this->getErrorResponse();
 		// std::cout << YELLOW << "FILE NOT FOUND" << RESET << std::endl;
-		std::map<int, std::string> errorPages = this->_server_config.getErrorPages();
-		std::map<int, std::string>::const_iterator it = errorPages.find(this->_status_code);
-		if (it == errorPages.end())
-		{
-			fileType = "text/html";
-			// std::cout << YELLOW << "2" << RESET << std::endl;
-			std::ifstream default_error_file("web/default_error_pages/" + std::to_string(this->_status_code)+ ".html");
-			std::ostringstream default_error_file_content;
-			default_error_file_content << default_error_file.rdbuf();
-			body = default_error_file_content.str();
-		}
-		else
-		{
-			std::ifstream errorfile;
-			std::ostringstream errorFileContent;
-			// std::cout << this->_server_config.getRoot() + it->second << std::endl;
-			body = "";
-			// std::cout << it->second << std::endl;
-			errorfile.open(this->_server_config.getRoot() + it->second);
-			errorFileContent << errorfile.rdbuf();
-			body = errorFileContent.str();
-			// std::cout << RED << body << RESET << std::endl;
-			fileType = "text/html";
-		}
+
 	}
 
 	response = "HTTP/1.1 " + std::to_string(this->_status_code) + " " + this->_status_string + "\r\n";
 	response += "Content-Type: "+fileType+"\r\n";
-	response += "Content-Length: " + std::to_string(body.size()) + "\r\n";
+	response += "Content-Length: " + std::to_string(this->_response_body.size()) + "\r\n";
 	response += "Connection: keep-alive\r\n";
 	response += "Location: " + this->_path + "\r\n\r\n";
-	response += body;
+	response += this->_response_body;
 
 	this->_response = response;
+}
+
+void Request::getErrorResponse()
+{
+	std::map<int, std::string> errorPages = this->_server_config.getErrorPages();
+	std::map<int, std::string>::const_iterator it = errorPages.find(this->_status_code);
+	if (it == errorPages.end())
+	{
+		
+		// std::cout << YELLOW << "2" << RESET << std::endl;
+		std::ifstream default_error_file("web/default_error_pages/" + std::to_string(this->_status_code)+ ".html");
+		std::ostringstream default_error_file_content;
+		default_error_file_content << default_error_file.rdbuf();
+		this->_response_body = default_error_file_content.str();
+	}
+	else
+	{
+		std::ifstream errorfile;
+		std::ostringstream errorFileContent;
+		// std::cout << this->_server_config.getRoot() + it->second << std::endl;
+		this->_response_body = "";
+		// std::cout << it->second << std::endl;
+		errorfile.open(this->_server_config.getRoot() + it->second);
+		errorFileContent << errorfile.rdbuf();
+		this->_response_body = errorFileContent.str();
+		// std::cout << RED << body << RESET << std::endl;
+		
+	}
 }
 
 

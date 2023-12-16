@@ -27,14 +27,14 @@ class Request {
         void                                        clearRequest(); // pour vider le contenu et laisser de la place pour une nouvelle requete
 
         // parsing the request
-        void                                        parseRequest(const std::string& request);
+        bool                                        parseRequest(const std::string& request);
         void                                        parseHeader(std::string& header);
         void                                        parseBody(std::string& body);
         std::string                                 readFirstLine(const std::string& line);
         std::string                                 readVersion(const std::string& line);
         std::string                                 readMethod(const std::string& line);
         void                                        parseMultipartData();
-
+        
 
 
         std::string extractBoundary() const;
@@ -87,7 +87,7 @@ class Request {
         bool                                        checkRedirection(int id_route);
 
         void    	                                prepareResponse();
-
+        void                                        getErrorResponse();
 
         bool                                        fileIsAvaible() const;
 
@@ -121,7 +121,6 @@ class Request {
 
         int                                         _status_code;
         std::string                                 _status_string;
-
 
         std::string                                 _response;
         std::string                                 _response_body;
