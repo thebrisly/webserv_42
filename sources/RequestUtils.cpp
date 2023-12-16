@@ -294,7 +294,7 @@ std::string Request::getConnectionHeader() const
     std::map<std::string, std::string>::const_iterator it = _headers.find("Connection");
     if (it != _headers.end())
 	{
-        return it->second.substr(0, it->second.size() - 1);
+        return it->second.substr(0, it->second.size());
     }
 	else
 	{

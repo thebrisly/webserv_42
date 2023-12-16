@@ -7,12 +7,6 @@
 #include <cstdio>
 
 
-// No constructor as the response is just a variable of the object "Request"
-
-// VERIFICATIONS BEFORE SENDING THE RESPONSE :
-
-// Créer une fonction qui renvoie la response si toutes (5) les verifications suivantes sont correctes :
-
 bool deleteFile(const std::string filename) 
 {
     if (std::remove(filename.c_str()) == 0) 
