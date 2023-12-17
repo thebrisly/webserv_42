@@ -142,3 +142,17 @@ const std::string prepareRescueResponse ()
 
 	return response_rescue_h + response_rescue_b;
 }
+
+void	*ft_memset(void *b, int c, size_t len)
+{
+	char *str;
+
+	str = (char *) b;
+	while (len)
+	{
+		*str = (unsigned char)c;
+		str++;
+		len--;
+	}
+	return (b);
+}

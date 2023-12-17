@@ -11,12 +11,12 @@ bool deleteFile(const std::string filename)
 {
     if (std::remove(filename.c_str()) == 0) 
     {
-        std::cout << "File '" << filename << "' deleted successfully." << std::endl;
+        std::cout << MAGENTA << "[INFO] " << RESET << "File '" << filename << "' deleted successfully" << std::endl;
         return true;
     } 
     else 
     {
-        std::cerr << "Error deleting file '" << filename << "'." << std::endl;
+        std::cout << MAGENTA << "[INFO] " << RESET << "File '" << filename << "' impossible to delete" << std::endl;
         return false;
     }
 }
@@ -26,41 +26,40 @@ void Request::checkRequest()
 {
 	int id_route;
 
-	//// std::cout << "[response.cpp]" GREEN << " checkRequest " << RESET << "is_file : " << is_file << std::endl;
 	if (!checkHttpVersion())
 	{
 		this->_status_code = 505;
 		this->_status_string = "HTTP Version Not Supported";
-		std::cout << "[Response.cpp] checkRequest " << MAGENTA << "505 : HTTP Version Not Supported" << RESET << std::endl;
+		std::cout << MAGENTA << "[INFO] checkRequest : " << RESET << "505 : HTTP Version Not Supported" << std::endl;
 	}
 	if (!check_host_port()) 
 	{
 		this->_status_code = 503; //trouver le bon code erreur
 		this->_status_string = "Service Unavailable";
-		std::cout << "[Response.cpp] checkRequest " << MAGENTA << "503 : Service Unavailable (host - port not resolved)" << RESET << std::endl;
+		std::cout << MAGENTA << "[INFO] checkRequest : " << RESET << "503 : Service Unavailable (host - port not resolved)" << std::endl;
 	}
 	else if (this->_body.length() > this->_server_config.getMaxBodySize())
 	{
 		this->_status_code = 413; //Request Entity Too Large
 		this->_status_string = "Request Entity Too Large";
-		std::cout << "[Response.cpp] checkRequest " << MAGENTA << "413 : Request Entity Too Large" << RESET << std::endl;
+		std::cout << MAGENTA << "[INFO] checkRequest : " << RESET << "413 : Request Entity Too Large" << std::endl;
 
 	}
 	else if ((id_route = this->getLocation()) == -1)
 	{
 		this->_status_code = 400; //page not found error
 		this->_status_string = "Bad Request";
-		std::cout << "[Response.cpp] checkRequest " << MAGENTA << "400 : Bad Request" << RESET << std::endl;
+		std::cout << MAGENTA << "[INFO] checkRequest : " << RESET << "400 : Bad Request" << std::endl;
 	}
 	else if (!checkMethods(id_route)) 
 	{
 		this->_status_code = 405; //Method Not Allowed
 		this->_status_string = "Forbidden";
-		std::cout << "[Response.cpp] checkRequest " << MAGENTA << "405 : Bad Request (method not allowed)" << RESET << std::endl;
+		std::cout << MAGENTA << "[INFO] checkRequest : " << RESET << "405 : Bad Request (method not allowed)" << std::endl;
 	}
 	else if (checkRedirection(id_route))
 	{
-		std::cout << "[Response.cpp] checkRequest " << MAGENTA << "301 : Redirection" << RESET << std::endl;
+		std::cout << MAGENTA << "[INFO] checkRequest : " << RESET << "301 : Redirection" << std::endl;
 		this->_status_code = 301; //redirection (error) code
 
 		//this->checkRequest();
@@ -74,13 +73,13 @@ void Request::checkRequest()
 			{
 				this->_status_code = 404; //page not found error
 				this->_status_string = "Not Found";
-				std::cout << "[Response.cpp] checkRequest "<< MAGENTA << "Response error 404 : page not found." << RESET << std::endl;
+				std::cout << MAGENTA << "[INFO] checkRequest :" << RESET << "Response error 404 : page not found" << std::endl;
 			}
 			else
 			{
 				this->_status_code = 200;
 				this->_status_string = "OK";
-				std::cout << "[Response.cpp] checkRequest "<< MAGENTA << "Response OK 200" << RESET << std::endl;
+				std::cout << MAGENTA << "[INFO] checkRequest : " << RESET << "OK 200" << RESET << std::endl;
 			}
 		}
 		else
@@ -89,13 +88,13 @@ void Request::checkRequest()
 			{
 				this->_status_code = 404;
 				this->_status_string = "Not Found";
-				std::cout << "[Response.cpp] checkRequest "<< MAGENTA << "Response error 404 : directory not found." << RESET << std::endl;
+				std::cout << MAGENTA << "[INFO] checkRequest : "<< RESET << "Response error 404 : directory not found" << std::endl;
 			}
 			else
 			{
 				this->_status_code = 200;
 				this->_status_string = "OK";
-				std::cout << "[Response.cpp] checkRequest "<< MAGENTA << "(directory) Response OK 200" << RESET << std::endl;
+				std::cout << MAGENTA << "[INFO] checkRequest : "<< RESET << "(directory) Response OK 200" << std::endl;
 			}
 
 		}
@@ -104,9 +103,9 @@ void Request::checkRequest()
 
 void	Request::prepareResponse()
 {
+	std::cout << MAGENTA <<  "[INFO] prepareResponse : " << RESET << this->_method << " " << this->_path <<std::endl;
 	this->checkRequest();
 
-	std::cout << "[Response.cpp] prepareResponse " << MAGENTA << "Response method : " << this->_method << RESET << std::endl;
 
 
 	std::string		response;
@@ -143,24 +142,6 @@ void	Request::prepareResponse()
 					this->getErrorResponse();
 				}
 			}
-			// else if (findFileType(this->_path) == "py" && this->_method == "GET")
-			// {
-			// 	std::cout << RED <<  "Manage CGI" << RESET << std::endl;
-			// 	file.close();
-			// 	fileType = "text/html";
-			// 	const std::string scriptPath = this->_server_config.getRoot() + this->_path;
-			// 	CgiHandler cgiHandler(scriptPath.c_str(), this->_userData, this->_method);
-			// 	if (cgiHandler.executePythonScript() == true)
-			// 	{
-			// 		this->_response_body = cgiHandler.get_py_body_response() ;
-			// 	}
-			// 	else
-			// 	{
-			// 		this->_status_code = 500;
-			// 		this->_status_string = "Internal Server Error";
-			// 		this->getErrorResponse();
-			// 	}
-			// }
 			else if (this->_content_to_upload.length() > 0 && this->_method == "POST")
 			{
 				//std::cout << "[Response.cpp] " << MAGENTA << "prepare response FILE UPLOADED !!! " << RESET << this->_filename << std::endl;
@@ -368,12 +349,12 @@ bool Request::issetFile(int id_route) const
 	if (file)
 	{
 		file.close();
-		std::cout << "[Response.cpp] " << GREEN << "issetFile : OK " << RESET << root_path_file << std::endl;
+		//std::cout << MAGENTA << "[INFO] " << RESET << "issetFile : OK "<< root_path_file << std::endl;
 		return true;
 	}
 	else
 	{
-		std::cout << "[Response.cpp] " << RED << "issetFile : KO " << RESET << root_path_file << std::endl;
+		//std::cout << MAGENTA << "[INFO] " << RESET << "issetFile : KO "<< root_path_file << std::endl;
 		return false;
 	}
 }
@@ -399,7 +380,7 @@ bool Request::checkMethods(int id_route) const
 
 bool Request::checkRedirection(int id_route)
 {
-	(void) id_route;
+	//(void) id_route;
 	// std::cout << "[Response.cpp] " << GREEN << "checkRedirection " <<RESET << " Checking for redirection for ["<< this->_path << "]" <<std::endl;
     //// std::cout << "Current Path: " << this->_path << std::endl;
 	std::string usingPath = this->_path;

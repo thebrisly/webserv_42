@@ -92,7 +92,7 @@ void Request::parseMultipartData() {
 	}
 
 
-	std::cout << "HEADERS PART \n\n" << headerpart << "\n" << std::endl;
+	// std::cout << "HEADERS PART \n\n" << headerpart << "\n" << std::endl;
 
 	while (std::getline(stream, line))
 	{
@@ -101,7 +101,7 @@ void Request::parseMultipartData() {
 		bodypart += line.substr(0, line.find("\r\n")) + "\n";
 	}
 
-	std::cout << "BODY PARTS: First 100 chars \n" << bodypart.substr(0, 100) << std::endl;
+	// std::cout << "BODY PARTS: First 100 chars \n" << bodypart.substr(0, 100) << std::endl;
 
 
 	unsigned long ent = headerpart.find("filename=");
@@ -228,7 +228,7 @@ bool	Request::parseRequest(const std::string& request)
 	}
 	else
 	{
-		std::cerr << RED << "Error : Request does not contain the end of header" << RESET << std::endl;
+		// std::cerr << RED << "Error : Request does not contain the end of header" << RESET << std::endl;
 		return false;
 	}
 

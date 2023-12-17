@@ -24,6 +24,7 @@ void saveBinaryFile(const std::string& filename, const std::vector<uint8_t>& dat
 bool uploadFile(const std::string& filename, const std::string& data);
 std::string loadPage(const std::string& path);
 const std::string prepareRescueResponse();
+void *ft_memset(void *b, int c, size_t len);
 
 
 #endif

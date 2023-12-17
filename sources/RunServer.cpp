@@ -59,7 +59,10 @@ void RunServer::recvs_request (int i)
 	char buffer[BUFFER_SIZE];
 	int size_read;
 
-	memset (buffer, 0, BUFFER_SIZE);
+	//memset (buffer, 0, BUFFER_SIZE);
+
+	ft_memset(buffer, 0, BUFFER_SIZE);
+
 	size_read = recv(i, buffer, BUFFER_SIZE, 0);
 
 	if (size_read == -1)
@@ -105,14 +108,8 @@ void RunServer::recvs_request (int i)
 
 		Request current_request(this->_map_clients[i].get_request(), this->_map_clients[i].get_server_config());
 		
-
-
 		bool parsing_result = current_request.parseRequest(current_request.getCurrentRequest());
 
-
-
-		// parsing request
-		//std::cout << "[RunServer] "<< RED << "recvs_request " << RESET << "Result parsing : " << parsing_result << std::endl;
 
 		// request object added to the client
 
@@ -157,7 +154,7 @@ void RunServer::send_response (int i)
 		perror("send");
 	}
 
-	std::cout << BLUE << time(0) - this->_time_start << " [INFO] send_response : " << "Sent response of " << response.length() << " bytes to client "<< i << RESET <<std::endl;
+	std::cout << BLUE << time(0) - this->_time_start << " [INFO] send_response : " << RESET << "Sent response of " << response.length() << " bytes to client "<< i <<std::endl;
 
 	if (this->_map_clients[i].get_request_object().getConnection() == "close")
 	{
@@ -170,7 +167,7 @@ void RunServer::send_response (int i)
 		FD_CLR(i, &this->_cpy_writefds);
 		this->_map_clients.erase(i);
 
-		std::cout << RED << time(0) - this->_time_start << " [INFO] send_response : " << RESET << "Socket " << i << " disconected" <<std::endl;
+		std::cout << BLUE << time(0) - this->_time_start << " [INFO] send_response : " << RESET << "Socket " << i << " disconected" <<std::endl;
 	}
 	else
 	{
