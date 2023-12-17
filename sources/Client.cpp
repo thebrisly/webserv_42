@@ -3,23 +3,10 @@
 
 Client::Client(const int socket, const ServerConfig server_config) : _socket(socket), _server_config(server_config)
 {
-	/*
-	#include <ctime>
-    ...
-    temps_initial = clock ();
-
-    temps_final = clock ();
-    temps_cpu = (temps_final - temps_initial) / CLOCKS_PER_SEC * 1000; // millisecondes
-	
-	*/
-
 	this->_session_time = clock();
-
-
 	this->_socket_mod = 0;
 	this->_size_response = 0;
 	this->_size_request = 0;
-
 }
 
 Client::Client(): _socket(0), _socket_mod(0), _size_response(0), _size_request(0){};

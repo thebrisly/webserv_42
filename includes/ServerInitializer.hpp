@@ -1,8 +1,8 @@
 #ifndef SERVER_INITIALIZER_HPP
 #define SERVER_INITIALIZER_HPP
 
-#include <unistd.h> //close 
-#include <arpa/inet.h> // close aussi ...
+#include <unistd.h>
+#include <arpa/inet.h>
 #include <iostream>
 #include <fcntl.h>
 #include "ServerConfig.hpp"
@@ -19,10 +19,7 @@ class ServerInitializer
 
 		const ServerConfig	_config;
 		const int			_size_waiting_list;
-		// const std::string							_hostname;
-		// const std::string							_error_page;
-		// const int									_body_size;
-		// const std::map<std::string, std::string>	_path_rules;
+
 
 	public :
 		ServerInitializer(const ServerConfig config, int size_waiting_list);

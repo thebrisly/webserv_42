@@ -98,8 +98,6 @@ class Request {
 
         int                                         getLocation() const;
 
-        // variable to store http methods
-        // static	std::vector<std::string>	        http_methods;
 
     private :
 

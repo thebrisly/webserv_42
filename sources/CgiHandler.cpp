@@ -126,8 +126,8 @@ bool CgiHandler::transform_map_to_strArray()
 
 	if (this->_mmap_args.size() > MAX_ARGS)
 	{
-		std::cerr << RED << "CgiHandler.cpp :" << RESET << " transform_map_to_strArray" << std::endl;
-		perror("Too many arguments");
+		//std::cerr << RED << "CgiHandler.cpp :" << RESET << " transform_map_to_strArray" << std::endl;
+		//perror("Too many arguments");
 		return false;
 	}
 
