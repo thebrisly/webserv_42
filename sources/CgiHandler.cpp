@@ -7,6 +7,7 @@ CgiHandler::~CgiHandler(){}
 
 CgiHandler::CgiHandler(const char* scriptPath, const std::map<std::string, std::string> mmap_args, const std::string method) : _scriptPath(scriptPath), _mmap_args(mmap_args), _method(method)
 {
+	this->_inf_loop = 0;
 	this->transform_map_to_strArray();
 }
 
@@ -28,6 +29,11 @@ std::map<std::string, std::string> CgiHandler::get_mmap_args() const
 const char* CgiHandler::get_arg(int i) const
 {
 	return this->args[i];
+}
+
+int CgiHandler::get_inf_loop() const
+{
+	return this->_inf_loop;
 }
 
 bool CgiHandler::executePythonScript()
@@ -72,11 +78,11 @@ bool CgiHandler::executePythonScript()
 
 		pid_t result;
 
-		bool child_checker = true;
+		bool child_checker = 1;
 
 		time_t start_process_child = time(NULL);
 
-		while (child_checker == true)
+		while (child_checker == 1)
 		{
 			result = waitpid(pid, NULL, WNOHANG);
 
@@ -85,18 +91,24 @@ bool CgiHandler::executePythonScript()
 				if ((time(NULL) - start_process_child) > MAX_TIME_CHILD)
 				{
 					kill(pid, SIGKILL);
-					child_checker = false;
+					child_checker = 0;
+					this->_inf_loop = 1;
+					close(pipefd[0]);
+					std::cerr << MAGENTA << "[WARNING PARENT]" << RESET << " Infinite loop" << " executePythonScript" << std::endl;
+
+					return false;
 				}
 			}
 			else if (result == -1)
 			{
 				std::cerr << MAGENTA << "[WARNING PARENT]" << RESET << " Impossible to" << " executePythonScript" << std::endl;
-				child_checker = false;
+				child_checker = 0;
+				close(pipefd[0]);
 				return false;
 			}
 			else
 			{
-				child_checker = false;
+				child_checker = 0;
 			}
 		}
 
