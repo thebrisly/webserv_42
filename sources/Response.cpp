@@ -131,15 +131,24 @@ void	Request::prepareResponse()
 				fileType = "text/html";
 				const std::string scriptPath = this->_server_config.getRoot() + this->_path;
 				CgiHandler cgiHandler(scriptPath.c_str(), this->_userData, this->_method);
-				if (cgiHandler.executePythonScript() == true)
+				if (cgiHandler.executePythonScript() == 1)
 				{
 					this->_response_body = cgiHandler.get_py_body_response();
 				}
 				else
 				{
-					this->_status_code = 500;
-					this->_status_string = "Internal Server Error";
-					this->getErrorResponse();
+					if (cgiHandler.get_inf_loop() == 1)
+					{
+						this->_status_code = 508;
+						this->_status_string = "Infinite Loop Detected";
+						this->getErrorResponse();
+					}
+					else
+					{
+						this->_status_code = 500;
+						this->_status_string = "Internal Server Error";
+						this->getErrorResponse();
+					}
 				}
 			}
 			else if (this->_content_to_upload.length() > 0 && this->_method == "POST")

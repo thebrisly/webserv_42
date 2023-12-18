@@ -18,6 +18,7 @@ class CgiHandler
 		const std::map<std::string, std::string> _mmap_args;
 		std::string _py_body_response;
 		char *args[MAX_ARGS];
+		int _inf_loop;
 
 		bool transform_map_to_strArray();
 
@@ -34,6 +35,7 @@ class CgiHandler
 		const char* get_scriptPath() const;
 		std::string get_py_body_response() const;
 
+		int 		get_inf_loop() const;
 
 		std::map<std::string, std::string> get_mmap_args() const;
 		bool executePythonScript();
