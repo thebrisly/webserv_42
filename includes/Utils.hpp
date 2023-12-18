@@ -8,6 +8,8 @@
 
 
 #define MAX_CLIENT 1024
+#define BUFFER_SIZE 1000000
+
 
 #include "Client.hpp"
 

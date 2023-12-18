@@ -2,7 +2,7 @@
 #include "../includes/Request.hpp"
 #include "../includes/Utils.hpp"
 
-#define BUFFER_SIZE 1000000
+
 
 RunServer::RunServer(ServersManager & servers_manager, std::string log_filename) : _servers_manager(servers_manager), _out(log_filename, std::ofstream::out), _time_start(time(NULL))
 {

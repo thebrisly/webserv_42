@@ -1,5 +1,6 @@
 #include "../includes/ServerConfig.hpp"
 #include "../includes/Color.hpp"
+#include "../includes/Utils.hpp"
 // Constructor
 ServerConfig::ServerConfig() : port(0), ip_address(""), max_body_size(0), server_name(""), root(""), default_file("") {}
 
@@ -35,7 +36,13 @@ ServerConfig &ServerConfig::operator=(const ServerConfig &other) {
 // Setters
 void ServerConfig::setPort(unsigned long p) { port = p; }
 void ServerConfig::setIPAddress(const std::string& ip) { ip_address = ip; }
-void ServerConfig::setMaxBodySize(unsigned long size) { max_body_size = size; }
+void ServerConfig::setMaxBodySize(unsigned long size)
+{
+    if (size > BUFFER_SIZE)
+        throw std::runtime_error("SIZE_ERROR : MAX_BODY_SIZE > BUFFER_SIZE");
+     max_body_size = size;
+
+}
 void ServerConfig::setServerName(const std::string& name) { server_name = name; }
 void ServerConfig::setDefaultFile(const std::string& path) { default_file = path; }
 void ServerConfig::setErrorPage(int errorCode, const std::string& pagePath) { error_pages[errorCode] = pagePath; }
