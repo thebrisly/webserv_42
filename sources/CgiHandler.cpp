@@ -118,6 +118,8 @@ bool CgiHandler::executePythonScript()
 		}
 		//std::cerr << GREEN << "CgiHandler.cpp :" << RESET << this->_py_body_response << std::endl;
 		close(pipefd[0]);
+
+		std::cout << RED << "CgiHandler.cpp :" << RESET << " executePythonScript return true" << std::endl;
 		return true;
 	}
 }
