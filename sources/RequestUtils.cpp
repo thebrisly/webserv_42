@@ -22,7 +22,6 @@ std::vector<std::string>		Request::initMethods()
 }
 
 void Request::processMultipartPart(const std::string& part) {
-	// std::cout << "Process Part: " << part << std::endl;
     std::istringstream partStream(part);
     std::string line;
     std::string headers;
@@ -82,7 +81,6 @@ void Request::parseMultipartData() {
 
 	std::string headerpart;
 	std::string bodypart;
-	//std::cout << RED << _body << RESET << std::endl;
 
 	while (std::getline(stream, line) && line != "\r")
 	{
@@ -91,8 +89,6 @@ void Request::parseMultipartData() {
 		headerpart += line.substr(0, line.find("\r\n")) + "\n";
 	}
 
-
-	// std::cout << "HEADERS PART \n\n" << headerpart << "\n" << std::endl;
 
 	while (std::getline(stream, line))
 	{
@@ -109,8 +105,6 @@ void Request::parseMultipartData() {
 	{
 		int end = headerpart.find('"', ent + 10);
 		this->_filename = headerpart.substr(ent + 10, end - ent - 10);
-		//std::cout << "ENT " << ent << " END " << end << " FILENAME " << _filename << std::endl;
-		//std::cout << "filename = [" << _filename << "]" << std::endl;
 	}
 	else
 	{
@@ -128,10 +122,6 @@ void Request::parseMultipartData() {
 // Méthode pour parser la requête
 void	Request::parseHeader(std::string& header)
 {
-	//std::cout << "[ParseHeader] " << MAGENTA << "start" << RESET << std::endl;
-
-	//std::cout << "[ParseHeader] " << BLUE << "header to parse : " << RESET << std::endl << "{" << header <<"} (header_size = "<< header.length() << ")" <<std::endl;
-
 	std::istringstream requestHeaderStream(header);
 	std::string line;
 
@@ -183,8 +173,6 @@ void	Request::parseBody()
 	std::map<std::string, std::string>::iterator it = this->_headers.find("Content-Type");
 	if (it != _headers.end())
 	{
-
-		//std::cout << "[RequestUtils.cpp] "<< RED << "parseBody " << RESET << it->second << std::endl; 
 		if (it->second.find("application/x-www-form-urlencoded") != std::string::npos)
 		{
 			parseUserData();
@@ -210,12 +198,8 @@ void	Request::parseBody()
 
 bool	Request::parseRequest(const std::string& request)
 {
-
-	//std::cout << "parseRequest "<< MAGENTA << "Start" << RESET << std::endl;
 	// Clear existing data
 	clearRequest();
-
-	//std::cout << "REQUEST \n"  << BLUE << request << RESET <<  std::endl;
 
 	std::string current_header;
 
@@ -224,11 +208,9 @@ bool	Request::parseRequest(const std::string& request)
 		current_header = request.substr(0, request.find("\r\n\r\n"));
 		this->_body = request.substr(request.find("\r\n\r\n") + 4);
 		
-		// std::cout << "CURRENT BODY\n" << current_body << std::endl;
 	}
 	else
 	{
-		// std::cerr << RED << "Error : Request does not contain the end of header" << RESET << std::endl;
 		return false;
 	}
 

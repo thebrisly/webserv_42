@@ -36,7 +36,6 @@ int main(int argc, char *argv[])
 	}
 	else if (argc == 2)
 	{
-		// std::cout << "Configuration file : " << argv[1] << std::endl;
 		configFile = argv[1];
 		if (!fileExist(configFile))
 		{
@@ -73,8 +72,6 @@ int main(int argc, char *argv[])
 	}
 	catch(std::exception& e)
 	{
-		// std::cout << RED << "ERROR " << RESET << e.what() << std::endl;
-		// std::cout << "Exiting..." << std::endl;	
 		return EXIT_FAILURE;
 	}
 	return 0;

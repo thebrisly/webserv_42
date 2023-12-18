@@ -70,8 +70,8 @@ RouteConfig ServerConfig::getRoute(const std::string& path) const
             return *it;
         }
     }
-
-    throw std::runtime_error("Route not found for path: " + path); // or handle the case as appropriate
+    throw std::runtime_error("");
+    //throw std::runtime_error("Route not found for path: " + path); // or handle the case as appropriate
 }
 
 std::ostream& operator<<(std::ostream& os, const ServerConfig &config)

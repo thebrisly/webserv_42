@@ -57,7 +57,7 @@ void ConfigParser::processErrorPages(const std::string& key, const std::string& 
         int errorCode = std::stoi(key);
         config.setErrorPage(errorCode, value);
     } catch (const std::invalid_argument& e) {
-        std::cerr << "Invalid error code in configuration: " << key << std::endl;
+        //std::cerr << "Invalid error code in configuration: " << key << std::endl;
     }
 }
 

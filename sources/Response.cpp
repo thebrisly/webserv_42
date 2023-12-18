@@ -144,8 +144,6 @@ void	Request::prepareResponse()
 			}
 			else if (this->_content_to_upload.length() > 0 && this->_method == "POST")
 			{
-				//std::cout << "[Response.cpp] " << MAGENTA << "prepare response FILE UPLOADED !!! " << RESET << this->_filename << std::endl;
-
 				if (uploadFile(this->_filename, this->_content_to_upload) == false)
 				{
 					file.close();
@@ -158,7 +156,6 @@ void	Request::prepareResponse()
 				{
 					fileContent << file.rdbuf();
 					this->_response_body = fileContent.str();
-					//std::cout << "[Response.cpp] " << MAGENTA << "prepare response body = " << RESET << body << std::endl;
 					file.close();
 				}
 			}
@@ -205,7 +202,7 @@ void	Request::prepareResponse()
 			}
 			catch(const std::exception& e)
 			{
-				std::cerr << "[Response.cpp]" << RED << " prepare response " << RESET << "e.what = " << e.what() << '\n';
+				//std::cerr << "[Response.cpp]" << RED << " prepare response " << RESET << "e.what = " << e.what() << '\n';
 			}
 			fileType = "text/html";
 			if (directory_listing == false)
@@ -305,12 +302,10 @@ bool Request::checkHttpVersion() const
 {
 	if (this->_version == "HTTP/1.1\r")
 	{
-		// std::cout << "[Response.cpp] " << GREEN << "checkHttpVersion : OK" << RESET << std::endl; 
 		return 1;
 	}
 	else
 	{
-		// std::cout << "[Response.cpp] " << RED << "checkHttpVersion : KO" << RESET << std::endl; 
 		return 0;
 	}
 }
@@ -319,7 +314,6 @@ bool Request::check_host_port() const
 {
 	if (this->_hostname != this->_server_config.getServerName() && this->_hostname != this->_server_config.getIPAddress())
 	{
-		// std::cout << "[Response.cpp] " << RED << "check_host_port : KO " << this->_hostname << RESET << std::endl;
 
 		return false;
 	}
@@ -328,11 +322,8 @@ bool Request::check_host_port() const
 
 	if (ul_port != this->_server_config.getPort())
 	{
-		// std::cout << "[Response.cpp] " << RED << "check_host_port : KO " << this->_port << RESET << std::endl;
 		return false;
 	}
-
-	// std::cout << "[Response.cpp] " << GREEN << "check_host_port : OK " << this->_port << RESET << std::endl;
 	return true;
 }
 
@@ -396,7 +387,7 @@ bool Request::checkRedirection(int id_route)
 	}
 	catch(const std::exception& e)
 	{
-		std::cerr << e.what() << '\n';
+		// std::cerr << e.what() << '\n';
 		// std::cout << "[Response.cpp] " << RED << "checkRedirection " << RESET << " No Redirection found" << std::endl;
 		return false;
 	}
