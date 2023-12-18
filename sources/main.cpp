@@ -72,6 +72,7 @@ int main(int argc, char *argv[])
 	}
 	catch(std::exception& e)
 	{
+		std::cerr << RED << "[CONFIG ERROR] : " << RESET << e.what() << std::endl;
 		return EXIT_FAILURE;
 	}
 	return 0;
