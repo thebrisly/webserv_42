@@ -1,10 +1,10 @@
 SRCS = $(wildcard sources/*.cpp)
 
-NAME = ./server
+NAME = ./webserver
 
 OBJS := $(SRCS:%.cpp=%.o)
 
-CPPFLAGS = -Wall -Wextra -Werror
+CPPFLAGS = -Wall -Wextra -Werror -std=c++98
 
 all: $(NAME)
 

@@ -181,15 +181,15 @@ void RunServer::send_response (int i)
 	}
 	else if (send_result == 0)
 	{
-		// if (close(i) < 0)
-		// {
-		// 	std::cerr << BLUE << time(0) - this->_time_start << " [ERROR] send_response : " << RESET << std::endl;
-		// 	perror("close");
-		// }
-		// FD_CLR(i, &this->_cpy_readfds);
-		// FD_CLR(i, &this->_cpy_writefds);
-		// this->_map_clients.erase(i);
-		// std::cout << BLUE << time(0) - this->_time_start << " [INFO] send_response : " << RESET << "Socket " << i << " disconected (empty socket)" << std::endl;
+		if (close(i) < 0)
+		{
+			std::cerr << BLUE << time(0) - this->_time_start << " [ERROR] send_response : " << RESET << std::endl;
+			perror("close");
+		}
+		FD_CLR(i, &this->_cpy_readfds);
+		FD_CLR(i, &this->_cpy_writefds);
+		this->_map_clients.erase(i);
+		std::cout << BLUE << time(0) - this->_time_start << " [INFO] send_response : " << RESET << "Socket " << i << " disconected (empty socket)" << std::endl;
 	}
 }
 
