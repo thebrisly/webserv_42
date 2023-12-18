@@ -7,14 +7,14 @@
 #include <cstdio>
 
 
-bool deleteFile(const std::string filename) 
+bool deleteFile(const std::string filename)
 {
-    if (std::remove(filename.c_str()) == 0) 
+    if (std::remove(filename.c_str()) == 0)
     {
         std::cout << MAGENTA << "[INFO] " << RESET << "File '" << filename << "' deleted successfully" << std::endl;
         return true;
-    } 
-    else 
+    }
+    else
     {
         std::cout << MAGENTA << "[INFO] " << RESET << "File '" << filename << "' impossible to delete" << std::endl;
         return false;
@@ -32,11 +32,11 @@ void Request::checkRequest()
 		this->_status_string = "HTTP Version Not Supported";
 		std::cout << MAGENTA << "[INFO] checkRequest : " << RESET << "505 : HTTP Version Not Supported" << std::endl;
 	}
-	if (!check_host_port()) 
+	if (!check_host_port())
 	{
-		this->_status_code = 503; //trouver le bon code erreur
-		this->_status_string = "Service Unavailable";
-		std::cout << MAGENTA << "[INFO] checkRequest : " << RESET << "503 : Service Unavailable (host - port not resolved)" << std::endl;
+		this->_status_code = 404; //trouver le bon code erreur
+		this->_status_string = "Not Found";
+		std::cout << MAGENTA << "[INFO] checkRequest : "<< RESET << "404 : Resource not found" << std::endl;
 	}
 	else if (this->_body.length() > this->_server_config.getMaxBodySize())
 	{
@@ -51,7 +51,7 @@ void Request::checkRequest()
 		this->_status_string = "Bad Request";
 		std::cout << MAGENTA << "[INFO] checkRequest : " << RESET << "400 : Bad Request" << std::endl;
 	}
-	else if (!checkMethods(id_route)) 
+	else if (!checkMethods(id_route))
 	{
 		this->_status_code = 405; //Method Not Allowed
 		this->_status_string = "Forbidden";
@@ -245,11 +245,11 @@ void	Request::prepareResponse()
 					closedir(dir);
 					// std::cout << "[Response.cpp]" << MAGENTA << " prepare response " << RESET << "MIME type = " << fileType << std::endl;
 				}
-			}			
+			}
 		}
 	}
 	else
-	{	
+	{
 		file.close();
 		fileType = "text/html";
 		this->getErrorResponse();
@@ -273,7 +273,7 @@ void Request::getErrorResponse()
 	std::map<int, std::string>::const_iterator it = errorPages.find(this->_status_code);
 	if (it == errorPages.end())
 	{
-		
+
 		// std::cout << YELLOW << "2" << RESET << std::endl;
 		std::ifstream default_error_file("web/default_error_pages/" + std::to_string(this->_status_code)+ ".html");
 		std::ostringstream default_error_file_content;
@@ -291,7 +291,7 @@ void Request::getErrorResponse()
 		errorFileContent << errorfile.rdbuf();
 		this->_response_body = errorFileContent.str();
 		// std::cout << RED << body << RESET << std::endl;
-		
+
 	}
 }
 
@@ -383,7 +383,7 @@ bool Request::checkRedirection(int id_route)
 	RouteConfig route;// = this->_server_config.getRoutes()[id_route];
 	try
 	{
-		route = this->_server_config.getRoute(usingPath);	
+		route = this->_server_config.getRoute(usingPath);
 	}
 	catch(const std::exception& e)
 	{
@@ -391,7 +391,7 @@ bool Request::checkRedirection(int id_route)
 		// std::cout << "[Response.cpp] " << RED << "checkRedirection " << RESET << " No Redirection found" << std::endl;
 		return false;
 	}
-	
+
 	// std::cout << "[Response.cpp] " << GREEN << "checkRedirection " << RESET << RED << "Redirection to " << RESET << route.redirection << std::endl;
 	if (route.redirection != "")
 	{
