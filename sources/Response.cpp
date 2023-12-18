@@ -380,18 +380,19 @@ bool Request::checkMethods(int id_route) const
 
 bool Request::checkRedirection(int id_route)
 {
-	//(void) id_route;
+	(void) id_route;
 	// std::cout << "[Response.cpp] " << GREEN << "checkRedirection " <<RESET << " Checking for redirection for ["<< this->_path << "]" <<std::endl;
     //// std::cout << "Current Path: " << this->_path << std::endl;
 	std::string usingPath = this->_path;
 
 	if (this->_path == "")
 		usingPath = "/";
+	else
+		usingPath = this->_path;
 	RouteConfig route;// = this->_server_config.getRoutes()[id_route];
 	try
 	{
-		route = this->_server_config.getRoutes()[id_route];
-		
+		route = this->_server_config.getRoute(usingPath);	
 	}
 	catch(const std::exception& e)
 	{
@@ -404,10 +405,9 @@ bool Request::checkRedirection(int id_route)
 	if (route.redirection != "")
 	{
 
-		this->_path = route.redirection;
+		this->_path = this->_server_config.getRoute(usingPath).redirection;
 		// std::cout << "[Response.cpp] " << GREEN << "checkRedirection " << RESET << RED << "Redirection to " << RESET << route.redirection << std::endl;
 		return true;
-
 	}
 
 	// std::cout << "[Response.cpp] " << GREEN << "checkRedirection : " << RESET <<  " No Redirection found"<< std::endl;
