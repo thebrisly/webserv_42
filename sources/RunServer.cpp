@@ -55,7 +55,6 @@ void RunServer::recvs_request (int i)
 	char buffer[BUFFER_SIZE];
 	int size_read;
 
-	//memset (buffer, 0, BUFFER_SIZE);
 
 	ft_memset(buffer, 0, BUFFER_SIZE);
 

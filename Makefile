@@ -1,7 +1,7 @@
 SRCS = $(addprefix sources/,  CgiHandler.cpp Client.cpp ConfigParser.cpp main.cpp Request.cpp RequestUtils.cpp Response_2.cpp Response.cpp \
 		RunServer.cpp ServerConfig.cpp ServerInitializer.cpp ServersManager.cpp Utils.cpp)
 
-NAME = ./webserver
+NAME = ./webserv
 
 OBJS := $(SRCS:%.cpp=%.o)
 
